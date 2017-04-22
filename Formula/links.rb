@@ -12,11 +12,16 @@ class Links < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "openssl" => :recommended
-  depends_on "libtiff" => :optional
-  depends_on "jpeg" => :optional
-  depends_on "librsvg" => :optional
+  depends_on "xz"
+  depends_on "openssl"
   depends_on :x11 => :optional
+
+  # rest only really needed if --with-x11: XXX but impossible to use:  if build.with? "x11"
+  depends_on "libtiff" => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libpng" => :recommended
+  # note: librsvg pulls in lots of really big stuff, but is quite useful, e.g. for Wikipedia
+  depends_on "librsvg" => :recommended
 
   def install
     args = %W[
@@ -27,11 +32,29 @@ class Links < Formula
       --with-ssl=#{Formula["openssl"].opt_prefix}
     ]
 
-    args << "--enable-graphics" if build.with? "x11"
-    args << "--without-libtiff" if build.without? "libtiff"
-    args << "--without-libjpeg" if build.without? "jpeg"
-    args << "--without-librsvg" if build.without? "librsvg"
-
+    if build.with? "x11"
+      args << "--enable-graphics"
+      args << "--with-x"
+      if build.without? "libpng"
+        args << "--disable-png-pkgconfig"
+      end
+      if build.without? "libtiff"
+        args << "--without-libtiff"
+      else
+        args << "--with-libtiff"
+      end
+      if build.without? "jpeg"
+        args << "--without-libjpeg"
+      else
+        args << "--with-libjpeg"
+      end
+      if build.without? "librsvg"
+        args << "--without-librsvg"
+        args << "--disable-svg-pkgconfig"
+      else
+        args << "--with-librsvg"
+      end
+    end
     system "./configure", *args
     system "make", "install"
     doc.install Dir["doc/*"]
