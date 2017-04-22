@@ -43,6 +43,16 @@ class Emacs < Formula
   # Reported on 2017-03-04: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=25967
   depends_on "imagemagick@6" => :optional
   depends_on "mailutils" => :optional
+  depends_on :x11 => :optional
+
+  # https://github.com/Homebrew/homebrew/issues/37803
+  # rest only really needed if --with-x11: XXX but impossible to use:  if build.with? "x11"
+  depends_on "giflib"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "libpng"
+  depends_on "freetype"
+  depends_on "fontconfig"
 
   def install
     args = %W[
@@ -51,7 +61,6 @@ class Emacs < Formula
       --enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp
       --infodir=#{info}/emacs
       --prefix=#{prefix}
-      --without-x
     ]
 
     if build.with? "libxml2"
@@ -94,6 +103,16 @@ class Emacs < Formula
       args << "--with-ns" << "--disable-ns-self-contained"
     else
       args << "--without-ns"
+      if build.with? "x11"
+        # These libs are not specified in xft's .pc. See:
+        # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
+        # https://github.com/Homebrew/homebrew/issues/8156
+        ENV.append "LDFLAGS", "-lfreetype -lfontconfig"
+        args << "--with-x"
+        args << "--with-gif" << "--with-tiff" << "--with-jpeg"
+      elsif build.without? "x11"
+        args << "--without-x"
+      end
     end
 
     system "./configure", *args
