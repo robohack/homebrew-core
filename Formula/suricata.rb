@@ -1,13 +1,14 @@
 class Suricata < Formula
   desc "Network IDS, IPS, and security monitoring engine"
   homepage "https://suricata-ids.org/"
-  url "https://www.openinfosecfoundation.org/download/suricata-3.2.1.tar.gz"
-  sha256 "0e0b0cf49016804bb2fb1fc4327341617e76a67902f4e03e0ef6d16c1d7d3994"
+  url "https://www.openinfosecfoundation.org/download/suricata-4.0.0.tar.gz"
+  sha256 "6b8b183a8409829ca92c71854cc1abed45f04ccfb7f14c08211f4edf571fa577"
 
   bottle do
-    sha256 "b99cf91adf35b491fdfa2c4421c918a6fbe619cac5bdc2382d692abb4afca15a" => :sierra
-    sha256 "a7ae9bbda83bcce4ffef56961305164802994930118f307b07fe7fef028e852f" => :el_capitan
-    sha256 "5fdf576e4d3d4558879493e2875d13a9200ab71d33c68711259e3aa46e384b86" => :yosemite
+    sha256 "900f56e06aef404b4dfa7ad12ddfdbaf286e37e594cb1ef509f55b855cc5d26e" => :high_sierra
+    sha256 "79a7a7846db0c3aec47923b9aec4748b4e4141a1b0cdb5f253958334c967d54b" => :sierra
+    sha256 "7cde635c3f02771ba54bbb84b159241b6b943bbca067089612e1f6fac113ccc4" => :el_capitan
+    sha256 "ea417dd96e5afb175768483229eb101800b67e0825ea899b9e0b66a0c32d4368" => :yosemite
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -25,19 +26,16 @@ class Suricata < Formula
   depends_on "hiredis" => :optional
 
   resource "argparse" do
-    url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
-    sha256 "b3a79a23d37b5a02faa550b92cbbbebeb4aa1d77e649c3eb39c19abf5262da04"
+    url "https://files.pythonhosted.org/packages/source/a/argparse/argparse-1.4.0.tar.gz"
+    sha256 "62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4"
   end
 
   resource "simplejson" do
-    url "https://pypi.python.org/packages/source/s/simplejson/simplejson-3.6.5.tar.gz"
-    sha256 "2a3189f79d1c7b8a2149a0e783c0b4217fad9b30a6e7d60450f2553dc2c0e57e"
+    url "https://files.pythonhosted.org/packages/source/s/simplejson/simplejson-3.11.1.tar.gz"
+    sha256 "01a22d49ddd9a168b136f26cac87d9a335660ce07aa5c630b8e3607d6f4325e7"
   end
 
   def install
-    # bug raised https://redmine.openinfosecfoundation.org/issues/1470
-    ENV.deparallelize
-
     libnet = Formula["libnet"]
     libmagic = Formula["libmagic"]
 

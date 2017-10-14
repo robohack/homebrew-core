@@ -3,11 +3,14 @@ class Imlib2 < Formula
   homepage "https://sourceforge.net/projects/enlightenment/"
   url "https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.4.10/imlib2-1.4.10.tar.bz2"
   sha256 "3f698cd285cbbfc251c1d6405f249b99fafffafa5e0a5ecf0ca7ae49bbc0a272"
+  revision 1
 
   bottle do
-    sha256 "7dca8d4fdbbcf9abc2d6280bf086f5f9d20485897d75194cbb80c8a3dc9012be" => :sierra
-    sha256 "869d92d080f4a99fbcebf35caa675a2b3a92cb3431531589d41f5ecd12b92b01" => :el_capitan
-    sha256 "337b2306f391929e58e876e60151a0f1d0068b154b4b4f6b316f3fce3e660cab" => :yosemite
+    rebuild 1
+    sha256 "b4ca64f45e433cfa1779ed0a8616f2b8130d63b8e15796dea55ff390cbeaff46" => :high_sierra
+    sha256 "8ee074fbc1fa4ec9b48151518cc4dcfaf02ad15a9001288f636d94684e7172a1" => :sierra
+    sha256 "139bf652a1e3b056f9100d33adeab3a576cd87cc86e7d7566cf1acadd8638fda" => :el_capitan
+    sha256 "c817b22453401f614d195af1009aaa3a94d0e5c08db2d4ef34cf76a1c74720b5" => :yosemite
   end
 
   deprecated_option "without-x" => "without-x11"

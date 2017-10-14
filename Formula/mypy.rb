@@ -2,15 +2,15 @@ class Mypy < Formula
   desc "Experimental optional static type checker for Python"
   homepage "http://www.mypy-lang.org/"
   url "https://github.com/python/mypy.git",
-      :tag => "v0.501",
-      :revision => "ed6480d148dae49f99c8af40f42b17def9947899"
+      :tag => "v0.530",
+      :revision => "f0c941f41bea326d9c8d4e12e0ee13532cb19c42"
   head "https://github.com/python/mypy.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c984e0803ee7622c9a426f1f39dc28a5587f6c710bcbf9d75794ec4b7f95de05" => :sierra
-    sha256 "5f97075bafbe8b913ecd55d5c234b3786690ca0ea5f065e25d28b7b65a517b5d" => :el_capitan
-    sha256 "76b16d42477c7249c4b3e72744765f0667d9a0ff23fbf0e12020077e58b84485" => :yosemite
+    sha256 "17492cb2ff37f0f838e0fdb863e270711fb82d4ebdd390882e169eb0849db9e9" => :high_sierra
+    sha256 "f5b12874aaff4d04088a7bc2c6909578eedbcbac0254e5a66055c97da570aac6" => :sierra
+    sha256 "d9c2bb4e41fd55ef8fd3c10403d544076d3f085620a2a34a3927c48c8f3d4aaa" => :el_capitan
   end
 
   option "without-sphinx-doc", "Don't build documentation"
@@ -21,13 +21,13 @@ class Mypy < Formula
   depends_on "sphinx-doc" => [:build, :recommended]
 
   resource "sphinx_rtd_theme" do
-    url "https://files.pythonhosted.org/packages/99/b5/249a803a428b4fd438dd4580a37f79c0d552025fb65619d25f960369d76b/sphinx_rtd_theme-0.1.9.tar.gz"
-    sha256 "273846f8aacac32bf9542365a593b495b68d8035c2e382c9ccedcac387c9a0a1"
+    url "https://files.pythonhosted.org/packages/8b/e5/b1933472424b30affb0a8cea8f0ef052a31ada96e5d1823911d7f4bfdf8e/sphinx_rtd_theme-0.2.4.tar.gz"
+    sha256 "2df74b8ff6fae6965c527e97cca6c6c944886aae474b490e17f92adfbe843417"
   end
 
   resource "typed-ast" do
-    url "https://files.pythonhosted.org/packages/1e/5e/ca6cef7a04c6c5df26b827e6cdca71af047fcf4d439b28a0f7bbf3b9a720/typed-ast-1.0.1.zip"
-    sha256 "b5f578a05498922300b8150716f9689ec4c3e7071f99f6568eed73e68bfa5983"
+    url "https://files.pythonhosted.org/packages/52/cf/2ebc7d282f026e21eed4987e42e10964a077c13cfc168b42f3573a7f178c/typed-ast-1.1.0.tar.gz"
+    sha256 "57fe287f0cdd9ceaf69e7b71a2e94a24b5d268b35df251a88fef5cc241bf73aa"
   end
 
   def install
@@ -65,17 +65,12 @@ class Mypy < Formula
   end
 
   test do
-    xy = Language::Python.major_minor_version "python3"
-    ENV["PYTHONPATH"] = libexec/"lib/python#{xy}/site-packages"
-
     (testpath/"broken.py").write <<-EOS.undent
       def p() -> None:
-        print ('hello')
+        print('hello')
       a = p()
     EOS
-
-    output = pipe_output("#{bin}/mypy #{testpath}/broken.py 2>&1")
-    assert_match "\"p\" does not return a value", output
-    system "python3", "-c", "import typing"
+    output = pipe_output("#{bin}/mypy broken.py 2>&1")
+    assert_match '"p" does not return a value', output
   end
 end

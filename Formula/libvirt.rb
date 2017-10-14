@@ -1,14 +1,14 @@
 class Libvirt < Formula
   desc "C virtualization API"
   homepage "https://www.libvirt.org"
-  url "https://libvirt.org/sources/libvirt-3.0.0.tar.xz"
-  sha256 "9d9d26b70e13b1b2dfde5789ed52fc4528289a37e0f158418e9746263b37175e"
+  url "https://libvirt.org/sources/libvirt-3.8.0.tar.xz"
+  sha256 "73eba834089ed0ce74e3183a7f12cf0c6f7de08e9a700b5456c62fb124f903f9"
   head "https://github.com/libvirt/libvirt.git"
 
   bottle do
-    sha256 "4dcb8adbe13f081f2fc1403cc47e9dc335a8c7bda32be5856960885e44ae65a2" => :sierra
-    sha256 "f9237dee634dfc7b9306ce18b7414bec4b5debc8589464fdc32baaf97175921a" => :el_capitan
-    sha256 "d033459dfae7095599f5ec0fe4c12ace01e4a8a501578ede1f921bfbf7868941" => :yosemite
+    sha256 "69af91594212176f98b99dce28f16e3d642d93ad2fc8d96d9c93804b12608b32" => :high_sierra
+    sha256 "6010432bdc338ec9a3bced9bb86cb7cacb6c4339df6fa9bda27cede56fb72397" => :sierra
+    sha256 "63a948ca337c41c36df8f444f5614c37b9a5e2bc6b41b28b8fda8bfa09d82a18" => :el_capitan
   end
 
   option "without-libvirtd", "Build only the virsh client and development libraries"
@@ -24,12 +24,6 @@ class Libvirt < Formula
     depends_on "gettext" => :build
     depends_on "libtool" => :build
     depends_on "rpcgen" => :build
-  end
-
-  if MacOS.version <= :leopard
-    # Definitely needed on Leopard, but not on Snow Leopard.
-    depends_on "readline"
-    depends_on "libxml2"
   end
 
   def install

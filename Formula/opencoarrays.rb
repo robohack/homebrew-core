@@ -1,16 +1,16 @@
 class Opencoarrays < Formula
-  desc "open-source coarray Fortran ABI, API, and compiler wrapper"
+  desc "Open-source coarray Fortran ABI, API, and compiler wrapper"
   homepage "http://opencoarrays.org"
-  url "https://github.com/sourceryinstitute/opencoarrays/releases/download/1.8.6/OpenCoarrays-1.8.6.tar.gz"
-  sha256 "1d560b5c39dd976fa73997545f86f8e996fda39ded01158195cd8fb16dd0991c"
+  url "https://github.com/sourceryinstitute/OpenCoarrays/releases/download/1.9.2/OpenCoarrays-1.9.2.tar.gz"
+  sha256 "c0b872db5449d0f3e405427e3953e81e9ca78199fe55651898d3f2ff9b3690c8"
 
   head "https://github.com/sourceryinstitute/opencoarrays.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "c57bc9e52fe97c25233cfbadbf2f4b74fc34f6e511b1707e876ea2e0af8787cf" => :sierra
-    sha256 "be6af7a4bd1b7ed28e3791f0f6435ee8ea8c6c5b6c60faf9c21979376133ab45" => :el_capitan
-    sha256 "aae6cd30732b16834faa7b9fa497e14fd2e6f5110fc4f307afd1a6723697bc3d" => :yosemite
+    cellar :any
+    sha256 "5af0f1c92e2e91e0ac336fda6e5057c8f417ce9d9cd3e9db7c28747f4a546820" => :high_sierra
+    sha256 "415a6396888e62fc959a5f1a1986c7c28db4a6f4ec7f5b94bf44539dca17410b" => :sierra
+    sha256 "fd02729b820868e9757c7a4b10bc529e820edc5a2f44d7d8a912646b77da7c01" => :el_capitan
   end
 
   option "without-test", "Skip build time tests (not recommended)"

@@ -1,47 +1,15 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-
-  stable do
-    url "https://ftp.gnu.org/gnu/coreutils/coreutils-8.27.tar.xz"
-    mirror "https://ftpmirror.gnu.org/coreutils/coreutils-8.27.tar.xz"
-    sha256 "8891d349ee87b9ff7870f52b6d9312a9db672d2439d289bc57084771ca21656b"
-
-    # Remove for > 8.27
-    # Fix "Undefined symbols _renameat"
-    # Reported upstream 10 Mar 2017 https://debbugs.gnu.org/cgi/bugreport.cgi?bug=26044
-    # The patches are from MacPorts. This has been fixed in HEAD.
-    if MacOS.version < :yosemite
-      depends_on "autoconf" => :build
-      depends_on "automake" => :build
-      depends_on "gettext" => :build
-
-      resource "renameat_c" do
-        url "https://raw.githubusercontent.com/macports/macports-ports/61f1b0d/sysutils/coreutils/files/renameat.c"
-        sha256 "1867c22dcb4e503bd1f075e5e78b7194af25cded7286225ea77ee2ec8703a1fb"
-      end
-
-      resource "renameat_m4" do
-        url "https://raw.githubusercontent.com/macports/macports-ports/61f1b0d/sysutils/coreutils/files/renameat.m4"
-        sha256 "09e79dea1d4ae8294297948d8d092ec1e3a1a4fb104faedef8b3d8f67293fd4d"
-      end
-
-      patch :p0 do
-        url "https://raw.githubusercontent.com/macports/macports-ports/61f1b0d/sysutils/coreutils/files/patch-m4_gnulib-comp.m4-add-renameat.diff"
-        sha256 "df9bedeae2ca6d335147b5b4c3f19db2f36ff8c84973fd15fe1697de70538247"
-      end
-
-      patch :p0 do
-        url "https://raw.githubusercontent.com/macports/macports-ports/61f1b0d/sysutils/coreutils/files/patch-lib_gnulib.mk-add-renameat.c.diff"
-        sha256 "f7e2b21f04085f589c3d10c2f6ac5a4185e2b907e8bdb5bb6e4f93888d7ab546"
-      end
-    end
-  end
+  url "https://ftp.gnu.org/gnu/coreutils/coreutils-8.28.tar.xz"
+  mirror "https://ftpmirror.gnu.org/coreutils/coreutils-8.28.tar.xz"
+  sha256 "1117b1a16039ddd84d51a9923948307cfa28c2cea03d1a2438742253df0a0c65"
+  revision 1
 
   bottle do
-    sha256 "a951d21ffbf3407ca84356d369ed6009d248b263587b79f644d9a95300465fa6" => :sierra
-    sha256 "dafd72ff298ed109503928a3d7cf1623327b4bc65318e99b48f3415b7c469ac8" => :el_capitan
-    sha256 "5d636c1ad28b1ef25c140b1486fdb368486bcca563901ad543d62ce1bd5f8b70" => :yosemite
+    sha256 "a28e090747c9963d0a7e572d159925968f8bc57163da407c258565cf118bb28b" => :high_sierra
+    sha256 "3cedadee0079415d09343ebd9ccafc10ae2303fb5fd99d55a61a94c59aea11d9" => :sierra
+    sha256 "ba26d1d475089fd2e692f126a018f0c025ba8dd8b8159ea95903144bf227da1a" => :el_capitan
   end
 
   head do
@@ -59,27 +27,26 @@ class Coreutils < Formula
   depends_on "gmp" => :optional
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
+  conflicts_with "gegl", :because => "both install `gcut` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
   conflicts_with "aardvark_shell_utils", :because => "both install `realpath` binaries"
 
   def install
-    # Work around unremovable, nested dirs bug that affects lots of
-    # GNU projects. See:
-    # https://github.com/Homebrew/homebrew/issues/45273
-    # https://github.com/Homebrew/homebrew/issues/44993
-    # This is thought to be an el_capitan bug:
-    # https://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
     if MacOS.version == :el_capitan
+      # Work around unremovable, nested dirs bug that affects lots of
+      # GNU projects. See:
+      # https://github.com/Homebrew/homebrew/issues/45273
+      # https://github.com/Homebrew/homebrew/issues/44993
+      # This is thought to be an el_capitan bug:
+      # https://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
       ENV["gl_cv_func_getcwd_abort_bug"] = "no"
+
+      # renameatx_np and RENAME_EXCL are available at compile time from Xcode 8
+      # (10.12 SDK), but the former is not available at runtime.
+      inreplace "lib/renameat2.c", "defined RENAME_EXCL", "defined UNDEFINED_GIBBERISH"
     end
 
-    if build.head?
-      system "./bootstrap"
-    elsif MacOS.version < :yosemite
-      (buildpath/"lib").install resource("renameat_c")
-      (buildpath/"m4").install resource("renameat_m4")
-      system "autoreconf", "-fiv"
-    end
+    system "./bootstrap" if build.head?
 
     args = %W[
       --prefix=#{prefix}
@@ -131,6 +98,7 @@ class Coreutils < Formula
   test do
     (testpath/"test").write("test")
     (testpath/"test.sha1").write("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 test")
-    system "#{bin}/gsha1sum", "-c", "test.sha1"
+    system bin/"gsha1sum", "-c", "test.sha1"
+    system bin/"gln", "-f", "test", "test.sha1"
   end
 end

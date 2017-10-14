@@ -2,15 +2,16 @@ class KubernetesHelm < Formula
   desc "The Kubernetes package manager"
   homepage "https://helm.sh/"
   url "https://github.com/kubernetes/helm.git",
-      :tag => "v2.3.1",
-      :revision => "32562a3040bb5ca690339b9840b6f60f8ce25da4"
+      :tag => "v2.6.2",
+      :revision => "be3ae4ea91b2960be98c07e8f73754e67e87963c"
   head "https://github.com/kubernetes/helm.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "76bbd83bd12ef47901814c4b48682416a18559b868839453d1c2d26c21a0f89f" => :sierra
-    sha256 "a64f6d4145fc0dbbfe32f219397e0c979d24aea68ce99c33459a62e6bed86846" => :el_capitan
-    sha256 "5be9c707046fc54d8aa291708d169b8633128360fd7c3e35cc5ae614cc8ebe76" => :yosemite
+    rebuild 1
+    sha256 "aac5cf956ff8335631c6ceda8d787012ddf971340bc538983f0b55cc2bcb027a" => :high_sierra
+    sha256 "382374df1198717d8b65fafad34e666408f31b173f2a2e526e45f417bb6378cf" => :sierra
+    sha256 "bf56fb083e391dec55b33da32e6537a9ad273610d20f0cf564560579f966ebbc" => :el_capitan
   end
 
   depends_on :hg => :build
@@ -27,18 +28,14 @@ class KubernetesHelm < Formula
     dir.install buildpath.children - [buildpath/".brew_home"]
 
     cd dir do
-      # Bootstap build
       system "make", "bootstrap"
-
-      # Make binary
       system "make", "build"
+
       bin.install "bin/helm"
-
-      # Install man pages
+      bin.install "bin/tiller"
       man1.install Dir["docs/man/man1/*"]
-
-      # Install bash completion
       bash_completion.install "scripts/completions.bash" => "helm"
+      prefix.install_metafiles
     end
   end
 

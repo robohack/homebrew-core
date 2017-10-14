@@ -1,14 +1,15 @@
 class Libcds < Formula
   desc "C++ library of Concurrent Data Structures"
   homepage "https://libcds.sourceforge.io/doc/cds-api/index.html"
-  url "https://github.com/khizmax/libcds/archive/v2.2.0.tar.gz"
-  sha256 "e582fbd6492c91ff24b11468f094b111d5f62eca69e6445c88bf16cad50e40ed"
+  url "https://github.com/khizmax/libcds/archive/v2.3.1.tar.gz"
+  sha256 "3754718beafc973fa6a7af9fbb43a4c3d031de86ab793cd439b897e2747e95bc"
 
   bottle do
     cellar :any
-    sha256 "17e4584663eaf891444b4feef6932917eac10c4d0f3cee58cc48cd6dc2af8415" => :sierra
-    sha256 "7c444cf3570fb54e1647ba9235066f9d7f6a35b97b9a2cec6397faf2d8e9555b" => :el_capitan
-    sha256 "35498f70f6f1f52df20dd1c1759168410af73724184c16ba3c4a2de9fd6dc78a" => :yosemite
+    sha256 "316f5b50f424b1a2dec276d788bc1439329f38ea09c2fc75da47f4384af96efc" => :high_sierra
+    sha256 "e2835b0a3b41618da31392fc35e62556e5e1bac35248b126e830fccde5817109" => :sierra
+    sha256 "587c4a2874cf3484591fba7a31654486b9d76d264e02e7b5e38e81bec507df30" => :el_capitan
+    sha256 "3a179bcaf925ea852fe737b899ab97941c7ca11709e9afda9c97524739ee7a30" => :yosemite
   end
 
   depends_on "cmake" => :build

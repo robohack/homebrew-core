@@ -3,15 +3,15 @@ class Pyinvoke < Formula
 
   desc "Pythonic task management & command execution"
   homepage "http://pyinvoke.org/"
-  url "https://github.com/pyinvoke/invoke/archive/0.16.3.tar.gz"
-  sha256 "7230458748de9e8d34f76cf2e9d50b4265cade41d98464c5aefb2c436f9e94c2"
+  url "https://github.com/pyinvoke/invoke/archive/0.21.0.tar.gz"
+  sha256 "ca2fcc56e5abdb9e56c9c5222786356a825a2b552e0137dd06184c54ce9a1cde"
   head "https://github.com/pyinvoke/invoke.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d5e63fd3622c6f0b3a7b4f19107c6e708fd590a8f4a02c602cd6bc547095a641" => :sierra
-    sha256 "ffedb8ab8c77b86abcf60692096de92c6e01412cb0ba17dd2ca34f1efb4eea99" => :el_capitan
-    sha256 "6cbca8bb9dedc851384955969e008b35861089b55e191587205d759eb850e2b0" => :yosemite
+    sha256 "0c84ab7223729c95b9303512e08b0e7a2a06b6cc4d3039dbd222b5080af98dae" => :high_sierra
+    sha256 "d11aae306e1a7482f80ab57c8bb4f2a4c9f3e040e6fad835a2d171fb00ab7a14" => :sierra
+    sha256 "29ac1318559e47eb5d9b3e09237514bdb51d6e33ea43ea11e442e678de1c1a10" => :el_capitan
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -35,10 +35,10 @@ class Pyinvoke < Formula
     (testpath/"foo"/"bar").mkpath
     (testpath/"baz").mkpath
     system bin/"invoke", "clean"
-    assert !File.exist?(testpath/"foo"), "\"pyinvoke clean\" should have deleted \"foo\""
-    assert File.exist?(testpath/"baz"), "pyinvoke should have left \"baz\""
+    refute_predicate testpath/"foo", :exist?, "\"pyinvoke clean\" should have deleted \"foo\""
+    assert_predicate testpath/"baz", :exist?, "pyinvoke should have left \"baz\""
     system bin/"invoke", "clean", "--extra=baz"
-    assert !File.exist?(testpath/"foo"), "\"pyinvoke clean-extra\" should have still deleted \"foo\""
-    assert !File.exist?(testpath/"baz"), "pyinvoke clean-extra should have deleted \"baz\""
+    refute_predicate testpath/"foo", :exist?, "\"pyinvoke clean-extra\" should have still deleted \"foo\""
+    refute_predicate testpath/"baz", :exist?, "pyinvoke clean-extra should have deleted \"baz\""
   end
 end

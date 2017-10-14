@@ -1,13 +1,14 @@
 class PostgresqlAT95 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v9.5.6/postgresql-9.5.6.tar.bz2"
-  sha256 "bb9e5f6d34e20783e96e10c1d6c0c09c31749e802aaa46b793ce2522725ae12f"
+  url "https://ftp.postgresql.org/pub/source/v9.5.9/postgresql-9.5.9.tar.bz2"
+  sha256 "e98cd5c664ab5a05cb83618ba8078647815cb71f7a60437f0322c7518727cdd4"
 
   bottle do
-    sha256 "7fdfb189c77eac47c6e5c969f6986ea1d10ef949b56a26b6c84c2ef4ff7faa2b" => :sierra
-    sha256 "4d8091bf98a26b86fdc4620672b3e61eba4ddf13bdda9b7d0265968bc7f5238a" => :el_capitan
-    sha256 "9732b49b0eb711a48250df0a604127cb259a7903ae498339281833329aa862b9" => :yosemite
+    sha256 "eb85043507176ef8f96dc4711d71f8df20114646140826464a46d817e4151397" => :high_sierra
+    sha256 "8ad3b9b88e91aa61398c8f11c64b804ae239389581d12331e0a32025a6f6cf2c" => :sierra
+    sha256 "27776fede8a58b2def023c73be2e2e682bf924529d22aef1f23364cfa808f5c3" => :el_capitan
+    sha256 "79745c4a8a0df304be89c106c3225396ff7a0f8ca6902caf8f3ac530145aea01" => :yosemite
   end
 
   keg_only :versioned_formula
@@ -20,7 +21,6 @@ class PostgresqlAT95 < Formula
 
   depends_on "openssl"
   depends_on "readline"
-  depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
   depends_on :python3 => :optional
 
@@ -69,8 +69,8 @@ class PostgresqlAT95 < Formula
     if build.with?("tcl") && (MacOS.version >= :mavericks || MacOS::CLT.installed?)
       args << "--with-tcl"
 
-      if File.exist?("#{MacOS.sdk_path}/usr/lib/tclConfig.sh")
-        args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+      if File.exist?("#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework/tclConfig.sh")
+        args << "--with-tclconfig=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework"
       end
     end
 
@@ -95,7 +95,7 @@ class PostgresqlAT95 < Formula
   def caveats; <<-EOS.undent
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
-      https://github.com/Homebrew/homebrew/issues/2510
+      https://github.com/Homebrew/legacy-homebrew/issues/2510
 
     To migrate existing data from a previous major version (pre-9.0) of PostgreSQL, see:
       https://www.postgresql.org/docs/9.5/static/upgrading.html

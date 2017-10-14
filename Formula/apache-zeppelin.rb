@@ -1,8 +1,8 @@
 class ApacheZeppelin < Formula
   desc "Web-based notebook that enables interactive data analytics"
   homepage "https://zeppelin.apache.org"
-  url "https://www.apache.org/dyn/closer.lua?path=zeppelin/zeppelin-0.7.1/zeppelin-0.7.1-bin-all.tgz"
-  sha256 "eaa7c34bb7e4dd0e722f330fe524e361cd8f05980dad214f92f5d6701861f3d8"
+  url "https://www.apache.org/dyn/closer.lua?path=zeppelin/zeppelin-0.7.3/zeppelin-0.7.3-bin-all.tgz"
+  sha256 "7e657df51ecfd4aad39d42f8578409692244d36b2da92b5dbd3b6957b829bf58"
   head "https://github.com/apache/zeppelin.git"
 
   bottle :unneeded

@@ -8,6 +8,7 @@ class Libtar < Formula
   bottle do
     cellar :any
     rebuild 2
+    sha256 "a263cfaa1499f0c82902009964df0a310e7841ddff29409c67ede0a79157c31e" => :high_sierra
     sha256 "68bdebde24477a815ea03289878ad57e8a1f719b417bef430bf477c2d760cad7" => :sierra
     sha256 "018f1c9897f52b783878db67db39a5933a4863a3f9dedc2af9b6bf13f2161957" => :el_capitan
     sha256 "d8d138fb4c1cf8c33aaaf8633cd748e9a423e84f1df886ae1842d4816b1f34a0" => :yosemite
@@ -32,10 +33,10 @@ class Libtar < Formula
     (testpath/"homebrew.txt").write "This is a simple example"
     system "tar", "-cvf", "test.tar", "homebrew.txt"
     rm "homebrew.txt"
-    assert !File.exist?("homebrew.txt")
-    assert File.exist?("test.tar")
+    refute_predicate testpath/"homebrew.txt", :exist?
+    assert_predicate testpath/"test.tar", :exist?
 
     system bin/"libtar", "-x", "test.tar"
-    assert File.exist?("homebrew.txt")
+    assert_predicate testpath/"homebrew.txt", :exist?
   end
 end

@@ -1,16 +1,14 @@
 class Itstool < Formula
   desc "Make XML documents translatable through PO files"
   homepage "http://itstool.org/"
-  url "http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2"
-  sha256 "bf909fb59b11a646681a8534d5700fec99be83bb2c57badf8c1844512227033a"
-  revision 2
+  url "http://files.itstool.org/itstool/itstool-2.0.3.tar.bz2"
+  sha256 "8c7a5c639eb4714a91ad829910fd06c1c677abcbbb60aee9211141faa7fb02c7"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f1ce80023c123419edc5705d9f26a4c4d15dde6dff09c672921197f94bf7daae" => :sierra
-    sha256 "4bbeea37b4f8f887458ffae502c74306a931ffbda43c34ae0f05eb5011dffd28" => :el_capitan
-    sha256 "22b1b0163b35b35fefbea27321cea0359dba726b832cf892729825ff718add6e" => :yosemite
-    sha256 "e8e0dbf50b44a058553bc63d039809cc1d96efb8c8a8c73b5e6f9f10b568d644" => :mavericks
+    sha256 "da09d7d185c9c44226324cdcad03bb73ac20468a4231c4ecc75f7ccf32457a23" => :high_sierra
+    sha256 "da09d7d185c9c44226324cdcad03bb73ac20468a4231c4ecc75f7ccf32457a23" => :sierra
+    sha256 "da09d7d185c9c44226324cdcad03bb73ac20468a4231c4ecc75f7ccf32457a23" => :el_capitan
   end
 
   head do
@@ -21,7 +19,7 @@ class Itstool < Formula
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "libxml2" => "with-python"
+  depends_on "libxml2"
 
   def install
     ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"

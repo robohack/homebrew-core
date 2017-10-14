@@ -2,14 +2,14 @@ class Haxe < Formula
   desc "Multi-platform programming language"
   homepage "https://haxe.org/"
   url "https://github.com/HaxeFoundation/haxe.git",
-      :tag => "3.4.2",
-      :revision => "890f8c70cf23ce6f9fe0fdd0ee514a9699433ca7"
+      :tag => "3.4.4",
+      :revision => "4f09586f6691e8a9645844b62036c8c974a00d15"
 
   bottle do
     cellar :any
-    sha256 "698bb9fe8d6fe5d546949469d082f6877658ad74feff0c7149d22675ce01109e" => :sierra
-    sha256 "2b72ad031bc21749162ae4cb2e8cb8488519b1b9998b6fe051a3b4de25cbda8a" => :el_capitan
-    sha256 "07da6182e4e2482c941a0b7e5d3ec0bda852ab6702c0067153c02e0c3a3a1925" => :yosemite
+    sha256 "baa0a054502fb1151d7dad57626cce36c5c6601db9f980639b61ea7810674908" => :high_sierra
+    sha256 "bb9d6e20fb0c1ca9cc27633f5bc6c29e5187b37be89226cb59f038fa5dacd7b1" => :sierra
+    sha256 "5dfaab0cfa7585478456bc8c4aeabc7d7e1cfae34aac3260399cfcc9df2a8fd8" => :el_capitan
   end
 
   head do
@@ -31,7 +31,8 @@ class Haxe < Formula
       ENV["OPAMROOT"] = buildpath/"opamroot"
       ENV["OPAMYES"] = "1"
       system "opam", "init", "--no-setup"
-      system "opam", "install", "ocamlfind"
+      system "opam", "config", "exec", "--", "opam", "install", "ocamlfind",
+             "sedlex", "xml-light", "extlib", "rope", "ptmap>2.0.1"
       system "opam", "config", "exec", "--", "make", "ADD_REVISION=1"
     else
       system "make", "OCAMLOPT=ocamlopt.opt"
@@ -46,7 +47,8 @@ class Haxe < Formula
     cp "extra/haxelib_src/haxelib", "haxelib"
 
     bin.mkpath
-    system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
+    system "make", "install", "INSTALL_BIN_DIR=#{bin}",
+           "INSTALL_LIB_DIR=#{lib}/haxe", "INSTALL_STD_DIR=#{lib}/haxe/std"
 
     # Replace the absolute symlink by a relative one,
     # such that binary package created by homebrew will work in non-/usr/local locations.

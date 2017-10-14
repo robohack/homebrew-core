@@ -8,6 +8,7 @@ class V8 < Formula
 
   bottle do
     cellar :any
+    sha256 "179a8442510eb0a022ea6823cd6a76044c14c4fe18415710cac3d746d432020e" => :high_sierra
     sha256 "8106efc14371982af11a66d8db533dc0589bc240950e0e445467cf6ce8871393" => :sierra
     sha256 "487f2ca72096ee27d13533a6dad2d472a92ba40ef518a45226f19e94d4a79242" => :el_capitan
     sha256 "dc9af3e08eda8a4acd1ff3c6b47a4c5170a92dbab7d2d79958a14d8aa42eefac" => :yosemite
@@ -22,7 +23,6 @@ class V8 < Formula
 
   depends_on :python => :build # gyp doesn't run under 2.6 or lower
   depends_on "readline" => :optional
-  depends_on "icu4c" => :optional
 
   needs :cxx11
 
@@ -75,13 +75,6 @@ class V8 < Formula
     # https://code.google.com/p/v8/issues/detail?id=4511#c3
     ENV.append "GYP_DEFINES", "v8_use_external_startup_data=0"
 
-    if build.with? "icu4c"
-      ENV.append "GYP_DEFINES", "use_system_icu=1"
-      i18nsupport = "i18nsupport=on"
-    else
-      i18nsupport = "i18nsupport=off"
-    end
-
     # fix up libv8.dylib install_name
     # https://github.com/Homebrew/homebrew/issues/36571
     # https://code.google.com/p/v8/issues/detail?id=3871
@@ -99,7 +92,7 @@ class V8 < Formula
     (buildpath/"tools/clang").install resource("clang")
 
     system "make", "native", "library=shared", "snapshot=on",
-                   "console=readline", i18nsupport,
+                   "console=readline", "i18nsupport=off",
                    "strictaliasing=off"
 
     include.install Dir["include/*"]

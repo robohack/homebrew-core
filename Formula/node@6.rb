@@ -1,14 +1,15 @@
 class NodeAT6 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v6.10.2/node-v6.10.2.tar.xz"
-  sha256 "80aa11333da99813973a99646e2113c6be5b63f665c0731ed14ecb94cbe846b6"
+  url "https://nodejs.org/dist/v6.11.4/node-v6.11.4.tar.xz"
+  sha256 "4c2f0435e3088136ac4bc75236a7717f189d590a13f490065e7b3b8e5aacd450"
+  revision 1
   head "https://github.com/nodejs/node.git", :branch => "v6.x-staging"
 
   bottle do
-    sha256 "d3d9c58a86ae353aaaddfb1b8e228d617438f860e1a6830baa7336a760845821" => :sierra
-    sha256 "b32619ebd3d347646540ec1eb35df3fcf7a7e4fda74996c3ed3422c79770320a" => :el_capitan
-    sha256 "463ad4daf2879d5c7f91824293556fca24d159b8db4a0a8c4201cc959da19780" => :yosemite
+    sha256 "74a7028d76df0c5d8a4337693183e5558edf2e46cda1534a6e0633052ae43a53" => :high_sierra
+    sha256 "68135b66205498f0d294b8c9bb5d70799cd8e3d772d309150549d33d822aadf5" => :sierra
+    sha256 "5d3f79943fae2332090e942fe95f0c0fae0f4c53ef8b45a38a3ee894c299e741" => :el_capitan
   end
 
   keg_only :versioned_formula
@@ -33,8 +34,8 @@ class NodeAT6 < Formula
 
   # Keep in sync with main node formula
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-4.2.0.tgz"
-    sha256 "bb9883f1581fd10854a8b6917ae1279f691a8d89e81a0cbea77b614dbcd53f5a"
+    url "https://registry.npmjs.org/npm/-/npm-5.4.2.tgz"
+    sha256 "04dc5f87b1079d59d51404d4b4c4aacbe385807a33bd15a8f2da2fabe27bf443"
   end
 
   resource "icu4c" do
@@ -60,31 +61,28 @@ class NodeAT6 < Formula
     system "make", "install"
 
     if build.with? "npm"
-      resource("npm").stage buildpath/"npm_install"
-
-      # make sure npm can find node
+      # Allow npm to find Node before installation has completed.
       ENV.prepend_path "PATH", bin
-      # set log level temporarily for npm's `make install`
-      ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
-      # unset prefix temporarily for npm's `make install`
-      ENV.delete "NPM_CONFIG_PREFIX"
 
-      cd buildpath/"npm_install" do
-        system "./configure", "--prefix=#{libexec}/npm"
-        system "make", "install"
-        # `package.json` has relative paths to the npm_install directory.
-        # This copies back over the vanilla `package.json` that is expected.
-        # https://github.com/Homebrew/homebrew/issues/46131#issuecomment-157845008
-        cp buildpath/"npm_install/package.json", libexec/"npm/lib/node_modules/npm"
-        # Remove manpage symlinks from the buildpath, they are breaking bottle
-        # creation. The real manpages are living in libexec/npm/lib/node_modules/npm/man/
-        # https://github.com/Homebrew/homebrew/pull/47081#issuecomment-165280470
-        rm_rf libexec/"npm/share/"
-      end
+      bootstrap = buildpath/"npm_bootstrap"
+      bootstrap.install resource("npm")
+      system "node", bootstrap/"bin/npm-cli.js", "install", "-ddd", "--global",
+             "--prefix=#{libexec}", resource("npm").cached_download
+
+      # Fix from chrmoritz for ENOENT issue with @ in path to node
+      inreplace libexec/"lib/node_modules/npm/node_modules/libnpx/index.js",
+                "return child.escapeArg(npmPath, true)", "return npmPath"
+
+      # The `package.json` stores integrity information about the above passed
+      # in `cached_download` npm resource, which breaks `npm -g outdated npm`.
+      # This copies back over the vanilla `package.json` to fix this issue.
+      cp bootstrap/"package.json", libexec/"lib/node_modules/npm"
+      # These symlinks are never used & they've caused issues in the past.
+      rm_rf libexec/"share"
 
       if build.with? "completion"
         bash_completion.install \
-          buildpath/"npm_install/lib/utils/completion.sh" => "npm"
+          bootstrap/"lib/utils/completion.sh" => "npm"
       end
     end
   end
@@ -94,25 +92,25 @@ class NodeAT6 < Formula
 
     node_modules = HOMEBREW_PREFIX/"lib/node_modules"
     node_modules.mkpath
-    npm_exec = node_modules/"npm/bin/npm-cli.js"
     # Kill npm but preserve all other modules across node updates/upgrades.
     rm_rf node_modules/"npm"
 
-    cp_r libexec/"npm/lib/node_modules/npm", node_modules
+    cp_r libexec/"lib/node_modules/npm", node_modules
     # This symlink doesn't hop into homebrew_prefix/bin automatically so
-    # remove it and make our own. This is a small consequence of our bottle
-    # npm make install workaround. All other installs **do** symlink to
-    # homebrew_prefix/bin correctly. We ln rather than cp this because doing
-    # so mimics npm's normal install.
-    ln_sf npm_exec, "#{HOMEBREW_PREFIX}/bin/npm"
+    # we make our own. This is a small consequence of our
+    # bottle-npm-and-retain-a-private-copy-in-libexec setup
+    # All other installs **do** symlink to homebrew_prefix/bin correctly.
+    # We ln rather than cp this because doing so mimics npm's normal install.
+    ln_sf node_modules/"npm/bin/npm-cli.js", HOMEBREW_PREFIX/"bin/npm"
+    ln_sf node_modules/"npm/bin/npx-cli.js", HOMEBREW_PREFIX/"bin/npx"
 
     # Let's do the manpage dance. It's just a jump to the left.
     # And then a step to the right, with your hand on rm_f.
-    ["man1", "man3", "man5", "man7"].each do |man|
-      # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
+    %w[man1 man5 man7].each do |man|
+      # Dirs must exist first: https://github.com/Homebrew/legacy-homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
-      rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.,package.json.}*"]
-      ln_sf Dir[libexec/"npm/lib/node_modules/npm/man/#{man}/{npm,package.json}*"], HOMEBREW_PREFIX/"share/man/#{man}"
+      rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.,package.json.,npx.}*"]
+      cp Dir[libexec/"lib/node_modules/npm/man/#{man}/{npm,package.json,npx}*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"
@@ -162,9 +160,14 @@ class NodeAT6 < Formula
       ENV.prepend_path "PATH", opt_bin
       ENV.delete "NVM_NODEJS_ORG_MIRROR"
       assert_equal which("node"), opt_bin/"node"
-      assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
-      assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
-      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
+      assert_predicate HOMEBREW_PREFIX/"bin/npm", :exist?, "npm must exist"
+      assert_predicate HOMEBREW_PREFIX/"bin/npm", :executable?, "npm must be executable"
+      npm_args = ["-ddd", "--cache=#{HOMEBREW_CACHE}/npm_cache", "--build-from-source"]
+      system "#{HOMEBREW_PREFIX}/bin/npm", *npm_args, "install", "npm@latest"
+      system "#{HOMEBREW_PREFIX}/bin/npm", *npm_args, "install", "bignum" unless head?
+      assert_predicate HOMEBREW_PREFIX/"bin/npx", :exist?, "npx must exist"
+      assert_predicate HOMEBREW_PREFIX/"bin/npx", :executable?, "npx must be executable"
+      assert_match "< hello >", shell_output("#{HOMEBREW_PREFIX}/bin/npx --cache=#{HOMEBREW_CACHE}/npm_cache cowsay hello")
     end
   end
 end

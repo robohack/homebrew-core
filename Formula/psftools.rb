@@ -6,6 +6,7 @@ class Psftools < Formula
 
   bottle do
     cellar :any
+    sha256 "984bfbb42595e84c8a71228b51b01cfb6844736340101b80998ff0da46ea0933" => :high_sierra
     sha256 "0e8f5ac8fd1dab5c23865b886463f71fbd9013803e97bb934dc6905e46f635fc" => :sierra
     sha256 "66a389177a272c5a03ca11f1cb8f32fdac2899117812ad9206fe6744b4b9118d" => :el_capitan
     sha256 "7e51a8f4c5605780528091208dfdb018c4a7ca0e56ff81cb75715b95fb8a9e9b" => :yosemite
@@ -29,7 +30,7 @@ class Psftools < Formula
     # The zip file has a fon in it, use fon2fnts to extrat to fnt
     resource("pc8x8font").stage do
       system "#{bin}/fon2fnts", "pc8x8.fon"
-      assert File.exist?("PC8X8_9.fnt")
+      assert_predicate Pathname.pwd/"PC8X8_9.fnt", :exist?
     end
   end
 end

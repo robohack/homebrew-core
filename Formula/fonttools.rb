@@ -3,15 +3,15 @@ class Fonttools < Formula
 
   desc "Library for manipulating fonts"
   homepage "https://github.com/fonttools/fonttools"
-  url "https://github.com/fonttools/fonttools/releases/download/3.10.0/fonttools-3.10.0.zip"
-  sha256 "d165f83078a8f1bb9f466b12cee1ff402f39ebf143970762ef34abdb13fd4255"
+  url "https://github.com/fonttools/fonttools/releases/download/3.16.0/fonttools-3.16.0.zip"
+  sha256 "b92df265ee71cec346438276f7bcfcabe82356aa9791a84c7895fd043e954f72"
   head "https://github.com/fonttools/fonttools.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "257540f8a8a20c637bcc1a9b58ca4cc238e9a5e5bcdb6c90469e86eb0cecc822" => :sierra
-    sha256 "5e67db3593196cc727899b0864d60fb54c3fa499486146230443c9b714788114" => :el_capitan
-    sha256 "4c381f702c44753b8765cf88d09663084da40acc6d5c64bb723da6b2c26e699c" => :yosemite
+    sha256 "b06ccb7f0ebc6ba441dc5300ad361f2030b808d0dbd553d573be98e8f4628f74" => :high_sierra
+    sha256 "f8504991decff26c80545d390303ec36b84722956474f01eade359a69745966f" => :sierra
+    sha256 "219551cebd8cfcba224f996bc33c80edcd39b994788b5cec75b3562fd313c5a4" => :el_capitan
   end
 
   option "with-pygtk", "Build with pygtk support for pyftinspect"

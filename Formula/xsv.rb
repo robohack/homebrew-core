@@ -1,14 +1,15 @@
 class Xsv < Formula
   desc "Fast CSV toolkit written in Rust."
   homepage "https://github.com/BurntSushi/xsv"
-  url "https://github.com/BurntSushi/xsv/archive/0.11.0.tar.gz"
-  sha256 "b0c21849eaa445d75765fd56da5f47359ef8cffa5970a329345f1fcb724cb5fe"
+  url "https://github.com/BurntSushi/xsv/archive/0.12.2.tar.gz"
+  sha256 "484e3d4a9fec0d4c8089a77cba3e122970113e2bf0277ab6a956bf12954bbca3"
   head "https://github.com/BurntSushi/xsv.git"
 
   bottle do
-    sha256 "6f7fd81033e00cfb8736e24450a87d98e1f7fc28185644b64a8331ffe0ff6df8" => :sierra
-    sha256 "4be9b4e5af53e4e22c8dbafb83befaaacaf382c0ae24dfcf4a815a91974b6025" => :el_capitan
-    sha256 "eef4f40a15ea50c5526b6efd2c26d97ba103db2fe6fad4050792d41469cd7f37" => :yosemite
+    sha256 "0d374ca4691f5e5fab0ff3d05bcaee68239fc61c05cbfff93bdefc8b7a981fe7" => :high_sierra
+    sha256 "e7b5bad91e0d75088045c1450970afb482b4419f777dd931775176106ed35271" => :sierra
+    sha256 "e6bf617d8bc98e792dde6590194695baa6f2f6ed4ab43b90f2bf50fff1b2f6a2" => :el_capitan
+    sha256 "0a3e50fe692f96af9706d2ecb8799b711c513ad9c8d8b4534b0ed0c2949e5ce3" => :yosemite
   end
 
   depends_on "rust" => :build

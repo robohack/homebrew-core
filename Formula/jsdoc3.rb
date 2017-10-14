@@ -3,15 +3,15 @@ require "language/node"
 class Jsdoc3 < Formula
   desc "API documentation generator for JavaScript"
   homepage "http://usejsdoc.org/"
-  url "https://registry.npmjs.org/jsdoc/-/jsdoc-3.4.3.tgz"
-  sha256 "23614801b96ab77c17cd5d509a2a892f022c9f0669de9de81b8a426a0a761054"
+  url "https://registry.npmjs.org/jsdoc/-/jsdoc-3.5.5.tgz"
+  sha256 "f80dd27d77c4b6110cc4c548c2c026eee7df6c86df2bb047e2a6c30594bba088"
   head "https://github.com/jsdoc3/jsdoc.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "05b19f6416176a148d4378a513ccb97162d39dfc7e1eb334ee847a255864c614" => :sierra
-    sha256 "a20047ed1604c540600e93726a072dd26c7050b0f100459047f01b8bd4388aa9" => :el_capitan
-    sha256 "3d1035d8d1ff7bd705d8b9ae2b3a00e1f969be6cdb1843c594924302e3de918d" => :yosemite
+    sha256 "746c92b92e292189a958f35739ebd267f0a861e33cdd5c08026da3d255d92ad7" => :high_sierra
+    sha256 "bfab5fccdd1e49260dc2166af13885de94d43acb7cc689663aa0414cef88698a" => :sierra
+    sha256 "9d5a8b63309f02f86c42c7cf6973a000f4eda4ad0e1cea080a64674abea0a2da" => :el_capitan
   end
 
   depends_on "node"

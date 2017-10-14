@@ -1,19 +1,21 @@
 class Getdns < Formula
   desc "Modern asynchronous DNS API"
   homepage "https://getdnsapi.net"
-  url "https://getdnsapi.net/releases/getdns-1-0-0/getdns-1.0.0.tar.gz"
-  sha256 "a0460269c6536501a7c0af9bc97f9339e05a012f8191d5c10f79042aa62f9e96"
-  head "https://github.com/getdnsapi/getdns.git", :branch => "develop"
+  url "https://getdnsapi.net/releases/getdns-1-2-0/getdns-1.2.0.tar.gz"
+  sha256 "06e6494b5d8b9404f439d5a98a3ab8f1f4b3557fb7aa3db005b021a6289b4229"
 
   bottle do
-    sha256 "eb0a9afe598e9611814d9ca21ff7e897dd4b2182df29797f2624a22ed661a892" => :sierra
-    sha256 "db7b5abcbb815b325cf60a334b31eee7f65485bf037895d61b24fb368200ea13" => :el_capitan
-    sha256 "0c372cc5b79342c227df9ab8dc678a064f2ffd351409d8aa5536d6522d7012aa" => :yosemite
+    sha256 "18a667520c470eb6af10f97c005c74ca348965642cc766df2db7804546e986b4" => :high_sierra
+    sha256 "6a1fec44c69fb72c9f0f8976ae595793ffc5d7a564b27fd322ae8855d797e43d" => :sierra
+    sha256 "af93db1657d757e1dc92ed41335ca509b539e4bf2c7414aac08f350c7475ccc9" => :el_capitan
   end
 
-  devel do
-    url "https://getdnsapi.net/releases/getdns-1-1-0-rc1/getdns-1.1.0-rc1.tar.gz"
-    sha256 "d91ec104b33880ac901f36b8cc01b22f9086fcf7d4ab94c0cbc56336d1f6bec0"
+  head do
+    url "https://github.com/getdnsapi/getdns.git", :branch => "develop"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "openssl"
@@ -22,12 +24,6 @@ class Getdns < Formula
   depends_on "libevent" => :recommended
   depends_on "libuv" => :optional
   depends_on "libev" => :optional
-
-  if build.head?
-    depends_on "libtool"
-    depends_on "autoconf"
-    depends_on "automake"
-  end
 
   def install
     if build.head?
@@ -38,6 +34,7 @@ class Getdns < Formula
     args = [
       "--with-ssl=#{Formula["openssl"].opt_prefix}",
       "--with-trust-anchor=#{etc}/getdns-root.key",
+      "--without-stubby",
     ]
     args << "--enable-stub-only" if build.without? "unbound"
     args << "--without-libidn" if build.without? "libidn"
@@ -45,17 +42,15 @@ class Getdns < Formula
     args << "--with-libuv" if build.with? "libuv"
     args << "--with-libev" if build.with? "libev"
 
-    # Current Makefile layout prevents simultaneous job execution
-    # https://github.com/getdnsapi/getdns/issues/166
-    ENV.deparallelize
-
     system "./configure", "--prefix=#{prefix}", *args
+    system "make"
     system "make", "install"
   end
 
   test do
     (testpath/"test.c").write <<-EOS.undent
       #include <getdns/getdns.h>
+      #include <stdio.h>
 
       int main(int argc, char *argv[]) {
         getdns_context *context;

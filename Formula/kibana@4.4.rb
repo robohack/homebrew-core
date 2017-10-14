@@ -7,9 +7,11 @@ class KibanaAT44 < Formula
   head "https://github.com/elastic/kibana.git"
 
   bottle do
-    sha256 "f60d7c5fffba7332cd873572e2545e831b882be3c3a67614a1d668e47aed2b33" => :sierra
-    sha256 "3b03418f6c7294e688e326d79dee99a74324a93696379fd5907481151c859fb3" => :el_capitan
-    sha256 "a6142cf1f25064be67a8fd8fd1ef056f95716e3000a74512a2f4887e0d083485" => :yosemite
+    rebuild 1
+    sha256 "3b7011fe62be21827a90c03a061d1bd84ba706440c65055c3b6ea89109d7d05b" => :high_sierra
+    sha256 "005ac0dd625197ccb1dce23a6c3a1b13f71334c36e0143dde31e257ef95c2503" => :sierra
+    sha256 "35a3786e62e9b87b20167b8fb4b39db3db518f090b40e8799297aa4725b7f32e" => :el_capitan
+    sha256 "9a76e851c990d0466c00b2e7a78b5f0850f35bb47b5390e8b2254c2de031b900" => :yosemite
   end
 
   keg_only :versioned_formula
@@ -20,8 +22,7 @@ class KibanaAT44 < Formula
   end
 
   def install
-    resource("node").stage buildpath/"node"
-    cd buildpath/"node" do
+    resource("node").stage do
       system "./configure", "--prefix=#{libexec}/node"
       system "make", "install"
     end
@@ -44,8 +45,7 @@ class KibanaAT44 < Formula
     inreplace buildpath/"tasks/build/archives.js", /(await exec\('zip'.*)/, "// \\1"
 
     ENV.prepend_path "PATH", prefix/"libexec/node/bin"
-    Pathname.new("#{ENV["HOME"]}/.npmrc").write Language::Node.npm_cache_config
-    system "npm", "install"
+    system "npm", "install", "-ddd", "--build-from-source", "--#{Language::Node.npm_cache_config}"
     system "npm", "run", "build"
     mkdir "tar" do
       system "tar", "--strip-components", "1", "-xf", Dir[buildpath/"target/kibana-*-#{platform}.tar.gz"].first
@@ -68,8 +68,6 @@ class KibanaAT44 < Formula
     (prefix/"installedPlugins").mkdir
   end
 
-  plist_options :manual => "kibana"
-
   def caveats; <<-EOS.undent
     Config: #{etc}/kibana/
     If you wish to preserve your plugins upon upgrade, make a copy of
@@ -77,6 +75,8 @@ class KibanaAT44 < Formula
     new keg location after upgrading.
     EOS
   end
+
+  plist_options :manual => "kibana"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

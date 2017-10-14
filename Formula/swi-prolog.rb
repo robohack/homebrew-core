@@ -1,18 +1,19 @@
 class SwiProlog < Formula
   desc "ISO/Edinburgh-style Prolog interpreter"
   homepage "http://www.swi-prolog.org/"
-  url "http://www.swi-prolog.org/download/stable/src/swipl-7.4.1.tar.gz"
-  sha256 "891e314e8f5d856ef71d8bbce5d255a18b0c8f227628748bb0e1e19473273cc1"
+  url "http://www.swi-prolog.org/download/stable/src/swipl-7.4.2.tar.gz"
+  sha256 "7f17257da334bc1e7a35e9cf5cb8fca01d82f1ea406c7ace76e9062af8f0df8b"
 
   bottle do
-    sha256 "0e5128fa677354c723a15b8d82a74a28ff6585efefa0c334e64798eee4ce2964" => :sierra
-    sha256 "2e8e2cbb8a5f109cafc0ad0e0231a91420d72c2f7a9eba5ef5f2ece66c1910c8" => :el_capitan
-    sha256 "144c6a6415dd42759190bf00b72bee3a7c7577db7a5d08f061bfbf8e2aa184e1" => :yosemite
+    sha256 "a03a0bde74e00d2c40b0a7735d46383bef5200dca08077b637e67d99cc0cb1aa" => :high_sierra
+    sha256 "ba534d0cc2cceb366ef8d19c1f1bb41441930fc1416c0491cf4233ed170ca23f" => :sierra
+    sha256 "ad17932306bca2156e865b80697ccf7c497ff03f6da6d8cf37eb7c966b581ba8" => :el_capitan
+    sha256 "ff7f400d368f44da8372423df94000e7b4cb84780a5b53936ff414a993db299b" => :yosemite
   end
 
   devel do
-    url "http://www.swi-prolog.org/download/devel/src/swipl-7.5.2.tar.gz"
-    sha256 "e16a5e74af16b1830d6a6f9950e56e2039b73e9dc70313603557a85d5490dafe"
+    url "http://www.swi-prolog.org/download/devel/src/swipl-7.7.1.tar.gz"
+    sha256 "fda2c8b6b606ff199ea8a6f019008aa8272b7c349cb9312ccd5944153509503a"
   end
 
   head do
@@ -39,11 +40,8 @@ class SwiProlog < Formula
   end
 
   def install
-    # The archive package hard-codes a check for MacPort libarchive
-    # Replace this with a check for Homebrew's libarchive, or nowhere
     if build.with? "libarchive"
-      inreplace "packages/archive/configure.in", "/opt/local",
-                                                 Formula["libarchive"].opt_prefix
+      ENV["ARPREFIX"] = Formula["libarchive"].opt_prefix
     else
       ENV.append "DISABLE_PKGS", "archive"
     end

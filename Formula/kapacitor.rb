@@ -2,14 +2,16 @@ class Kapacitor < Formula
   desc "Open source time series data processor"
   homepage "https://github.com/influxdata/kapacitor"
   url "https://github.com/influxdata/kapacitor.git",
-      :tag => "v1.2.1",
-      :revision => "4628bda2e3fbcc43df694707ec3f640f213cb0dc"
+      :tag => "v1.3.3",
+      :revision => "ce586f35e89e75a1779e2b493caba15d66295a15"
   head "https://github.com/influxdata/kapacitor.git"
 
   bottle do
-    sha256 "196481399627f7840a1c739e5718779f5dfe6a38dfe32a0d634f6ed73c3a7135" => :sierra
-    sha256 "1b5f30632216f5671a9c49ca3bc25952c7a2990a7b981f36e1973b9ebf11716c" => :el_capitan
-    sha256 "209fd08bf8214c8dd7c6566973b6bfe6009683bc743121570e6206c1091785ff" => :yosemite
+    cellar :any_skip_relocation
+    rebuild 1
+    sha256 "ef5b9fca23bec2457e0ca83c50ff6ee6e3d123cba42a3c159f53448db5ba6e7d" => :high_sierra
+    sha256 "a2714ef4df092c66ebc7aec7fbead28ad86dbccdb8c4af1fb7027d0c26d8a348" => :sierra
+    sha256 "8666187b386a0fbc88724ca02a7bde971e5a4659c041d7d25426a7bd7b0fbe97" => :el_capitan
   end
 
   depends_on "go" => :build

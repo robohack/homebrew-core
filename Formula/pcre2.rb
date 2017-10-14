@@ -1,16 +1,17 @@
 class Pcre2 < Formula
   desc "Perl compatible regular expressions library with a new API"
-  homepage "http://www.pcre.org/"
-  url "https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.23.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.exim.org/pub/pcre/pcre2-10.23.tar.bz2"
-  sha256 "dfc79b918771f02d33968bd34a749ad7487fa1014aeb787fad29dd392b78c56e"
+  homepage "https://www.pcre.org/"
+  url "https://ftp.pcre.org/pub/pcre/pcre2-10.30.tar.bz2"
+  sha256 "90bd41c605d30e3745771eb81928d779f158081a51b2f314bbcc1f73de5773db"
+
   head "svn://vcs.exim.org/pcre2/code/trunk"
 
   bottle do
     cellar :any
-    sha256 "713086fd17e6d5543cc0144e3055ee0382dc1b092eb9fafdbda73a7b2539c363" => :sierra
-    sha256 "151ff71a40f5b960c7504b77e0d5c18d8873a201c725c6b6d357f559a50722dd" => :el_capitan
-    sha256 "18f0559c760d65f0f2323499fcf306c04576b3630a46d61a3582a37fb103bf29" => :yosemite
+    sha256 "018f7eba7db9d2807e624b8c3e243d369714a6eb84f498917c4f4988a0fa19b0" => :high_sierra
+    sha256 "1ff0a7fa5c45bebb4c3ea138a5cea73a83a7663ed9bcf2636bb9177af6dee9e9" => :sierra
+    sha256 "15b40ba0f293ebea4a0108db7436a301523bac14e16997d20acd778e94bb3545" => :el_capitan
+    sha256 "0ec2d3f9b5e01424bf13a06a4e55894ed708eee2015fa43ce0755953c5afd885" => :yosemite
   end
 
   def install
@@ -22,7 +23,6 @@ class Pcre2 < Formula
                           "--enable-pcre2grep-libbz2",
                           "--enable-jit"
     system "make"
-    system "make", "check"
     system "make", "install"
   end
 

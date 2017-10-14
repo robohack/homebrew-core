@@ -4,14 +4,14 @@ class ImagemagickAT6 < Formula
   # Please always keep the Homebrew mirror as the primary URL as the
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/imagemagick%406-6.9.8-3.tar.xz"
-  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.8-3.tar.xz"
-  sha256 "5dd5804f803d01f0c0c6fc0f3da68cc8e4c638b5ff56770f8481bbe202411316"
+  url "https://dl.bintray.com/homebrew/mirror/imagemagick%406-6.9.9-19.tar.xz"
+  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.9-19.tar.xz"
+  sha256 "330efe70c38d86b95337f67015c465c8d910d8e96632ee72e09017120546d1ab"
 
   bottle do
-    sha256 "979d69b75cec5289ba01579cb7c77e068e810edd3fae0326faa88e416a42266b" => :sierra
-    sha256 "41e9a94ab39a3c97564fd6c976a60d3f881e84620d19b4bca7bb32862c7b7508" => :el_capitan
-    sha256 "8af8736c27512fe4689f9d1221b5a5d1babd1777d4f80ab551e8c05c0de42c09" => :yosemite
+    sha256 "ff0094009edf94bc9ff681328fd14d79c1caa0897e2d44949d83068787656309" => :high_sierra
+    sha256 "660c1f7456a6505e62a7c21020bbea29f4739baa8b04f84b4e22cbcfc05f5014" => :sierra
+    sha256 "2ec0d715445077e433616232efe30990fad278893d384454e1949ec51785829a" => :el_capitan
   end
 
   keg_only :versioned_formula
@@ -21,9 +21,6 @@ class ImagemagickAT6 < Formula
   option "with-opencl", "Compile with OpenCL support"
   option "with-openmp", "Compile with OpenMP support"
   option "with-perl", "Compile with PerlMagick"
-  option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
-  option "with-quantum-depth-16", "Compile with a quantum depth of 16 bit"
-  option "with-quantum-depth-32", "Compile with a quantum depth of 32 bit"
   option "without-magick-plus-plus", "disable build/install of Magick++"
   option "without-modules", "Disable support for dynamically loadable modules"
   option "without-threads", "Disable threads support"
@@ -112,15 +109,6 @@ class ImagemagickAT6 < Formula
     args << "--with-fontconfig=yes" if build.with? "fontconfig"
     args << "--with-freetype=yes" if build.with? "freetype"
     args << "--enable-zero-configuration" if build.with? "zero-configuration"
-
-    if build.with? "quantum-depth-32"
-      quantum_depth = 32
-    elsif build.with?("quantum-depth-16") || build.with?("perl")
-      quantum_depth = 16
-    elsif build.with? "quantum-depth-8"
-      quantum_depth = 8
-    end
-    args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
 
     # versioned stuff in main tree is pointless for us
     inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_VERSION}", "${PACKAGE_NAME}"

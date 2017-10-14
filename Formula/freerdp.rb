@@ -8,13 +8,13 @@ class Freerdp < Formula
     sha256 "c0f137df7ab6fb76d7e7d316ae4e0ca6caf356e5bc0b5dadbdfadea5db992df1"
 
     patch do
-      url "https://github.com/FreeRDP/FreeRDP/commit/1d3289.diff"
-      sha256 "90a4f288349dd13b658b3401762373f0dec8414233bf304df0715724c8352cec"
+      url "https://github.com/FreeRDP/FreeRDP/commit/1d3289.diff?full_index=1"
+      sha256 "09628c01238615c425e35f287b46f100fddcc2e5fea0adc41416fecee8129731"
     end
 
     patch do
-      url "https://github.com/FreeRDP/FreeRDP/commit/e32f9e.diff"
-      sha256 "1b8ec9d5e229b4ed50790042bee7ceb3e85bdd88c9bc2dcfdf2e9d97e921649d"
+      url "https://github.com/FreeRDP/FreeRDP/commit/e32f9e.diff?full_index=1"
+      sha256 "829ce02ff1e618a808d6d505b815168cdef9cf0012db25d5b8470657852be93b"
     end
 
     # https://github.com/FreeRDP/FreeRDP/pull/1682/files
@@ -24,6 +24,7 @@ class Freerdp < Formula
     end
   end
   bottle do
+    sha256 "849254a5206feace01a07302a2e483c82cdc2403b85c6ad6a13917da19a53fb4" => :high_sierra
     sha256 "429e7a072afb895dbb2dd35a5d0ec64d6225c42af1e81c415454edd94336a5cf" => :sierra
     sha256 "6f7c7f1ccfe392cdd983e53ff662f7dae3c2ea94f47637760dc2e41fb707f172" => :el_capitan
     sha256 "a371c32a6fd8c6ccd28dad7260ecc84b042128f157aa85f2e2ffe9efcc19e0bc" => :yosemite
@@ -31,12 +32,12 @@ class Freerdp < Formula
 
   devel do
     url "https://github.com/FreeRDP/FreeRDP/archive/4c69c3ea1489f09e1c3e698eaebd67b6d8d25785.tar.gz" # stable-1.1 branch as of Aug 13, 2016
-    sha256 "4a3a2cbb8d5dd2660252c1dc03ddfbdce8a23423d09c01b590cc94390a31e476"
+    sha256 "1a4b03daca9bd82ef2e3827e1cdb469121f62aab1061f79ffa587babf9fe080c"
     version "1.1.0-beta1"
     depends_on :xcode => :build # for "ibtool"
 
     patch do
-      url "https://github.com/untoldone/FreeRDP/commit/65e53694eb5d6faa5d57a31a54defd1c5233ac09.diff"
+      url "https://github.com/untoldone/FreeRDP/commit/65e53694eb5d6faa5d57a31a54defd1c5233ac09.diff?full_index=1"
       sha256 "a017305311312006d253908615a7af29c5f71a0cf2dcea1de9e35616a9df3d00"
     end
   end
@@ -60,9 +61,9 @@ class Freerdp < Formula
 
   test do
     success = `#{bin}/xfreerdp --version` # not using system as expected non-zero exit code
-    details = $?
+    details = $CHILD_STATUS
     if !success && details.exitstatus != 128
-      raise "Unexpected exit code #{$?} while running xfreerdp"
+      raise "Unexpected exit code #{$CHILD_STATUS} while running xfreerdp"
     end
   end
 end

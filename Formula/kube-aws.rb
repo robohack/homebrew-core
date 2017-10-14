@@ -1,15 +1,16 @@
 class KubeAws < Formula
   desc "CoreOS Kubernetes on AWS"
   homepage "https://coreos.com/kubernetes/docs/latest/kubernetes-on-aws.html"
-  url "https://github.com/kubernetes-incubator/kube-aws/archive/v0.9.5.tar.gz"
-  sha256 "86a15c882ef63e3a24fbd96f8af0b945911b7b2092051baa397d6a5046a1d21f"
+  url "https://github.com/kubernetes-incubator/kube-aws/archive/v0.9.8.tar.gz"
+  sha256 "d4954b8d42dee8459329a799088267632e368e0b60652bfecab4a16d59a2f50a"
   head "https://github.com/kubernetes-incubator/kube-aws.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d486f64d76f822d0f282d575543f1dc5008b8306deaeb3d4ee984ae1604a9924" => :sierra
-    sha256 "d6f7cbe965878315250494441844d3de9bb2e0b2b7eb9d5e8d3faae3904a815f" => :el_capitan
-    sha256 "e10ba1d9474a9cc8bbdafa8919132af3463f9c652ad50dd258a44e0a55723edf" => :yosemite
+    sha256 "9552e54a302fb9514e05e2332e652ac4840a5175c583ca397cd655d6ada29f91" => :high_sierra
+    sha256 "43b4567874d330c91191d155c699c9a7b5522246bc5fd204954182a5f9a04b50" => :sierra
+    sha256 "c27239463b5d9d28c3adaa0bf5e112637b3a266bf28bfb97b076d952c9d24e53" => :el_capitan
+    sha256 "4bde1b4c7934815860f2e94731b9e70843f6d2bcf79a886f96dcb9f47be1d057" => :yosemite
   end
 
   depends_on "go" => :build
@@ -42,10 +43,21 @@ class KubeAws < Formula
     require "yaml"
 
     system "#{bin}/kube-aws"
-    cluster = { "clusterName" => "test-cluster", "externalDNSName" => "dns",
-                "keyName" => "key", "region" => "west",
-                "availabilityZone" => "zone", "kmsKeyArn" => "arn",
-                "worker"=>{ "nodePools"=>[{ "name"=>"nodepool1" }] } }
+    cluster = {
+      "clusterName" => "test-cluster",
+      "apiEndpoints" => [{
+        "name" => "default",
+        "dnsName" => "dns",
+        "loadBalancer" => { "createRecordSet" => false },
+      }],
+      "keyName" => "key",
+      "region" => "west",
+      "availabilityZone" => "zone",
+      "kmsKeyArn" => "arn",
+      "worker" => { "nodePools" => [{ "name" => "nodepool1" }] },
+      "addons" => { "clusterAutoscaler" => { "enabled" => false },
+                    "rescheduler" => { "enabled" => false } },
+    }
     system "#{bin}/kube-aws", "init", "--cluster-name", "test-cluster",
            "--external-dns-name", "dns", "--region", "west",
            "--availability-zone", "zone", "--key-name", "key",

@@ -5,13 +5,14 @@ class Expect < Formula
   sha256 "b28dca90428a3b30e650525cdc16255d76bb6ccd65d448be53e620d95d5cc040"
 
   bottle do
+    sha256 "f49994bf93a0d51de030ef15a07c8b31c7abd04241054cc831cbbdeb442b81b4" => :high_sierra
     sha256 "25b09bc0dbb7c9550df75b6d6d84c7c5444bbb9ea508fb19f043f01b1c2b0f90" => :sierra
     sha256 "53c9bc7b8884ac782dcd374d66192e9e60e33e478568593df029bf6e65667b31" => :el_capitan
     sha256 "ffe25ca3a637bee0ff0bb49ce17283d2f64d6c1e1636db3c4c4de08badbd6bb0" => :yosemite
   end
 
   option "with-threads", "Build with multithreading support"
-  option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-brewed-tk", "Use Homebrew's Tk (has Cocoa and threads support)"
 
   deprecated_option "enable-threads" => "with-threads"
 
@@ -31,8 +32,12 @@ class Expect < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--exec-prefix=#{prefix}", "--mandir=#{man}"]
-    args << "--enable-shared"
+    args = %W[
+      --prefix=#{prefix}
+      --exec-prefix=#{prefix}
+      --mandir=#{man}
+      --enable-shared
+    ]
     args << "--enable-threads" if build.with? "threads"
     args << "--enable-64bit" if MacOS.prefer_64_bit?
 
@@ -40,8 +45,9 @@ class Expect < Formula
       args << "--with-tcl=#{Formula["tcl-tk"].opt_prefix}/lib"
     else
       ENV.prepend "CFLAGS", "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework/Versions/8.5/Headers/tcl-private"
-      args << "--with-tcl=#{MacOS.sdk_path}/usr/lib"
+      args << "--with-tcl=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework"
     end
+
     # Regenerate configure script. Remove after patch applied in newer
     # releases.
     system "autoreconf", "--force", "--install", "--verbose"

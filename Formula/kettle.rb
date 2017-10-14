@@ -1,6 +1,6 @@
 class Kettle < Formula
   desc "Pentaho Data Integration software"
-  homepage "http://community.pentaho.com/projects/data-integration/"
+  homepage "https://community.hds.com/docs/DOC-1009855"
   url "https://downloads.sourceforge.net/project/pentaho/Data%20Integration/6.1/pdi-ce-6.1.0.1-196.zip"
   sha256 "ef5076c09e8481d1ab4cfc5f7d4701437f80f2b97a3bf19dfa74821de9524495"
 
@@ -22,7 +22,7 @@ class Kettle < Formula
     end
   end
 
-  plist_options :manual => "kettle"
+  plist_options :manual => "pdicarte #{HOMEBREW_PREFIX}/etc/kettle/carte-config.xml"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -56,8 +56,6 @@ class Kettle < Formula
   end
 
   test do
-    ENV.java_cache
-
     system "#{bin}/pdipan", "-file=#{libexec}/samples/transformations/Encrypt\ Password.ktr", "-level=RowLevel"
   end
 end

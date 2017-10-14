@@ -1,15 +1,15 @@
 class LeanCli < Formula
   desc "Command-line tool to develop and manage LeanCloud apps."
   homepage "https://github.com/leancloud/lean-cli"
-  url "https://github.com/leancloud/lean-cli/archive/v0.7.5.tar.gz"
-  sha256 "31b4600d221111e5866581ccc497a37985b0a81939f95061aebbdfd8d08c5a87"
+  url "https://github.com/leancloud/lean-cli/archive/v0.16.2.tar.gz"
+  sha256 "70c31c81966bc12cf9de22a3192e55f03c64055a907e42995e5df98db2c89a32"
   head "https://github.com/leancloud/lean-cli.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f6560b5ead8501402b6078b340c0c9cf6e15414b9ca5e5d414e304d0bf6ef488" => :sierra
-    sha256 "1f8d6ac982535281ff2f41e8d57d3930d7bbaadb623c7fb4b10fefddd4a46d02" => :el_capitan
-    sha256 "bc598d8b19bb11fc3e3d87bfc6d9c089b440a03262ced8760fc0e328aaf04d0a" => :yosemite
+    sha256 "3e80626dbf7efd1e5c509e5af4c7cd92c8003487c5a3ca1ed989471aad785c80" => :high_sierra
+    sha256 "e9c7fd636b43d700d52e45d07d7ecf6d625e0b3df61b18c5af979ca202593519" => :sierra
+    sha256 "3a33f49c57410134a2d8ae4f995b3bf67228cf375bcf5460f2bc096d34903430" => :el_capitan
   end
 
   depends_on "go" => :build
@@ -22,6 +22,8 @@ class LeanCli < Formula
     system "go", "build", "-o", bin/"lean",
                  "-ldflags", "-X main.pkgType=#{build_from}",
                  "github.com/leancloud/lean-cli/lean"
+    bash_completion.install "misc/lean-bash-completion" => "lean"
+    zsh_completion.install "misc/lean-zsh-completion" => "_lean"
   end
 
   test do

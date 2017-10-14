@@ -2,15 +2,15 @@ class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
   url "https://github.com/influxdata/influxdb.git",
-      :tag => "v1.2.3",
-      :revision => "74aa2aa9ae830cd11b8e975e85bb60e61d8d1f21"
+      :tag => "v1.3.6",
+      :revision => "a7c3d3c0f7b74f71919047adbc4933460967a576"
   head "https://github.com/influxdata/influxdb.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "136a1ff9a4e5f6acf1cabc8a68b27478e0ba1a77f462203487f0d691bf18c4a2" => :sierra
-    sha256 "69eef0d68a9b2ea95bc833c06239dd87358a6abcc47c9d19c545aee884b122bd" => :el_capitan
-    sha256 "4acdcd8b8cadec7e87b13eee74b09bd942384f3acd0c4be38ecb4f4e9a9cbdf8" => :yosemite
+    sha256 "afe00063c989f15c9ffa316669dc88e03d8688ab80ae2aa5619fcd278d445916" => :high_sierra
+    sha256 "75ec262ce3823b0bd9c0ffc91f9b1f72f1259df08f7223a722a989503eb3d44f" => :sierra
+    sha256 "cda1383027c51da9efb774ac986f08629548d497af10b21ea410303fdd07aaba" => :el_capitan
   end
 
   depends_on "gdm" => :build
@@ -40,6 +40,7 @@ class Influxdb < Formula
     bin.install "bin/influx"
     bin.install "bin/influx_tsm"
     bin.install "bin/influx_stress"
+    bin.install "bin/influx_inspect"
     etc.install influxdb_path/"etc/config.sample.toml" => "influxdb.conf"
 
     (var/"influxdb/data").mkpath

@@ -1,20 +1,20 @@
 class Sip < Formula
   desc "Tool to create Python bindings for C and C++ libraries"
   homepage "https://www.riverbankcomputing.com/software/sip/intro"
-  url "https://downloads.sourceforge.net/project/pyqt/sip/sip-4.19.2/sip-4.19.2.tar.gz"
-  sha256 "432b4aad25254e6997913e33b1ca3cf5fd21d5729a50a3ce2edccbea82c80533"
+  url "https://downloads.sourceforge.net/project/pyqt/sip/sip-4.19.3/sip-4.19.3.tar.gz"
+  sha256 "740df844f80cc45dcc9b23294a92492923bc403ce88e68c35783f27c177c4b74"
+  revision 4
   head "https://www.riverbankcomputing.com/hg/sip", :using => :hg
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "05a3d53af8562d67d16b8ec43d817c289f8fc71a0361bfe1d8ef347706fba185" => :sierra
-    sha256 "65fd457bb8abd264318f4986649589d4e3f24596d6119055d76e218021d3e960" => :el_capitan
-    sha256 "c1a19cd5ba519acc15190be899954e42cba72e329d454c41ded5a8c18e4bdbb0" => :yosemite
+    sha256 "5fc393ef529959a75c5e549338eacd51e60453848b9aebb7c9c8dfede518f87c" => :high_sierra
+    sha256 "99ab357056cfe7e53b0452bda1be46aec55f44dc6fca338c2302a174d3e406df" => :sierra
+    sha256 "7ca21d5d033bcc25eda9be7d1f321129b278535cf7bd5e9705ad722c013747e2" => :el_capitan
   end
 
-  option "without-python", "Build without python2 support"
-  depends_on :python => :recommended if MacOS.version <= :snow_leopard
-  depends_on :python3 => :optional
+  depends_on :python => :recommended
+  depends_on :python3 => :recommended
 
   def install
     if build.without?("python3") && build.without?("python")
@@ -30,7 +30,7 @@ class Sip < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-      # Note the binary `sip` is the same for python 2.x and 3.x
+      ENV.delete("SDKROOT") # Avoid picking up /Application/Xcode.app paths
       system python, "configure.py",
                      "--deployment-target=#{MacOS.version}",
                      "--destdir=#{lib}/python#{version}/site-packages",

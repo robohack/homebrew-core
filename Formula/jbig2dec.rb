@@ -1,27 +1,17 @@
 class Jbig2dec < Formula
   desc "JBIG2 decoder and library (for monochrome documents)"
   homepage "https://ghostscript.com/jbig2dec.html"
-  url "http://downloads.ghostscript.com/public/jbig2dec/jbig2dec-0.13.tar.gz"
-  sha256 "5aaca0070992cc2e971e3bb2338ee749495613dcecab4c868fc547b4148f5311"
+  url "http://downloads.ghostscript.com/public/jbig2dec/jbig2dec-0.14.tar.gz"
+  sha256 "21b498c3ba566f283d02946f7e78e12abbad89f12fe4958974e50882c185014c"
 
   bottle do
     cellar :any
-    sha256 "8b0f528a21bc3fc6ef4a333a892d0bafee3650a40c2192102152ebab4702cd2b" => :sierra
-    sha256 "9d486cf625f24d6b3d681451b041998ef70b86801c7cc0e75ffb074162267a08" => :el_capitan
-    sha256 "5418d7ca54b8366f5f2135c130921f2426e67e872ace91ddb843689f7f61b9f7" => :yosemite
+    sha256 "197656bee979449ea283d855f0332afa414a31f7114123f477f3f9f2cc192763" => :high_sierra
+    sha256 "a98bac77f5b916d67c1c7742ee3462af053c2ff0726dacaf5b0bcb2e9aef7e74" => :sierra
+    sha256 "beb6ea36ce8edffa4ff8569231413fab5f3de7338379b35b49d208e16243577d" => :el_capitan
   end
 
   depends_on "libpng" => :optional
-
-  # These are all upstream already, remove on next release.
-  patch do
-    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/j/jbig2dec/jbig2dec_0.13-4.debian.tar.xz"
-    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/j/jbig2dec/jbig2dec_0.13-4.debian.tar.xz"
-    sha256 "c4776c27e4633a7216e02ca6efcc19039ca757e8bd8fe0a7fbfdb07fa4c30d23"
-    apply "patches/020160518~1369359.patch",
-          "patches/020161212~e698d5c.patch",
-          "patches/020161214~9d2c4f3.patch"
-  end
 
   def install
     args = %W[
@@ -29,7 +19,6 @@ class Jbig2dec < Formula
       --prefix=#{prefix}
       --disable-silent-rules
     ]
-
     args << "--without-libpng" if build.without? "libpng"
 
     system "./configure", *args

@@ -1,8 +1,8 @@
 class Kobalt < Formula
   desc "Build system"
   homepage "http://beust.com/kobalt"
-  url "https://github.com/cbeust/kobalt/releases/download/1.0.72/kobalt-1.0.72.zip"
-  sha256 "85942c7505846c841fa87d57ccb07be504569699d5a3f8fe80dca94355c74e2e"
+  url "https://github.com/cbeust/kobalt/releases/download/1.0.90/kobalt-1.0.90.zip"
+  sha256 "6aaec7e96390017ac170823a82f1fb6268d549324d447fce118e6471067dbe98"
 
   bottle :unneeded
 
@@ -16,8 +16,6 @@ class Kobalt < Formula
   end
 
   test do
-    ENV.java_cache
-
     (testpath/"src/main/kotlin/com/A.kt").write <<-EOS.undent
       package com
       class A
@@ -39,6 +37,6 @@ class Kobalt < Formula
 
     system "#{bin}/kobaltw", "assemble"
     output = "kobaltBuild/libs/test-1.0.jar"
-    assert File.exist?(output), "Couldn't find #{output}"
+    assert_predicate testpath/output, :exist?, "Couldn't find #{output}"
   end
 end

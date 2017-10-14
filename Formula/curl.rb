@@ -1,14 +1,23 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
   homepage "https://curl.haxx.se/"
-  url "https://curl.haxx.se/download/curl-7.54.0.tar.bz2"
-  sha256 "f50ebaf43c507fa7cc32be4b8108fa8bbd0f5022e90794388f3c7694a302ff06"
+  url "https://curl.haxx.se/download/curl-7.56.0.tar.bz2"
+  mirror "http://curl.askapache.com/download/curl-7.56.0.tar.bz2"
+  sha256 "de60a4725a3d461c70aa571d7d69c788f1816d9d1a8a2ef05f864ce8f01279df"
 
   bottle do
     cellar :any
-    sha256 "e812e7a0fed04ca4333c56b9f7d740dfbda4aa8a28a8b79647f98e7ae5289bf1" => :sierra
-    sha256 "bef5bbef95da0a4c7d619539dd5cf0646d9be59169c1666d3f2c548050caa2a7" => :el_capitan
-    sha256 "de301f643ebc7bc5ebb9ac2cc204fb11ef7d2a920b7ac18d0ea737117cde9d2e" => :yosemite
+    sha256 "85cd4aab6e1ad5c52e6511f0049fd76f6d0a5aa67ad74d57b04121e24f9c3123" => :high_sierra
+    sha256 "5e46b9ed7a800dfdfce5fe3028616fce91fd6b2c8ef82aa8d85dcd3e7265d021" => :sierra
+    sha256 "eb8882694b5645841503a6355797ea517ef942546a0e4b3a2f02995fd1f60007" => :el_capitan
+  end
+
+  head do
+    url "https://github.com/curl/curl.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   keg_only :provided_by_osx
@@ -41,6 +50,8 @@ class Curl < Formula
   depends_on "nghttp2" => :optional
 
   def install
+    system "./buildconf" if build.head?
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking
@@ -86,7 +97,7 @@ class Curl < Formula
     filename.verify_checksum stable.checksum
 
     system libexec/"mk-ca-bundle.pl", "test.pem"
-    assert File.exist?("test.pem")
-    assert File.exist?("certdata.txt")
+    assert_predicate testpath/"test.pem", :exist?
+    assert_predicate testpath/"certdata.txt", :exist?
   end
 end

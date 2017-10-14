@@ -1,5 +1,5 @@
 class Webarchiver < Formula
-  desc "allows you to create Safari .webarchive files"
+  desc "Allows you to create Safari .webarchive files"
   homepage "https://github.com/newzealandpaul/webarchiver"
   url "https://github.com/newzealandpaul/webarchiver/archive/0.9.tar.gz"
   sha256 "8ea826038e923c72e75a4bbb1416910368140a675421f6aaa51fd0dea703f75c"
@@ -8,6 +8,7 @@ class Webarchiver < Formula
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "589ff1af350f78b387e96e5b121f03271e12b0cb67d22a2c17e227e4da02d797" => :high_sierra
     sha256 "d62bc4e985e7fe36519af669c626f5fdd3ef56b17ddaaba5d5fdad2505c8277d" => :sierra
     sha256 "63b8f54ff998596d2fab065f616f38d0c72dee9a48ae80a06c433a78813b4b11" => :el_capitan
     sha256 "0c86758734efe96b1f6d0fc8294691ff62e4d191d97312b614511d20b0f989f3" => :yosemite

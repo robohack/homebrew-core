@@ -1,13 +1,16 @@
 class WoboqCodebrowser < Formula
   desc "Generate HTML from C++ Code"
   homepage "https://code.woboq.org/"
-  url "https://github.com/woboq/woboq_codebrowser/archive/2.0.1.tar.gz"
-  sha256 "f2ec67bb49415986a4bbef515024009433756c83e14fa84f5acc40c83eec19e6"
+  url "https://github.com/woboq/woboq_codebrowser/archive/2.1.tar.gz"
+  sha256 "f7c803260a9a79405c4c2c561443c49702811f38dcf1081238ef024a6654caa0"
+  revision 1
 
   bottle do
-    sha256 "61b8336b7118c845ff09ea2d8733a741fe5bf1e08469d474c62ddea3245519e8" => :sierra
-    sha256 "503bfd97e11ae244521a501487f4a4d0b48c512550ced9cb29fc5e4fcb355eb7" => :el_capitan
-    sha256 "ceec3aed2f4ccf00b27d2676113dde02cc131251745abbfc039e37a8391c52eb" => :yosemite
+    cellar :any
+    sha256 "fe58745b371aafb698e307687c5969b1d71d07dfdf5d289514e4b7eba7411afd" => :high_sierra
+    sha256 "9a2054efa633879136fa0d29902d51644c95ac8b94b2713d72cbc533fb18da07" => :sierra
+    sha256 "2543a57c487d2892f95536246c5bf53959cf1e124bfa10128637bdee7e38e2f2" => :el_capitan
+    sha256 "154a9954e7af0693a08a5d79f52aec1a41f32ea2cbd97f5ec97de50122f35c89" => :yosemite
   end
 
   depends_on "llvm"
@@ -28,10 +31,10 @@ class WoboqCodebrowser < Formula
       }
     EOS
     system "#{bin}/codebrowser_generator", "-o=#{Dir.pwd}", "-p", "test:#{Dir.pwd}", "#{Dir.pwd}/test.c", "--", "clang", "#{Dir.pwd}/test.c"
-    assert File.exist? "./test/test.c.html"
-    assert File.exist? "./refs/printf"
-    assert File.exist? "./include/sys/stdio.h.html"
-    assert File.exist? "./fnSearch"
-    assert File.exist? "./fileIndex"
+    assert_predicate testpath/"test/test.c.html", :exist?
+    assert_predicate testpath/"refs/printf", :exist?
+    assert_predicate testpath/"include/sys/stdio.h.html", :exist?
+    assert_predicate testpath/"fnSearch", :exist?
+    assert_predicate testpath/"fileIndex", :exist?
   end
 end

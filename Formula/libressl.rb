@@ -2,14 +2,21 @@ class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "https://www.libressl.org/"
   # Please ensure when updating version the release is from stable branch.
-  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.5.3.tar.gz"
-  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-2.5.3.tar.gz"
-  sha256 "14e34cc586ec4ce5763f76046dcf366c45104b2cc71d77b63be5505608e68a30"
+  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.5.5.tar.gz"
+  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-2.5.5.tar.gz"
+  sha256 "e57f5e3d5842a81fe9351b6e817fcaf0a749ca4ef35a91465edba9e071dce7c4"
 
   bottle do
-    sha256 "d6d1a4d2bf72bcc13ee8244ecabed17ebc24cb7b888462b3cbfd0814bd6fa40f" => :sierra
-    sha256 "2f9216d4f2f42d2b050c8e3ba1b1f8537c7977019e185be2e772a6a387e82fad" => :el_capitan
-    sha256 "14dd5c9f56523b7c676fa8ce91816147f8ca1ea368802878f80ed72f6aae8fc0" => :yosemite
+    sha256 "2d9d33ea7dfef533ffbaac52760437ad4d9c1fbb298d73c44726f471dee9e84a" => :high_sierra
+    sha256 "3ff166de8666c5275cabd2d8b6de8e44ae2b71ee8a694a4a8b20866943b9e117" => :sierra
+    sha256 "94342eafb2d50f798dd5be8c1d35347e3dd414f2e64753f6691f2ce4b7f9f391" => :el_capitan
+    sha256 "5f52e3e477f2381d153458795dc54251439c61899d1504435214895dda9d5b41" => :yosemite
+  end
+
+  devel do
+    url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.6.2.tar.gz"
+    mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-2.6.2.tar.gz"
+    sha256 "b029d2492b72a9ba5b5fcd9f3d602c9fd0baa087912f2aaecc28f52f567ec478"
   end
 
   head do
@@ -20,7 +27,7 @@ class Libressl < Formula
     depends_on "libtool" => :build
   end
 
-  keg_only "LibreSSL is not linked to prevent conflict with the system OpenSSL."
+  keg_only "LibreSSL is not linked to prevent conflict with the system OpenSSL"
 
   def install
     args = %W[
@@ -54,7 +61,7 @@ class Libressl < Formula
         openssl_io.close_write
       end
 
-      $?.success?
+      $CHILD_STATUS.success?
     end
 
     # LibreSSL install a default pem - We prefer to use macOS for consistency.
@@ -75,7 +82,7 @@ class Libressl < Formula
 
   test do
     # Make sure the necessary .cnf file exists, otherwise LibreSSL gets moody.
-    assert (HOMEBREW_PREFIX/"etc/libressl/openssl.cnf").exist?,
+    assert_predicate HOMEBREW_PREFIX/"etc/libressl/openssl.cnf", :exist?,
             "LibreSSL requires the .cnf file for some functionality"
 
     # Check LibreSSL itself functions as expected.

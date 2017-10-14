@@ -1,13 +1,14 @@
 class MysqlCluster < Formula
   desc "Shared-nothing clustering and auto-sharding for MySQL"
   homepage "https://www.mysql.com/products/cluster/"
-  url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.5/mysql-cluster-gpl-7.5.6.tar.gz"
-  sha256 "f799932e0baeb4cf61d735b662ebefba6d2d7b156cb66fc81c1bef4a4a43848d"
+  url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.5/mysql-cluster-gpl-7.5.7.tar.gz"
+  sha256 "c40551603a9aacc4db96416be7f15700af6039a2247b83c2dce637c793cb10d8"
 
   bottle do
-    sha256 "1fc1992ed96091f6d610052ae06ecfaa263e69e0acaf12d786e2da30ff5b45df" => :sierra
-    sha256 "16b479de2127b298b035838e36502fcf89539bb78c01b951f112797986bf43e5" => :el_capitan
-    sha256 "efd31cfe2338bcc4c118b1a89a77e3b698429250be4dea131f645169255e9512" => :yosemite
+    sha256 "a45135631bc0a4af03386ff3d812b1375dcd6f1cfc609b19bbdcf67dd676396a" => :high_sierra
+    sha256 "91bf3e3613e86df1f8fec9785d236a9ecffe72bc0e8fbe81e1c5961f77052f48" => :sierra
+    sha256 "84a754a7f71e34ee076774027930bbd7667961e2ecf82724a56d3b73b5eeac76" => :el_capitan
+    sha256 "29692861b897e6b013d01396bd0cea9541b109a7d691007ddb67a64de91d0a44" => :yosemite
   end
 
   option "with-test", "Build with unit tests"
@@ -143,6 +144,7 @@ class MysqlCluster < Formula
       #{var}/mysql-cluster
     Note that in a production system there are other parameters
     that you would set to tune the configuration.
+    MySQL is configured to only allow connections from localhost by default
 
     Set up databases to run AS YOUR USER ACCOUNT with:
       unset TMPDIR
@@ -176,6 +178,8 @@ class MysqlCluster < Formula
     datadir=#{var}/mysql-cluster/mysqld_data
     basedir=#{opt_prefix}
     port=5000
+    # Only allow connections from localhost
+    bind-address = 127.0.0.1
     EOCNF
   end
 
@@ -301,7 +305,7 @@ class MysqlCluster < Formula
       "--basedir=#{prefix}", "--datadir=#{dir}", "--tmpdir=#{dir}"
 
       pid = fork do
-        exec bin/"mysqld", "--bind-address=127.0.0.1", "--datadir=#{dir}"
+        exec bin/"mysqld", "--datadir=#{dir}"
       end
       sleep 2
 

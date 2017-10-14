@@ -5,23 +5,39 @@ class Purescript < Formula
 
   desc "Strongly typed programming language that compiles to JavaScript"
   homepage "http://www.purescript.org"
-  url "https://github.com/purescript/purescript/archive/v0.11.4.tar.gz"
-  sha256 "74a58e01a9b6a18eb000fe40ab521b4c53484d510ea1ecd868899ecf0be1f915"
+  url "https://github.com/purescript/purescript/archive/v0.11.6.tar.gz"
+  sha256 "8bd2e4f844666a553d93c2e55c72c6361fbc08c706157d9d975dc7c1b730304e"
+  revision 1
   head "https://github.com/purescript/purescript.git"
 
   bottle do
-    sha256 "e7072aa63bdcde7a6a96ff26db392f025383e6d0bfce8535f4d2787ebcc9d798" => :sierra
-    sha256 "473f0b5ddd0d8d28c9ac28805c4f1a42dd7dd3bdf6e97a5b5f991598be4b4a56" => :el_capitan
-    sha256 "1145b4cfb35bb48ada8e9261f93302b50e3c515df4b36a04b889fe940b2e4bf1" => :yosemite
+    rebuild 1
+    sha256 "6e3c8f33ac8e6b8af9e4d7b7da7d6116129048e1e553337e7d887aa5996cbb59" => :high_sierra
+    sha256 "c6719ba1cd153eeb9816ffc5ee3a10e5d7e25d618689ce2f416d43aeaf1a525e" => :sierra
+    sha256 "474ce08419ecaaa6456f828674adf095c4b07af557f7a15881071a52ec907e98" => :el_capitan
   end
 
-  depends_on "ghc" => :build
+  depends_on "ghc@8.0" => :build
   depends_on "cabal-install" => :build
 
   def install
     inreplace (buildpath/"scripts").children, /^purs /, "#{bin}/purs "
     bin.install (buildpath/"scripts").children
-    install_cabal_package :using => ["alex", "happy"]
+
+    cabal_sandbox do
+      if build.head?
+        cabal_install "hpack"
+        system "./.cabal-sandbox/bin/hpack"
+      else
+        system "cabal", "get", "purescript-#{version}"
+        mv "purescript-#{version}/purescript.cabal", "."
+      end
+
+      # Upstream issue "Build failure with protolude 0.2"
+      # Reported 11 Sep 2017 https://github.com/purescript/purescript/issues/3065
+      install_cabal_package "--constraint", "protolude < 0.2",
+                            "-f release", :using => ["alex", "happy"]
+    end
   end
 
   test do
@@ -34,6 +50,6 @@ class Purescript < Formula
       main = 1
     EOS
     system bin/"psc", test_module_path, "-o", test_target_path
-    assert File.exist?(test_target_path)
+    assert_predicate test_target_path, :exist?
   end
 end

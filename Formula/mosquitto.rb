@@ -1,14 +1,14 @@
 class Mosquitto < Formula
   desc "Message broker implementing the MQTT protocol"
   homepage "https://mosquitto.org/"
-  url "https://mosquitto.org/files/source/mosquitto-1.4.11.tar.gz"
-  sha256 "ca47533bbc1b7c5e15d6e5d96d3efc59677f2515b6692263c34b7c48f33280c5"
-  revision 2
+  url "https://mosquitto.org/files/source/mosquitto-1.4.14.tar.gz"
+  sha256 "156b1fa731d12baad4b8b22f7b6a8af50ba881fc711b81e9919ec103cf2942d1"
+  revision 1
 
   bottle do
-    sha256 "3067a892bccb9675c46ad449f020a5405f9bc6c68cd2abf2fb6399bb04362826" => :sierra
-    sha256 "f208d2a4e29149504bd9f20ea5cc43b856a498323179bef42f3d9bb8c5ccf0bc" => :el_capitan
-    sha256 "9386b2c2a797d66ad5604a0d17cbf47126ed5c4e0865a451bb81b8f7f68e7826" => :yosemite
+    sha256 "1c88c1369ccf5d0f082e9f40a45e8ca7e5e5ec88cba3b50ddcd1a439c5a84739" => :high_sierra
+    sha256 "6f0e61c573e6b285ba9a85fdb84bbe9d29f50c764b97b765ba3e15ab171dd7d1" => :sierra
+    sha256 "c56a1a1572d7d110b7fcd68e0c4e9c0c5ee0254d852188e51c47b9ae3acdef4f" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
@@ -64,6 +64,6 @@ class Mosquitto < Formula
 
   test do
     quiet_system "#{sbin}/mosquitto", "-h"
-    assert_equal 3, $?.exitstatus
+    assert_equal 3, $CHILD_STATUS.exitstatus
   end
 end

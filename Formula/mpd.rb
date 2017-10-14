@@ -1,13 +1,14 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "https://www.musicpd.org/"
-  url "https://www.musicpd.org/download/mpd/0.20/mpd-0.20.6.tar.xz"
-  sha256 "f4055e1189e5cc00e83706b2e0b5ead924ced0303e073d7802ee9f9a8eba4b47"
+  url "https://www.musicpd.org/download/mpd/0.20/mpd-0.20.10.tar.xz"
+  sha256 "52fbc1125cdba41ba999add2820d45f3ce7cf493006bb04d8f0b2937204d3121"
 
   bottle do
-    sha256 "772293121659866f47d554b60eea57460a489659599ea9f83435c8a372c05ac8" => :sierra
-    sha256 "2913600b2efe25fe2591f87a8bd9b59b044ada4fac1abe783b1fb18ee966ec55" => :el_capitan
-    sha256 "cec38e434121b587c6e4f771e106ffd6724b1d7c3ccfcd19cfc45ba9259aca2d" => :yosemite
+    sha256 "98f7b1a2e829807335748e5d965c4079d3583d8d82e972359edf38967c7535a8" => :high_sierra
+    sha256 "f6345152b193dd53a6a581f76437d49542ce222f354eab21d719b24374c67a36" => :sierra
+    sha256 "cb105eeda689e1ad3c9478baccc39caa8377d78a64eef9b468126a7d301af332" => :el_capitan
+    sha256 "f04e8651642cf8bf72d21d5250cfc0afb51c360e3df4bb218bd0d4a9b5a301bd" => :yosemite
   end
 
   head do
@@ -26,6 +27,7 @@ class Mpd < Formula
   option "with-opus", "Build with opus support (for Opus encoding and decoding)"
   option "with-libmodplug", "Build with modplug support (for decoding modules supported by MODPlug)"
   option "with-pulseaudio", "Build with PulseAudio support (for sending audio output to a PulseAudio sound server)"
+  option "with-upnp", "Build with upnp database plugin support"
 
   deprecated_option "with-vorbis" => "with-libvorbis"
 
@@ -60,6 +62,11 @@ class Mpd < Formula
   depends_on "mad" => :optional
   depends_on "libmodplug" => :optional  # MODPlug decoder
   depends_on "pulseaudio" => :optional
+  depends_on "libao" => :optional       # Output to libao
+  if build.with? "upnp"
+    depends_on "expat"
+    depends_on "libupnp"
+  end
 
   def install
     # mpd specifies -std=gnu++0x, but clang appears to try to build
@@ -82,8 +89,6 @@ class Mpd < Formula
     ]
 
     args << "--disable-mad" if build.without? "mad"
-    args << "--disable-curl" if MacOS.version <= :leopard
-
     args << "--enable-zzip" if build.with? "libzzip"
     args << "--enable-lastfm" if build.with? "lastfm"
     args << "--disable-lame-encoder" if build.without? "lame"
@@ -92,6 +97,11 @@ class Mpd < Formula
     args << "--enable-nfs" if build.with? "libnfs"
     args << "--enable-modplug" if build.with? "libmodplug"
     args << "--enable-pulse" if build.with? "pulseaudio"
+    args << "--enable-ao" if build.with? "libao"
+    if build.with? "upnp"
+      args << "--enable-upnp"
+      args << "--enable-expat"
+    end
 
     system "./configure", *args
     system "make"
@@ -121,6 +131,8 @@ class Mpd < Formula
         <true/>
         <key>KeepAlive</key>
         <true/>
+        <key>ProcessType</key>
+        <string>Interactive</string>
     </dict>
     </plist>
     EOS

@@ -1,29 +1,23 @@
 class BoostPython < Formula
   desc "C++ library for C++/Python interoperability"
   homepage "https://www.boost.org/"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.tar.bz2"
-  sha256 "beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0"
-  url "https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.bz2"
-  sha256 "7bcc5caace97baa948931d712ea5f37038dbb1c5d89b43ad4def4ed7cb683332"
+  url "https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2"
+  sha256 "9807a5d16566c57fd74fb522764e0b134a8bbe6b6e8967b83afefd30dcd3be81"
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha256 "9b36914889a7c0492bc21821c7951f3d0417a519b90fdcdaf2435385d506a833" => :sierra
-    sha256 "3554a12bfb824365e3b57929f8ef29b31c24b536b30018546ac573f417b6904c" => :el_capitan
-    sha256 "c26e9665b68fc3e57acbca31f8698c1b9d55ac97de436908521bd0d5cfa97216" => :yosemite
+    sha256 "8377ee93d0bb678b2c69e9f2956607b4c04e4c226a780be60b452ac2d7e02de7" => :high_sierra
+    sha256 "d811c19f1eef548746972475d98f68f431f62af075a9c9e984911f6cb45ebb75" => :sierra
+    sha256 "37b52bcae4be5fb7db46487e494bc8c3da0ddbe2dab2e7f20ffba4e7eb3827e4" => :el_capitan
+    sha256 "28e1853e51af2f853dfd84135a62215c3d3142126742648f1e76434f218756dc" => :yosemite
   end
 
   option :cxx11
-
   option "without-python", "Build without python 2 support"
-  depends_on :python3 => :optional
 
-  if build.cxx11?
-    depends_on "boost" => "c++11"
-  else
-    depends_on "boost"
-  end
+  depends_on :python3 => :optional
+  depends_on "boost"
 
   def install
     # "layout" should be synchronized with boost

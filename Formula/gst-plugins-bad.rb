@@ -1,13 +1,13 @@
 class GstPluginsBad < Formula
   desc "GStreamer plugins less supported, not fully tested"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.10.4.tar.xz"
-  sha256 "23ddae506b3a223b94869a0d3eea3e9a12e847f94d2d0e0b97102ce13ecd6966"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.12.3.tar.xz"
+  sha256 "36d059761852bed0f1a7fcd3ef64a8aeecab95d2bca53cd6aa0f08054b1cbfec"
 
   bottle do
-    sha256 "b4b1a648677cae5e21bf3ebac04601ec9f3ea8c6fcd3b39b85ae17e8d2876558" => :sierra
-    sha256 "7482dfde8a60574ece43e2fe5a347e43f495c8519c0852a27e62f76c423caf75" => :el_capitan
-    sha256 "92221b1c4e807c995539ebf5fd8162afbfbe92f78ded0ae74015fe30ca2fc0c8" => :yosemite
+    sha256 "4397ef2e3fa1c8f3412ac987f4e301f0957a9bfe78f9c262301738464bc1ebb2" => :high_sierra
+    sha256 "86f80880fdf44287e722225a43d95451938eb89106e5bb0d35745499f4ecd3fc" => :sierra
+    sha256 "14b6e1bf13820fb6515905a11a2b5361640c8ff5190c68f84958fe0676515e1b" => :el_capitan
   end
 
   head do
@@ -27,24 +27,25 @@ class GstPluginsBad < Formula
   depends_on "dirac" => :optional
   depends_on "faac" => :optional
   depends_on "faad2" => :optional
+  depends_on "fdk-aac" => :optional
   depends_on "gnutls" => :optional
   depends_on "gtk+3" => :optional
   depends_on "libdvdread" => :optional
   depends_on "libexif" => :optional
   depends_on "libmms" => :optional
-  depends_on "homebrew/science/opencv" => :optional
+  depends_on "opencv@2" => :optional
   depends_on "opus" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "schroedinger" => :optional
   depends_on "sound-touch" => :optional
-  depends_on "srtp" => :optional
+  depends_on "srtp@1.6" => :optional
   depends_on "libvo-aacenc" => :optional
 
   def install
     args = %W[
       --prefix=#{prefix}
       --disable-yadif
-      --disable-sdl
+      --disable-examples
       --disable-debug
       --disable-dependency-tracking
     ]

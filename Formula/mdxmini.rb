@@ -1,12 +1,13 @@
 class Mdxmini < Formula
   desc "Plays music in X68000 MDX chiptune format"
-  homepage "http://clogging.web.fc2.com/psp/"
+  homepage "https://clogging.web.fc2.com/psp/"
   url "https://github.com/mistydemeo/mdxmini/archive/v1.0.0.tar.gz"
   sha256 "5a407203f35d873c3cd5977213b0c33a1ce283d6b14483e9d434de79b05ca4e2"
 
   bottle do
     cellar :any
     rebuild 1
+    sha256 "5bf36e82084146ab4604b4746bcf6634cfe4268f2044712e4d13519b21ab5165" => :high_sierra
     sha256 "8e0daf3d508dad59074c567b8c8e60bd88c8026b7dfe1305e4e9c50ec5d8fbbd" => :sierra
     sha256 "d20b94107c25833096401be6336544f283e6956758d4238e207e6a4e34fa5fdf" => :el_capitan
     sha256 "55cf6b84d9a0e649e25db7626db954a47bf1061afd20a959972470b6e5cc9fa2" => :yosemite
@@ -55,7 +56,7 @@ class Mdxmini < Formula
         printf("%s\\n", title);
     }
     EOS
-    system ENV.cc, "mdxtest.c", "-lmdxmini", "-o", "mdxtest"
+    system ENV.cc, "mdxtest.c", "-L#{lib}", "-lmdxmini", "-o", "mdxtest"
 
     result = `#{testpath}/mdxtest #{testpath}/pop-00.mdx #{testpath}`.chomp
     result.force_encoding("ascii-8bit") if result.respond_to? :force_encoding

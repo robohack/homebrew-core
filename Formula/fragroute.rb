@@ -2,10 +2,12 @@ class Fragroute < Formula
   desc "Intercepts, modifies and rewrites egress traffic for a specified host"
   homepage "https://www.monkey.org/~dugsong/fragroute/"
   url "https://www.monkey.org/~dugsong/fragroute/fragroute-1.2.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.wiretapped.net/pub/security/packet-construction/fragroute-1.2.tar.gz"
   sha256 "6899a61ecacba3bb400a65b51b3c0f76d4e591dbf976fba0389434a29efc2003"
   revision 1
 
   bottle do
+    sha256 "65ea82f265aeb3018b59f1c24630ad2e88fc8d3c678579f4e83be4f339005450" => :high_sierra
     sha256 "54e5062ef504ba660fa5bbc67a562c7fd9a80fbca511cf37c10ca65d135cefe7" => :sierra
     sha256 "d9a4634cf2e7759caed69fee95f5f0044e4365cbaaf308a2f5abddfa46f4bec1" => :el_capitan
     sha256 "7c1fc2c4a43e91a22b2e999d071424c5b57243820e2293cc4106e4b68ded0323" => :yosemite

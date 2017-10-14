@@ -1,11 +1,12 @@
 class Guichan < Formula
-  desc "small, efficient C++ GUI library designed for games"
+  desc "Small, efficient C++ GUI library designed for games"
   homepage "https://guichan.sourceforge.io/"
   url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/guichan/guichan-0.8.2.tar.gz"
   sha256 "eedf206eae5201eaae027b133226d0793ab9a287bfd74c5f82c7681e3684eeab"
 
   bottle do
     cellar :any
+    sha256 "ecbd02d365bc8c1dbc1bd2ad8beae89876f34b0082926dd8a465591df04e6ab7" => :high_sierra
     sha256 "3815959a2b29e0d92e8f8e47fb09528c13adff1756df3acf72792092e1e13ef0" => :sierra
     sha256 "ceccf2469c60c0ee7c06d3b7af0a8a43080d857c959dabcb30c74da908318a34" => :el_capitan
     sha256 "472e8b2c7e04d74d2704481e2bb12d228773de400975ecf53c07bbc2823a0ea7" => :yosemite
@@ -158,7 +159,7 @@ class Guichan < Formula
     EOS
     system ENV.cc, "helloworld.cpp", ENV.cppflags, "-I#{HOMEBREW_PREFIX}/include/SDL",
         "-L#{Formula["SDL"].opt_lib}", "-framework", "Foundation", "-framework", "CoreGraphics", "-framework", "Cocoa",
-        "-lSDL", "-lSDLmain", "-lSDL_image", "-lguichan", "-lguichan_sdl", "-lobjc", "-lc++", "-o", "helloworld"
+        "-lSDL", "-lSDLmain", "-lSDL_image", "-L#{lib}", "-lguichan", "-lguichan_sdl", "-lobjc", "-lc++", "-o", "helloworld"
     helloworld = fork do
       system testpath/"helloworld"
     end

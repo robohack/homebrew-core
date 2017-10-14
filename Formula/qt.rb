@@ -3,35 +3,21 @@
 class Qt < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  revision 2
-  head "https://code.qt.io/qt/qt5.git", :branch => "5.8", :shallow => false
-
-  stable do
-    url "https://download.qt.io/official_releases/qt/5.8/5.8.0/single/qt-everywhere-opensource-src-5.8.0.tar.xz"
-    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.8/5.8.0/single/qt-everywhere-opensource-src-5.8.0.tar.xz"
-    sha256 "0f4c54386d3dbac0606a936a7145cebb7b94b0ca2d29bc001ea49642984824b6"
-
-    # Upstream issue "Qt5.8: macOS, designer examples fails to compile"
-    # Reported 15 Dec 2016 https://bugreports.qt.io/browse/QTBUG-57656
-    # Upstream PR from 31 Jan 2017 "fix installation of header-only frameworks"
-    # See https://codereview.qt-project.org/#/c/184053/1
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/634a19fb/qt5/QTBUG-57656.patch"
-      sha256 "a69fc727f4378dbe0cf05ecf6e633769fe7ee6ea52b1630135a05d5adfa23d87"
-    end
-  end
+  url "https://download.qt.io/official_releases/qt/5.9/5.9.2/single/qt-everywhere-opensource-src-5.9.2.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.9/5.9.2/single/qt-everywhere-opensource-src-5.9.2.tar.xz"
+  sha256 "6c6171a4d1ea3fbd4212d6a04899650218583df3ec583a8a6a4a589fe18620ff"
+  head "https://code.qt.io/qt/qt5.git", :branch => "5.9", :shallow => false
 
   bottle do
-    sha256 "eff56a84940888c0e9bcb6a95cd5b4d434bee36c6df3162d954cb15f10627c32" => :sierra
-    sha256 "0f322056717bb8f821aa809c79a3842ce914ce112bc273bbee9f2f05f0819fe3" => :el_capitan
-    sha256 "762149a177db074d9ee721395739bcc7c264a6fac0604a6a1bc2f913098df2bc" => :yosemite
+    sha256 "bbba35b2261a372ebd5511dc6db7687fd772c28c8dfd86d4604f8d6087be210e" => :high_sierra
+    sha256 "9fa18fecb5c9f99e21f3725bcdebf531fda2336a115d117e3c35ef3ddaf85163" => :sierra
+    sha256 "aaa16640e5c34d3bad308b496c3cd8ef32f7294b6ac4f007d582720449062482" => :el_capitan
   end
 
   keg_only "Qt 5 has CMake issues when linked"
 
   option "with-docs", "Build documentation"
   option "with-examples", "Build examples"
-  option "with-qtwebkit", "Build with QtWebkit module"
 
   # OS X 10.7 Lion is still supported in Qt 5.5, but is no longer a reference
   # configuration and thus untested in practice. Builds on OS X 10.7 have been
@@ -42,12 +28,6 @@ class Qt < Formula
   depends_on :xcode => :build
   depends_on :mysql => :optional
   depends_on :postgresql => :optional
-
-  # http://lists.qt-project.org/pipermail/development/2016-March/025358.html
-  resource "qt-webkit" do
-    url "https://download.qt.io/community_releases/5.8/5.8.0-final/qtwebkit-opensource-src-5.8.0.tar.xz"
-    sha256 "79ae8660086bf92ffb0008b17566270e6477c8fa0daf9bb3ac29404fb5911bec"
-  end
 
   # Restore `.pc` files for framework-based build of Qt 5 on OS X. This
   # partially reverts <https://codereview.qt-project.org/#/c/140954/> merged
@@ -60,6 +40,15 @@ class Qt < Formula
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/e8fe6567/qt5/restore-pc-files.patch"
     sha256 "48ff18be2f4050de7288bddbae7f47e949512ac4bcd126c2f504be2ac701158b"
+  end
+
+  # Remove for >= 5.10
+  # Fix for upstream issue "macdeployqt does not work with Homebrew"
+  # See https://bugreports.qt.io/browse/QTBUG-56814
+  # Upstream commit from 23 Dec 2016 https://github.com/qt/qttools/commit/8f9b747f030bb41556831a23ec2a8e7e76fb7dc0#diff-2b6e250f93810fd9bcf9bbecf5d2be88
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/a627e0a/qt5/QTBUG-56814.patch"
+    sha256 "b18e4715fcef2992f051790d3784a54900508c93350c25b0f2228cb058567142"
   end
 
   def install
@@ -96,11 +85,6 @@ class Qt < Formula
     end
 
     args << "-plugin-sql-psql" if build.with? "postgresql"
-
-    if build.with? "qtwebkit"
-      (buildpath/"qtwebkit").install resource("qt-webkit")
-      inreplace ".gitmodules", /.*status = obsolete\n((\s*)project = WebKit\.pro)/, "\\1\n\\2initrepo = true"
-    end
 
     system "./configure", *args
     system "make"
@@ -161,8 +145,8 @@ class Qt < Formula
 
     system bin/"qmake", testpath/"hello.pro"
     system "make"
-    assert File.exist?("hello")
-    assert File.exist?("main.o")
+    assert_predicate testpath/"hello", :exist?
+    assert_predicate testpath/"main.o", :exist?
     system "./hello"
   end
 end

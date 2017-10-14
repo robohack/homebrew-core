@@ -8,6 +8,7 @@ class Lua < Formula
   bottle do
     cellar :any
     rebuild 1
+    sha256 "9d81d844cb167ba66b4eefdd33edcd1ffc6c48355ccede9d05064859a9a8d4d2" => :high_sierra
     sha256 "cc0e904400207422498efe4b352bfa185927ba75115920275cfe1f051ecbe768" => :sierra
     sha256 "71e15d3f9db85ec870950d9d7d4aa2b0295914a60d5062c4b5db3bda50972a79" => :el_capitan
     sha256 "fbef1569ff95f0a63ca17208891b4ce6f9d4e1e484bf3a9a6052271e00e35637" => :yosemite
@@ -146,7 +147,7 @@ class Lua < Formula
     if File.exist?(bin/"luarocks-5.2")
       mkdir testpath/"luarocks"
       system bin/"luarocks-5.2", "install", "moonscript", "--tree=#{testpath}/luarocks"
-      assert File.exist? testpath/"luarocks/bin/moon"
+      assert_predicate testpath/"luarocks/bin/moon", :exist?
     end
   end
 end

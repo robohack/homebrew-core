@@ -1,12 +1,13 @@
 class Flac < Formula
   desc "Free lossless audio codec"
   homepage "https://xiph.org/flac/"
-  url "http://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz"
+  url "https://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz"
   mirror "https://downloads.sourceforge.net/project/flac/flac-src/flac-1.3.2.tar.xz"
   sha256 "91cfc3ed61dc40f47f050a109b08610667d73477af6ef36dcad31c31a4a8d53f"
 
   bottle do
     cellar :any
+    sha256 "844fb2d7f9884f3e2f56c8578a985b14f0fc7159c189a048733d593d17d807b6" => :high_sierra
     sha256 "332f6f0968ceb21ea233140d59d01c63bd7f40de2c2a612e4ae1719f8ecf7801" => :sierra
     sha256 "720aebe4647f462b7d5202d38b499b0bbe507236e16111ff81ebf549738d43d9" => :el_capitan
     sha256 "74a964ef7aa1d2f0d774c71ea894a0ab972d08280032042e4ab6b73836bdf824" => :yosemite

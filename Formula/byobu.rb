@@ -1,14 +1,14 @@
 class Byobu < Formula
   desc "Text-based window manager and terminal multiplexer"
   homepage "http://byobu.co/"
-  url "https://launchpad.net/byobu/trunk/5.116/+download/byobu_5.116.orig.tar.gz"
-  sha256 "85251e149bc56cfeb299c88b32390889b73b444f47039f9206a012602ecb9748"
+  url "https://launchpad.net/byobu/trunk/5.123/+download/byobu_5.123.orig.tar.gz"
+  sha256 "2e5a5425368d2f74c0b8649ce88fc653420c248f6c7945b4b718f382adc5a67d"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9e0cf31b24ac96edafe8cb09abecb84a556adb64f103acbb5585a5d090a0f1c9" => :sierra
-    sha256 "9e0cf31b24ac96edafe8cb09abecb84a556adb64f103acbb5585a5d090a0f1c9" => :el_capitan
-    sha256 "9e0cf31b24ac96edafe8cb09abecb84a556adb64f103acbb5585a5d090a0f1c9" => :yosemite
+    sha256 "427e22a1554e3a9236b2fc5769d3d69faac29b9f3664805fce0f434cdf85b63e" => :high_sierra
+    sha256 "427e22a1554e3a9236b2fc5769d3d69faac29b9f3664805fce0f434cdf85b63e" => :sierra
+    sha256 "427e22a1554e3a9236b2fc5769d3d69faac29b9f3664805fce0f434cdf85b63e" => :el_capitan
   end
 
   head do

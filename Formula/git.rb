@@ -1,43 +1,58 @@
 class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.12.2.tar.xz"
-  sha256 "d21a9e23506e618d561fb25a8a7bd6134f927b86147930103487117a7a678c4a"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.14.2.tar.xz"
+  sha256 "50e9723996114ad1eec4dda89960d9fe34461749ae42031008a261fedd03c7a1"
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "b2f5e8d1be066285f723d17173d1c6cd854ebd419dc3e440bb18e277b09ae22c" => :sierra
-    sha256 "7f17f19cce5cee6509ab3c5c5ceb6e74bc5bd198c2488752c4e32d1478771225" => :el_capitan
-    sha256 "ffada28a5ff7e7c2c0de2d2dfb5eac0396faeb24d4bdbc929a5177e23aadb81f" => :yosemite
+    sha256 "aeee88fe952395662443823da8defc89740f7f63199dfd52cb0ae570b85ebdf4" => :high_sierra
+    sha256 "cde6194d8988226cf213a5903821004d0844960fee3695d9553b009b473ab41a" => :sierra
+    sha256 "f7388986a241ac6f82b02254e965e0f854985e1f4d55ca108cbbd84f04735268" => :el_capitan
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"
   option "without-completions", "Disable bash/zsh completions from 'contrib' directory"
-  option "with-brewed-openssl", "Build with Homebrew OpenSSL instead of the system version"
-  option "with-brewed-curl", "Use Homebrew's version of cURL library"
-  option "with-brewed-svn", "Use Homebrew's version of SVN"
+  option "with-subversion", "Use Homebrew's version of SVN"
   option "with-persistent-https", "Build git-remote-persistent-https from 'contrib' directory"
 
-  depends_on "pcre" => :optional
+  deprecated_option "with-brewed-svn" => "with-subversion"
+  deprecated_option "with-pcre" => "with-pcre2"
+
+  depends_on "pcre2" => :optional
   depends_on "gettext" => :optional
-  depends_on "openssl" if build.with? "brewed-openssl"
-  depends_on "curl" if build.with? "brewed-curl"
   depends_on "go" => :build if build.with? "persistent-https"
-  # Trigger an install of swig before subversion, as the "swig" doesn't get pulled in otherwise
-  # See https://github.com/Homebrew/homebrew/issues/34554
-  if build.with? "brewed-svn"
-    depends_on "swig"
-    depends_on "subversion" => "with-perl"
+
+  if MacOS.version < :yosemite
+    depends_on "openssl"
+    depends_on "curl"
+  else
+    deprecated_option "with-brewed-openssl" => "with-openssl"
+    deprecated_option "with-brewed-curl" => "with-curl"
+
+    option "with-openssl", "Build with Homebrew's OpenSSL instead of using CommonCrypto"
+    option "with-curl", "Use Homebrew's version of cURL library"
+
+    depends_on "openssl" => :optional
+    depends_on "curl" => :optional
+  end
+
+  if build.with? "subversion"
+    depends_on "subversion"
+    depends_on :perl => ["5.6", :recommended]
+  else
+    option "with-perl", "Build against a custom Perl rather than system default"
+    depends_on :perl => ["5.6", :optional]
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.12.2.tar.xz"
-    sha256 "6f656085c2fdca94df1cc3eb8624c38099f920318c428e34ef0333ecf7f4cd59"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.14.2.tar.xz"
+    sha256 "a36661e81e5b21e788cd84e11860bcd0cafa402eff06e6371415a5a0e0b80dfb"
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.12.2.tar.xz"
-    sha256 "7ed1da04e6b0f7fb54a3c7546c6a30fe999b5c8ffcf5e3418521e7550b7f9558"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.14.2.tar.xz"
+    sha256 "6dd350d1e9d00159a549f0fad08a9f954b1d12576fc8d5865fbed9dee15105fc"
   end
 
   def install
@@ -46,16 +61,19 @@ class Git < Formula
     ENV["NO_DARWIN_PORTS"] = "1"
     ENV["V"] = "1" # build verbosely
     ENV["NO_R_TO_GCC_LINKER"] = "1" # pass arguments to LD correctly
-    ENV["PYTHON_PATH"] = which "python"
-    ENV["PERL_PATH"] = which "perl"
+    ENV["PYTHON_PATH"] = which("python")
+    ENV["PERL_PATH"] = which("perl")
 
-    perl_version = /\d\.\d+/.match(`perl --version`)
+    perl_version = Utils.popen_read("perl --version")[/v(\d+\.\d+)(?:\.\d+)?/, 1]
+    # If building with a non-system Perl search everywhere declared in @INC.
+    perl_inc = Utils.popen_read("perl -e 'print join\":\",@INC'").sub(":.", "")
 
-    if build.with? "brewed-svn"
+    if build.with? "subversion"
       ENV["PERLLIB_EXTRA"] = %W[
         #{Formula["subversion"].opt_lib}/perl5/site_perl
-        #{Formula["subversion"].opt_prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level
       ].join(":")
+    elsif build.with? "perl"
+      ENV["PERLLIB_EXTRA"] = perl_inc
     elsif MacOS.version >= :mavericks
       ENV["PERLLIB_EXTRA"] = %W[
         #{MacOS.active_developer_dir}
@@ -71,13 +89,12 @@ class Git < Formula
     end
 
     ENV["BLK_SHA1"] = "1" if build.with? "blk-sha1"
-
-    if build.with? "pcre"
-      ENV["USE_LIBPCRE"] = "1"
-      ENV["LIBPCREDIR"] = Formula["pcre"].opt_prefix
-    end
-
     ENV["NO_GETTEXT"] = "1" if build.without? "gettext"
+
+    if build.with? "pcre2"
+      ENV["USE_LIBPCRE2"] = "1"
+      ENV["LIBPCREDIR"] = Formula["pcre2"].opt_prefix
+    end
 
     args = %W[
       prefix=#{prefix}
@@ -86,7 +103,13 @@ class Git < Formula
       CFLAGS=#{ENV.cflags}
       LDFLAGS=#{ENV.ldflags}
     ]
-    args << "NO_OPENSSL=1" << "APPLE_COMMON_CRYPTO=1" if build.without? "brewed-openssl"
+
+    if build.with?("openssl") || MacOS.version < :yosemite
+      openssl_prefix = Formula["openssl"].opt_prefix
+      args += %W[NO_APPLE_COMMON_CRYPTO=1 OPENSSLDIR=#{openssl_prefix}]
+    else
+      args += %w[NO_OPENSSL=1 APPLE_COMMON_CRYPTO=1]
+    end
 
     system "make", "install", *args
 
@@ -97,6 +120,11 @@ class Git < Formula
                      "LDFLAGS=#{ENV.ldflags}"
       bin.install "git-credential-osxkeychain"
       system "make", "clean"
+    end
+
+    # Generate diff-highlight perl script executable
+    cd "contrib/diff-highlight" do
+      system "make"
     end
 
     # Install the netrc credential helper
@@ -144,8 +172,16 @@ class Git < Formula
     chmod 0755, Dir["#{share}/doc/git-doc/{RelNotes,howto,technical}"]
 
     # To avoid this feature hooking into the system OpenSSL, remove it.
-    # If you need it, install git --with-brewed-openssl.
-    rm "#{libexec}/git-core/git-imap-send" if build.without? "brewed-openssl"
+    # If you need it, install git --with-openssl.
+    if MacOS.version >= :yosemite && build.without?("openssl")
+      rm "#{libexec}/git-core/git-imap-send"
+    end
+
+    # This is only created when building against system Perl, but it isn't
+    # purged by Homebrew's post-install cleaner because that doesn't check
+    # "Library" directories. It is however pointless to keep around as it
+    # only contains the perllocal.pod installation file.
+    rm_rf prefix/"Library/Perl"
 
     # Set the macOS keychain credential helper by default
     # (as Apple's CLT's git also does this).

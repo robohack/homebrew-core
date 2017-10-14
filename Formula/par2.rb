@@ -1,29 +1,25 @@
 class Par2 < Formula
   desc "Parchive: Parity Archive Volume Set for data recovery"
   homepage "https://github.com/Parchive/par2cmdline"
-  url "https://github.com/Parchive/par2cmdline/archive/v0.7.0.tar.gz"
-  sha256 "d877b728d6d3af422904644310980e4da9eba6685960950fd1cd8277c7b63bd5"
+  url "https://github.com/Parchive/par2cmdline/releases/download/v0.7.4/par2cmdline-0.7.4.tar.bz2"
+  sha256 "e602db3d8bdc49e2cb9e0e089ec31cd262e661ef7450f5d556e43a97a299e71d"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4d3d75c93b332c3aaf894ac27a45953da106f8fb57e9435c871e7338fb5f5f74" => :sierra
-    sha256 "cb5e7cb51ed7a281c2b353ce55006598738cde2fd42493a0f389104b99bcccb8" => :el_capitan
-    sha256 "12774bc7430ebd4e281e5478c0930e17aa1f5f92ac1dc7c8baf9c4b5cea59f58" => :yosemite
+    sha256 "a825515ff251975d362998560f5e2e046ce3a9f753be106bbf3717c6d411b7fb" => :high_sierra
+    sha256 "6c3432e8a1b7e8ceeabb380af04d13123c9fb542fab7caf62fe8201f3d1adee2" => :sierra
+    sha256 "7257b39640dcf1894c2329129406a573b04dd263bf3b06283dc854b5ed17cf8e" => :el_capitan
   end
 
-  depends_on "automake" => :build
-  depends_on "autoconf" => :build
-
   def install
-    system "autoreconf", "-fiv"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
 
   test do
     # Protect a file with par2.
-    test_file = "some-file"
-    (testpath/test_file).write "file contents"
+    test_file = testpath/"some-file"
+    File.write(test_file, "file contents")
     system "#{bin}/par2", "create", test_file
 
     # "Corrupt" the file by overwriting, then ask par2 to repair it.

@@ -1,22 +1,16 @@
 class Redis < Formula
   desc "Persistent key-value database, with built-in net interface"
   homepage "https://redis.io/"
-  url "http://download.redis.io/releases/redis-3.2.8.tar.gz"
-  sha256 "61b373c23d18e6cc752a69d5ab7f676c6216dc2853e46750a8c4ed791d68482c"
+  url "http://download.redis.io/releases/redis-4.0.2.tar.gz"
+  sha256 "b1a0915dbc91b979d06df1977fe594c3fa9b189f1f3d38743a2948c9f7634813"
   head "https://github.com/antirez/redis.git", :branch => "unstable"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 2
-    sha256 "3166b2859236788d20d85dc65c64a103fda930ac3b9c32c8c768a8026a89dcba" => :sierra
-    sha256 "6e65bc7cb9e10bcd43c42eaca4713e454e9159e29d82bfff6a2143ab14be1b30" => :el_capitan
-    sha256 "101be1a5a2a5bb5842d5b8329d8988e68737e61b735310fd770db51810c6924b" => :yosemite
-  end
-
-  devel do
-    url "https://github.com/antirez/redis/archive/4.0-rc3.tar.gz"
-    sha256 "bc948bcb32dc4ba43412dd791b4bb48c64de9debb797346b9c9f1b2cb98f96f4"
-    version "4.0RC3"
+    rebuild 1
+    sha256 "ae08d93f77ee795c4a64349cd548febc759043b587b530c624a80c1c97d210e7" => :high_sierra
+    sha256 "bff73385bc94ceba943c4f880bc4f6fe9a3286c86cdda236da40882440485958" => :sierra
+    sha256 "3df2b75202ed8ecf8be630fe8e4179c5fea26156f1b02fe32b4e0d47a2604701" => :el_capitan
   end
 
   option "with-jemalloc", "Select jemalloc as memory allocator when building Redis"
@@ -38,7 +32,7 @@ class Redis < Formula
     inreplace "redis.conf" do |s|
       s.gsub! "/var/run/redis.pid", var/"run/redis.pid"
       s.gsub! "dir ./", "dir #{var}/db/redis/"
-      s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
+      s.sub!  /^bind .*$/, "bind 127.0.0.1 ::1"
     end
 
     etc.install "redis.conf"
@@ -80,6 +74,6 @@ class Redis < Formula
 
   test do
     system bin/"redis-server", "--test-memory", "2"
-    %w[run db/redis log].each { |p| assert (var/p).exist?, "#{var/p} doesn't exist!" }
+    %w[run db/redis log].each { |p| assert_predicate var/p, :exist?, "#{var/p} doesn't exist!" }
   end
 end

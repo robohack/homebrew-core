@@ -1,13 +1,15 @@
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
-  url "https://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.17-13/source/tarball/percona-server-5.7.17-13.tar.gz"
-  sha256 "31abe11f5aa7a85be4a2834e68abdd1fcb42016e73136b5da2b47070d7497a93"
+  url "https://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.18-16/source/tarball/percona-server-5.7.18-16.tar.gz"
+  sha256 "dc80833354675956fe90e01316fcd46b17cd23a8f17d9f30b9ef18e1a9bd2ae1"
 
   bottle do
-    sha256 "99a4df804615f630ad9d8fd69b586d4eaa50e8f3047461e41215f9f96b29ae99" => :sierra
-    sha256 "541871922271a522c9cb2c16059e24df4cc9319275377a458aa881cd13bfa2d9" => :el_capitan
-    sha256 "9ab803502ca6cd911a3c075442f1162ee05eb2aa963d2a5bd55581f1ca68d6b5" => :yosemite
+    rebuild 1
+    sha256 "2097446d4eca29f7dc394ecf7901ec8f9b4718befad3fa6ea1b53087fe3e4828" => :high_sierra
+    sha256 "55aa5b068374099a81d9084336c8cf6700005f7372a2a8c7d822a25b4e92b486" => :sierra
+    sha256 "5e66b8808a6f611813fdb9e3b02e79855ff0445630853501647220beac5cb4ab" => :el_capitan
+    sha256 "988440a2b796abff37d0fbb69dd03a537e6be9ebce83da5adb4131794ea7f242" => :yosemite
   end
 
   option "with-test", "Build with unit tests"
@@ -48,6 +50,14 @@ class PerconaServer < Formula
     satisfy { datadir == var/"mysql" }
   end
 
+  # Fix C++ build failure due to Xcode 9 being very strict
+  if DevelopmentTools.clang_build_version >= 900
+    patch do
+      url "https://github.com/percona/percona-server/pull/1925.patch?full_index=1"
+      sha256 "126ed7762ab94a4b2afdaa8a09d35d5e25dfd7cd5452cf51b4db90144e737e6e"
+    end
+  end
+
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
@@ -57,6 +67,7 @@ class PerconaServer < Formula
 
     args = std_cmake_args + %W[
       -DMYSQL_DATADIR=#{datadir}
+      -DINSTALL_PLUGINDIR=lib/plugin
       -DSYSCONFDIR=#{etc}
       -DINSTALL_MANDIR=#{man}
       -DINSTALL_DOCDIR=#{doc}
@@ -112,18 +123,26 @@ class PerconaServer < Formula
     rm_rf prefix+"data"
 
     # Fix up the control script and link into bin
-    inreplace "#{prefix}/support-files/mysql.server" do |s|
-      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
-      # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, "pgrep") if MacOS.version >= :mountain_lion
-    end
-
+    inreplace "#{prefix}/support-files/mysql.server",
+              /^(PATH=".*)(")/,
+              "\\1:#{HOMEBREW_PREFIX}/bin\\2"
     bin.install_symlink prefix/"support-files/mysql.server"
+
+    # Install my.cnf that binds to 127.0.0.1 by default
+    (buildpath/"my.cnf").write <<-EOS.undent
+      # Default Homebrew MySQL server config
+      [mysqld]
+      # Only allow connections from localhost
+      bind-address = 127.0.0.1
+    EOS
+    etc.install "my.cnf"
   end
 
   def caveats; <<-EOS.undent
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
+
+    MySQL is configured to only allow connections from localhost by default
 
     To connect:
         mysql -uroot
@@ -153,5 +172,35 @@ class PerconaServer < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    begin
+      (testpath/"mysql_test.sql").write <<-EOS.undent
+        CREATE DATABASE `mysql_test`;
+        USE `mysql_test`;
+        CREATE TABLE `mysql_test`.`test` (
+        `id` BIGINT(21) UNSIGNED NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(127) NOT NULL COMMENT '42',
+        PRIMARY KEY (`id`),
+        KEY `name` (`name`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+        INSERT INTO `mysql_test`.`test` VALUES (NULL, '42');
+        SELECT * FROM `mysql_test`.`test` WHERE `name` = '42';
+        DELETE FROM `mysql_test`.`test` WHERE `name` = '42';
+        DROP TABLE `mysql_test`.`test`;
+        DROP DATABASE `mysql_test`;
+      EOS
+      # mysql throws error if any file exists in the data directory
+      system "#{bin}/mysqld", "--log-error-verbosity=3", "--initialize-insecure", "--datadir=#{testpath}/mysql", "--user=#{ENV["USER"]}"
+      pid = fork do
+        exec "#{opt_bin}/mysqld_safe", "--datadir=#{testpath}/mysql", "--user=#{ENV["USER"]}", "--bind-address=127.0.0.1", "--port=3307", "--socket=#{testpath}/mysql.sock"
+      end
+      sleep 3
+      system "#{bin}/mysql", "--verbose", "--host=127.0.0.1", "--port=3307", "--user=root", "--execute=source #{testpath/"mysql_test.sql"}"
+    ensure
+      system "#{bin}/mysqladmin", "shutdown", "--user=root", "--host=127.0.0.1", "--port=3307"
+      Process.wait pid
+    end
   end
 end

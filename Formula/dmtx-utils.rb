@@ -3,12 +3,14 @@ class DmtxUtils < Formula
   homepage "https://github.com/dmtx/dmtx-utils"
   url "https://github.com/dmtx/dmtx-utils/archive/v0.7.5.tar.gz"
   sha256 "6fa365cd321609db40800f6b34a2387c0ac56ef4643f6101ac83cb762f5ce9ef"
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "4075b892f492b9afe50ce2840158cd4b19d06bcf129749f2cd6e8e6c777634fb" => :sierra
-    sha256 "f5cb2e45f79fe1456470c7085254b8af6e71eafe62c0b1601b21adaa62db8c8b" => :el_capitan
-    sha256 "e6d4fda32908729a72b45c7103417d07b749cc4e7f798efa0b0ad70e9947536b" => :yosemite
+    sha256 "2373f702d73deef207316466fa1ea724c33db397b1b6fa18fca6fc333b619bb1" => :high_sierra
+    sha256 "1ddf7aa4238bc24df4c249041e3cd964987ae6c773d2b3ac6c12b95b9784631d" => :sierra
+    sha256 "8ce569eb1a9af3a0ea25936d9ee9947bd830301615db43ee04cbd5c22863c47e" => :el_capitan
+    sha256 "d045cc55b0bd09b36dd81ae3168dd8e996743c0e4dd2578649658615b9daf48c" => :yosemite
   end
 
   depends_on "autoconf" => :build

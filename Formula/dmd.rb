@@ -3,29 +3,29 @@ class Dmd < Formula
   homepage "https://dlang.org/"
 
   stable do
-    url "https://github.com/dlang/dmd/archive/v2.074.0.tar.gz"
-    sha256 "d083323e706ada71fd404a1a41a93786b709ecb23dc49fbcaa6eff4baaad82fe"
+    url "https://github.com/dlang/dmd/archive/v2.076.1.tar.gz"
+    sha256 "242e0dccf0b5aabd3a886c1aca32e6b197dfef015005f45bd36050f8a4fded5c"
 
     resource "druntime" do
-      url "https://github.com/dlang/druntime/archive/v2.074.0.tar.gz"
-      sha256 "17b98cdb732ff017f8a78db2ab82bca6599be7813f8fc8ff8519d6cd06f4f3ec"
+      url "https://github.com/dlang/druntime/archive/v2.076.1.tar.gz"
+      sha256 "28950dce412e3bba27030464eb91e99621f4f2c0cd0ba680a6361911776f89b0"
     end
 
     resource "phobos" do
-      url "https://github.com/dlang/phobos/archive/v2.074.0.tar.gz"
-      sha256 "f40b7fee9cfcb3c153159f27e8e7cc945a3b2945ab707f76cfbf926edf47ce43"
+      url "https://github.com/dlang/phobos/archive/v2.076.1.tar.gz"
+      sha256 "d253e6f23d91b8d544dea0b3c8ca4a13abfc2b13642f31f76b6ad2c1dd49615b"
     end
 
     resource "tools" do
-      url "https://github.com/dlang/tools/archive/v2.074.0.tar.gz"
-      sha256 "7cdb66f5a0213e0e0b5cf5b9619873b08fe4424b7e56b59ae13b16209b812cf4"
+      url "https://github.com/dlang/tools/archive/v2.076.1.tar.gz"
+      sha256 "cf42d4e5f9ceb5acfb5bd3000dd9c1ed7120b136f252b33b07fb026f36970e77"
     end
   end
 
   bottle do
-    sha256 "ac5c2cbc5a4cdfd76f08b0b34cf7a23ec22c54b0d4dbd17bb46769d7011f061b" => :sierra
-    sha256 "7ad73a8701677531d7d4d1a694903e333aa315dd876cf768c9aeb38d1c24451f" => :el_capitan
-    sha256 "76fa776913e93a515b64f130e232b0097192b21aa5902016ecdea11217f6f48d" => :yosemite
+    sha256 "3b52b4fd9f660e97e654b9040b9467c998c77aa57fc17997fb75773587196cf1" => :high_sierra
+    sha256 "ce763c7da5b88d2f6e63d990e26cc286a6d96534e975fa1d04c45729885e0f21" => :sierra
+    sha256 "fd4a9e180181c408001afc14fdaf6c5118b180c2bf814ff09c5ea4814b3f9285" => :el_capitan
   end
 
   head do
@@ -53,40 +53,31 @@ class Dmd < Formula
     prefix.install "samples"
     man.install Dir["docs/man/*"]
 
-    # A proper dmd.conf is required for later build steps:
-    conf = buildpath/"dmd.conf"
-    # Can't use opt_include or opt_lib here because dmd won't have been
-    # linked into opt by the time this build runs:
-    conf.write <<-EOS.undent
-        [Environment]
-        DFLAGS=-I#{include}/dlang/dmd -L-L#{lib}
-        EOS
-    etc.install conf
-    install_new_dmd_conf
-
-    make_args.unshift "DMD=#{bin}/dmd"
-
+    make_args.unshift "DMD_DIR=#{buildpath}", "DRUNTIME_PATH=#{buildpath}/druntime", "PHOBOS_PATH=#{buildpath}/phobos"
     (buildpath/"druntime").install resource("druntime")
     (buildpath/"phobos").install resource("phobos")
-
     system "make", "-C", "druntime", *make_args
     system "make", "-C", "phobos", "VERSION=#{buildpath}/VERSION", *make_args
-
-    (include/"dlang/dmd").install Dir["druntime/import/*"]
-    cp_r ["phobos/std", "phobos/etc"], include/"dlang/dmd"
-    lib.install Dir["druntime/lib/*", "phobos/**/libphobos2.a"]
 
     resource("tools").stage do
       inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS) $(ROOT)/dustmite"
       system "make", "install", *make_args
     end
+
+    (include/"dlang/dmd").install Dir["druntime/import/*"]
+    cp_r ["phobos/std", "phobos/etc"], include/"dlang/dmd"
+    lib.install Dir["druntime/lib/*", "phobos/**/libphobos2.a"]
+
+    (buildpath/"dmd.conf").write <<-EOS.undent
+      [Environment]
+      DFLAGS=-I#{opt_include}/dlang/dmd -L-L#{opt_lib}
+    EOS
+    etc.install "dmd.conf"
   end
 
   # Previous versions of this formula may have left in place an incorrect
   # dmd.conf.  If it differs from the newly generated one, move it out of place
   # and warn the user.
-  # This must be idempotent because it may run from both install() and
-  # post_install() if the user is running `brew install --build-from-source`.
   def install_new_dmd_conf
     conf = etc/"dmd.conf"
 

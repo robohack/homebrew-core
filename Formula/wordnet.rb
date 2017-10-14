@@ -7,6 +7,7 @@ class Wordnet < Formula
   sha256 "6c492d0c7b4a40e7674d088191d3aa11f373bb1da60762e098b8ee2dda96ef22"
 
   bottle do
+    sha256 "307362dabf35eb3deb0c75154245df65a166655973a822d901a20fcad3a01f5a" => :high_sierra
     sha256 "873bcb33510b3211fc34bb986f9527ab554f01177fb765c7db48509291a6f7cb" => :sierra
     sha256 "412b4cc4b65d5083176aa69647ab5a15b96b63b758fa8900c80b402c5a9d2cb6" => :el_capitan
     sha256 "876de343c8e2d508af818a7aacdcc8015f7e662edf8f08e068ca7800f48d50d4" => :yosemite
@@ -18,7 +19,6 @@ class Wordnet < Formula
   resource "dict" do
     url "http://wordnetcode.princeton.edu/wn3.1.dict.tar.gz"
     sha256 "3f7d8be8ef6ecc7167d39b10d66954ec734280b5bdcd57f7d9eafe429d11c22a"
-    version "3.1"
   end
 
   def install
@@ -30,8 +30,8 @@ class Wordnet < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
-                          "--with-tcl=#{MacOS.sdk_path}/usr/lib",
-                          "--with-tk=#{MacOS.sdk_path}/usr/lib"
+                          "--with-tcl=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework",
+                          "--with-tk=#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework"
     ENV.deparallelize
     system "make", "install"
   end

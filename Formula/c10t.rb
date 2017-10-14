@@ -6,6 +6,7 @@ class C10t < Formula
 
   bottle do
     cellar :any
+    sha256 "eaf300efd0b907d3cead85f0e2338b3ebc7162143d29874e841504a2645a126d" => :high_sierra
     sha256 "81effa3d15bf65343a17befabbab5ddf9e40953336d4dec27b379e62fac98439" => :sierra
     sha256 "a7e8fa78424c478351d68d8db77577b1d93208da645e975be9dfd5696d0cf851" => :el_capitan
     sha256 "bcda91a0b11bf1fc75fa5235901ad0c43c22b058846f8b6785daf35fcc10e9af" => :yosemite
@@ -19,8 +20,8 @@ class C10t < Formula
   # Can be removed for the next version of c10t after 1.7
   # See: https://github.com/udoprog/c10t/pull/153
   patch do
-    url "https://github.com/udoprog/c10t/commit/4a392b9f06d08c70290f4c7591e84ecdbc73d902.diff"
-    sha256 "f2d7b1772672f7769adab0eaf081887399de772e72ad1fa53caa0856d50b9a8a"
+    url "https://github.com/udoprog/c10t/commit/4a392b9f06d08c70290f4c7591e84ecdbc73d902.diff?full_index=1"
+    sha256 "5e1c6d9906c3cf2aaaceca2570236585d3404ab4107cfb9169697e9cab30072d"
   end
 
   # Fix freetype detection; adapted from this upstream commit:
@@ -32,8 +33,8 @@ class C10t < Formula
 
   # Ensure zlib header is included for libpng; fixed upstream
   patch do
-    url "https://github.com/udoprog/c10t/commit/800977bb23e6b4f9da3ac850ac15dd216ece0cda.diff"
-    sha256 "4c8953bdc46b1b2063abe0d1768e7116b9092d49f16161732e39e4abb5622ec1"
+    url "https://github.com/udoprog/c10t/commit/800977bb23e6b4f9da3ac850ac15dd216ece0cda.diff?full_index=1"
+    sha256 "5275cb43178b2f6915b14d214ec47c9182e63ff23771426b71f3c0a5450721bf"
   end
 
   def install

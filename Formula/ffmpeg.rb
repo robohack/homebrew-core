@@ -1,14 +1,35 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-3.3.tar.bz2"
-  sha256 "21e08647c9e740a4d3b85bf455b31d079fe0faba9555fa9329230e8541cf6bdc"
-  head "https://github.com/FFmpeg/FFmpeg.git"
+
+  stable do
+    url "https://ffmpeg.org/releases/ffmpeg-3.3.4.tar.bz2"
+    sha256 "5ef5e9276c311c74ab2e9d301c2d7ee10e1f2cbd758c6f13d6cb9514dffbac7e"
+
+    option "with-schroedinger", "Enable Dirac video format"
+
+    depends_on "yasm" => :build
+    depends_on "schroedinger" => :optional
+
+    # Upstream commit from 23 Jun 2017 "Add support for LibOpenJPEG v2.2/git"
+    # See https://github.com/FFmpeg/FFmpeg/commit/078322f33ced4b2db6ac3e5002f98233d6fbf643
+    # Also, add openjpeg 2.3 compatibility
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/ad15f83/ffmpeg/openjpeg-2.3.patch"
+      sha256 "af5bbbc2c05ec5bb7e639f316531b6a2c08370a9ab7ecab465ffa3e7b1467427"
+    end
+  end
 
   bottle do
-    sha256 "7624726a384cc7e6e7306a53f34bd4991ab9aea056f1256a63ababfe9901ba35" => :sierra
-    sha256 "106cf4bb2bd92ce01f22b2170d67af296e705c12cfb461df35194cbc183d99ac" => :el_capitan
-    sha256 "4bce4dbb76c2ae954ca183d81b7282ddd29659933219e728bfabef59f8eccfa2" => :yosemite
+    sha256 "eef67826064913b12cc1b62ea816f63fd66d8390da3c0d85078157942bf18b7a" => :high_sierra
+    sha256 "9553237b03315cbb567ad610c56c44b334adfc9ff46dbf224c90d01f99e9e4e2" => :sierra
+    sha256 "35a316fe3ac1be79163726e5b45f53c07ab25f10155b69d2df43d1a72878b7c8" => :el_capitan
+  end
+
+  head do
+    url "https://github.com/FFmpeg/FFmpeg.git"
+
+    depends_on "nasm" => :build
   end
 
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
@@ -24,7 +45,6 @@ class Ffmpeg < Formula
   option "with-openssl", "Enable SSL support"
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-rubberband", "Enable rubberband library"
-  option "with-schroedinger", "Enable Dirac video format"
   option "with-sdl2", "Enable FFplay media player"
   option "with-snappy", "Enable Snappy library"
   option "with-tools", "Enable additional FFmpeg tools"
@@ -38,6 +58,7 @@ class Ffmpeg < Formula
   option "without-securetransport", "Disable use of SecureTransport"
   option "without-x264", "Disable H.264 encoder"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
+  option "without-gpl", "Disable building GPL licensed parts of FFmpeg"
 
   deprecated_option "with-ffplay" => "with-sdl2"
   deprecated_option "with-sdl" => "with-sdl2"
@@ -45,7 +66,6 @@ class Ffmpeg < Formula
 
   depends_on "pkg-config" => :build
   depends_on "texi2html" => :build
-  depends_on "yasm" => :build
 
   depends_on "lame" => :recommended
   depends_on "x264" => :recommended
@@ -75,7 +95,6 @@ class Ffmpeg < Formula
   depends_on "opus" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "rubberband" => :optional
-  depends_on "schroedinger" => :optional
   depends_on "sdl2" => :optional
   depends_on "snappy" => :optional
   depends_on "speex" => :optional
@@ -94,7 +113,6 @@ class Ffmpeg < Formula
       --prefix=#{prefix}
       --enable-shared
       --enable-pthreads
-      --enable-gpl
       --enable-version3
       --enable-hardcoded-tables
       --enable-avresample
@@ -103,6 +121,7 @@ class Ffmpeg < Formula
       --host-ldflags=#{ENV.ldflags}
     ]
 
+    args << "--enable-gpl" if build.with? "gpl"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
     args << "--disable-securetransport" if build.without? "securetransport"
     args << "--enable-chromaprint" if build.with? "chromaprint"
@@ -143,6 +162,7 @@ class Ffmpeg < Formula
     args << "--enable-libzimg" if build.with? "zimg"
     args << "--enable-libzmq" if build.with? "zeromq"
     args << "--enable-opencl" if MacOS.version > :lion
+    args << "--enable-videotoolbox" if MacOS.version >= :mountain_lion
     args << "--enable-openssl" if build.with? "openssl"
 
     if build.with? "xz"
@@ -159,34 +179,18 @@ class Ffmpeg < Formula
 
     # These librares are GPL-incompatible, and require ffmpeg be built with
     # the "--enable-nonfree" flag, which produces unredistributable libraries
-    if %w[fdk-aac openssl].any? { |f| build.with? f }
-      args << "--enable-nonfree"
-    end
+    args << "--enable-nonfree" if build.with?("fdk-aac") || build.with?("openssl")
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,
-    # prevents GCC from building VDA support. GCC has no problems on
-    # 10.9 and earlier.
+    # prevents GCC from building VDA support.
     # See: https://github.com/Homebrew/homebrew/issues/33741
-    if MacOS.version < :yosemite || ENV.compiler == :clang
+    if !build.head? && (MacOS.version != :yosemite || ENV.compiler == :clang)
       args << "--enable-vda"
     else
       args << "--disable-vda"
     end
 
-    # For 32-bit compilation under gcc 4.2, see:
-    # https://trac.macports.org/ticket/20938#comment:22
-    ENV.append_to_cflags "-mdynamic-no-pic" if Hardware::CPU.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
-
     system "./configure", *args
-
-    if MacOS.prefer_64_bit?
-      inreplace "config.mak" do |s|
-        shflags = s.get_make_var "SHFLAGS"
-        if shflags.gsub!(" -Wl,-read_only_relocs,suppress", "")
-          s.change_make_var! "SHFLAGS", shflags
-        end
-      end
-    end
 
     system "make", "install"
 

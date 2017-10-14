@@ -1,23 +1,15 @@
-require "language/node"
-
 class DiffSoFancy < Formula
   desc "Good-lookin' diffs with diff-highlight and more"
   homepage "https://github.com/so-fancy/diff-so-fancy"
-  url "https://registry.npmjs.org/diff-so-fancy/-/diff-so-fancy-0.11.4.tgz"
-  sha256 "1812b1a36b77c371fc811cc0a9746204954b2c3ab4734ab310b4f01009630b15"
+  url "https://github.com/so-fancy/diff-so-fancy/archive/v1.1.1.tar.gz"
+  sha256 "9505fa729e1e5a4e3ca9af22db3c07342e8544f5151c73ccf05c6b3b3f2e835f"
+  head "https://github.com/so-fancy/diff-so-fancy.git", :branch => "next"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "cbb9b162c89bec116039e2849656fb253e2ecbbcd7973ba3d7b444e978c969a3" => :sierra
-    sha256 "83cd8afe3628eab0a9ddcb2a4326a935279abb24e4409001eedcf1cee81342db" => :el_capitan
-    sha256 "643d937586cc3e4bbe6d9189f6ef1f0a118b89b10dff5870d26d077edc06fb92" => :yosemite
-  end
-
-  depends_on "node" => :build
+  bottle :unneeded
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
-    bin.install_symlink Dir[libexec/"bin/*"]
+    libexec.install "diff-so-fancy", "lib"
+    bin.install_symlink libexec/"diff-so-fancy"
   end
 
   test do

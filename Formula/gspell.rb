@@ -1,19 +1,20 @@
 class Gspell < Formula
   desc "Flexible API to implement spellchecking in GTK+ applications"
   homepage "https://wiki.gnome.org/Projects/gspell"
-  url "https://download.gnome.org/sources/gspell/1.4/gspell-1.4.1.tar.xz"
-  sha256 "442f88fecd7f9e00a6a9d0af2d762744dd3c119217ff11d6739500f75b0f10be"
+  url "https://download.gnome.org/sources/gspell/1.6/gspell-1.6.0.tar.xz"
+  sha256 "b5d73dab4bda45cde4bdeed04e472dca8a3e16ea19739cfb66237553e91f872d"
 
   bottle do
-    sha256 "d018460f00f0b8f369c45995076d1e5d7bab4cc0a5813cc9473c0ca95206c7cf" => :sierra
-    sha256 "5ce753f9cc029fb04675eb9bb1b2f5b3b45b23c90ee16fc5c2e0a6fa6d4dab5e" => :el_capitan
-    sha256 "da244c16a06802015df18078688d863414943f698bdf478a9b15274aa990053f" => :yosemite
+    sha256 "eb042c618b2e42d20c2482cc6aeb63be0eb05ec8ccb80e8e1d9e666b6b573de9" => :high_sierra
+    sha256 "d1cbb52f50dda1cbe670422704cf2177b4e0039f13277e021bf1fd296619d09e" => :sierra
+    sha256 "29308ad85815a65c342422ad498ed02d34ed70b4af989234373a84b1c462db2a" => :el_capitan
   end
 
-  depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "gtk-doc" => :build
   depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
   depends_on "enchant"
   depends_on "gtk+3"
   depends_on "gtk-mac-integration"

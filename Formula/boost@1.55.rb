@@ -11,13 +11,13 @@ class BoostAT155 < Formula
     # https://github.com/Homebrew/homebrew/issues/27396
     # https://github.com/Homebrew/homebrew/pull/27436
     patch :p2 do
-      url "https://github.com/boostorg/atomic/commit/6bb71fdd.diff"
-      sha256 "eb139160a33d8ef3e810ce3e47da278563d03d7be6d0a75c109f708030a7abcb"
+      url "https://github.com/boostorg/atomic/commit/6bb71fdd.diff?full_index=1"
+      sha256 "1574ef5c1c3ec28cf3786e40e4a8608f2bbb1c426ef2f14a2515e7a1a9313fab"
     end
 
     patch :p2 do
-      url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
-      sha256 "8c5efeea91d44b2a48fdeee9cde71e831dad78f0930e8f65b7223ba0ecdfec9b"
+      url "https://github.com/boostorg/atomic/commit/e4bde20f.diff?full_index=1"
+      sha256 "fa6676d83993c59e3566fff105f7e99c193a54ef7dba5c3b327ebdb5b6dcba37"
     end
 
     # Patch fixes upstream issue reported here (https://svn.boost.org/trac/boost/ticket/9698).
@@ -25,13 +25,14 @@ class BoostAT155 < Formula
     # See this issue (https://github.com/Homebrew/homebrew/issues/30592) for more details.
 
     patch :p2 do
-      url "https://github.com/boostorg/chrono/commit/143260d.diff"
-      sha256 "f6f40b576725b15ddfe24497ddcd597f387dfdf674f6dd301b8dcb723593ee22"
+      url "https://github.com/boostorg/chrono/commit/143260d.diff?full_index=1"
+      sha256 "96ba2f3a028df323e9bdffb400cc7c30c0c67e3d681c8c5a867c40ae0549cb62"
     end
   end
 
   bottle do
     cellar :any
+    sha256 "268a8123cf956c5f8e79115b4a5d5807a9125891ac5df161357f31f917bbe16f" => :high_sierra
     sha256 "bf89ab11c1ceab224a5ece4629987b4d8d137c5c3506a4577301f70b05d0ea97" => :sierra
     sha256 "30bb554952cdbcc445b247f570243c31ab4cafebf55bcfe96b9cabcb5ca2f716" => :el_capitan
     sha256 "f861f79bde1988282064245c5b1080f66f6a4e034162656b627c2bb8de42ebb2" => :yosemite

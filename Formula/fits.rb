@@ -1,21 +1,21 @@
 class Fits < Formula
   desc "File Information Tool Set"
   homepage "https://projects.iq.harvard.edu/fits"
-  url "https://github.com/harvard-lts/fits/archive/1.0.7.tar.gz"
-  sha256 "9094071db178c1ba48bd3a0c957138c461190f28f3dc97c81a8d84d2233eb198"
+  url "https://github.com/harvard-lts/fits/archive/1.2.0.tar.gz"
+  sha256 "54a557cd1e559b4473dbbdd6bab561911ffaf090dfba258fab79604b50c3a46b"
 
   bottle do
     cellar :any
-    sha256 "6e40f1fd9f8f1942695e0d40a6c6ba0a8c3ed742fc3fb463600617457a62eccb" => :sierra
-    sha256 "2bfd30983cebe22bef49a889e4af586158f3b8f2ea9bc0f9560aa359a27ebf62" => :el_capitan
-    sha256 "14f8f42715e72893d27ac1e6d3941dc5eec0b77e3838becb86475c70643a1522" => :yosemite
+    sha256 "c7a4dddded2fdb365b582a036dc8d0974848b22dc8f4684ec8b345d9ca5dc9a8" => :high_sierra
+    sha256 "9a6d083c8c70fb75240e94b9a05a4db864eb9de6f718e2ff98e5cbe6e87f094e" => :sierra
+    sha256 "022efd61e0b8f100f30f84bb1223b6b6c28198bcc278721424fbfdf32a5c87d8" => :el_capitan
+    sha256 "b8a7e8240957b2347a4a90dbd15c671b6610809b3b39b887b9231210bd1f0874" => :yosemite
   end
 
   depends_on "ant" => :build
   depends_on :java => "1.7+"
 
   def install
-    ENV.java_cache
     system "ant", "clean-compile-jar", "-noinput"
 
     libexec.install "lib",
@@ -35,8 +35,9 @@ class Fits < Formula
     # fits-env.sh is a helper script that sets up environment
     # variables, so we want to tuck this away in libexec
     libexec.install "fits-env.sh"
-    bin.install "fits.sh" => "fits"
-    bin.install "fits-ngserver.sh" => "fits-ngserver"
+    bin.install "fits.sh", "fits-ngserver.sh"
+    bin.install_symlink bin/"fits.sh" => "fits"
+    bin.install_symlink bin/"fits-ngserver.sh" => "fits-ngserver"
   end
 
   test do

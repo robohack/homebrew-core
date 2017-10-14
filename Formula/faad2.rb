@@ -1,23 +1,24 @@
 class Faad2 < Formula
   desc "ISO AAC audio decoder"
   homepage "http://www.audiocoding.com/faad2.html"
-  url "https://downloads.sourceforge.net/project/faac/faad2-src/faad2-2.7/faad2-2.7.tar.bz2"
-  sha256 "14561b5d6bc457e825bfd3921ae50a6648f377a9396eaf16d4b057b39a3f63b5"
+  url "https://downloads.sourceforge.net/project/faac/faad2-src/faad2-2.8.0/faad2-2.8.6.tar.gz"
+  sha256 "654977adbf62eb81f4fca00152aca58ce3b6dd157181b9edd7bed687a7c73f21"
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "dc0b4f69ac5ccb338c409fbce248f2d45dae4e706ef67bb3ae4aa865c7d67b55" => :sierra
-    sha256 "ded931642921a5e0d236237ce046f883aa96a0e5bfe67f5d437ee31f10b5f3d1" => :el_capitan
-    sha256 "c9d4798cb9ed59d6f4b9e5fa24d65e4b9afca6a390b4e0d4168975a0da43b991" => :yosemite
-    sha256 "4d5c07adef1f8fbeea4e71ad42205145b38dd3e3616485b9ee44f839c6d4f1a4" => :mavericks
-    sha256 "cc0b789cd93b14247f679211b2f4a592e88395304cb6cc1df91514ed9d6a9720" => :mountain_lion
+    sha256 "ca4c735b958cc393e8ccfa90ca3b0c372febc7175c7be3070aee64fded14d593" => :high_sierra
+    sha256 "b543a97001b82b54a7b650be495394d73b3c81822ca989e154380630ce503ccb" => :sierra
+    sha256 "6dacb8f2ebff6a348a0b1be0a8bbec37a4cee81a28dad9fe2fa2f809461e9e89" => :el_capitan
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
-    man1.install man+"manm/faad.man" => "faad.1"
+  end
+
+  test do
+    assert_match "infile.mp4", shell_output("#{bin}/faad -h", 1)
   end
 end

@@ -1,26 +1,25 @@
 class Scipy < Formula
   desc "Software for mathematics, science, and engineering"
   homepage "https://www.scipy.org"
-  url "https://github.com/scipy/scipy/releases/download/v0.19.0/scipy-0.19.0.tar.xz"
-  sha256 "ed52232afb2b321a4978e39040d94bf81af90176ba64f58c4499dc305a024437"
+  url "https://github.com/scipy/scipy/releases/download/v0.19.1/scipy-0.19.1.tar.xz"
+  sha256 "0dca04c4860afdcb066cab4fd520fcffa8c85e9a7b5aa37a445308e899d728b3"
+  revision 1
   head "https://github.com/scipy/scipy.git"
 
   bottle do
-    sha256 "24852ec494ce62531ab60744ffb2d7a4acf55a16a311bcaeb931a717640584d8" => :sierra
-    sha256 "fe83a68967644820a02109eb85cd2b1d0dc8be48ec8a7407c35863a8dc86c2e3" => :el_capitan
-    sha256 "681f5b88966188641b911fe7adc82297664a9df074640b080920566a0bed152c" => :yosemite
+    sha256 "8d012bce51f0329e4da5d9746d7651aedf16d3d4859421060cf7b7510234ed42" => :high_sierra
+    sha256 "52dfdefbaeaaeb843ae2f36a7e743ccdb69d3eecd266d7a27ab2693c8e15be06" => :sierra
+    sha256 "6a7138aa35a3a58e6f4ba77946e3dec4a6ca6f4456cbc31b8e23a7e5ae8ad3b4" => :el_capitan
+    sha256 "5b793bffbedc74ba881866847a02cefa02dc1372ff22ce86920fe68fc44c25b2" => :yosemite
   end
 
   option "without-python", "Build without python2 support"
 
   depends_on "swig" => :build
-  depends_on :python => :recommended if MacOS.version <= :snow_leopard
-  depends_on :python3 => :optional
   depends_on :fortran
-
-  numpy_options = []
-  numpy_options << "with-python3" if build.with? "python3"
-  depends_on "numpy" => numpy_options
+  depends_on "numpy"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
+  depends_on :python3 => :recommended
 
   cxxstdlib_check :skip
 
@@ -69,6 +68,8 @@ class Scipy < Formula
   end
 
   test do
-    system "python", "-c", "import scipy"
+    Language::Python.each_python(build) do |python, _version|
+      system python, "-c", "import scipy"
+    end
   end
 end

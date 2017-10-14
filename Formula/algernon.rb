@@ -1,28 +1,26 @@
 class Algernon < Formula
-  desc "HTTP/2 web server with built-in support for Lua and templates"
+  desc "Pure Go web server with Lua, Markdown, HTTP/2 and template support"
   homepage "http://algernon.roboticoverlords.org/"
-  url "https://github.com/xyproto/algernon/archive/1.3.tar.gz"
-  sha256 "46577afcd255f9c4f193f2408c418e0ca5a66db9c9b4e553058fd4bef28631c1"
-  sha256 "a5a5976ce75c58b0a1ec10ee8185457fa590bc4e7473f061053bba85474208cc"
+  url "https://github.com/xyproto/algernon.git",
+      :tag => "1.6",
+      :revision => "9281665f4106b6c8938904f7ea1ff5386116ca22"
+  sha256 "f1627ed11e84890befbf244828aff7a56a17157f721b445804e18b5461e3b8f3"
   version_scheme 1
   head "https://github.com/xyproto/algernon.git"
 
   bottle do
-    sha256 "c01c2947279e6bbc29eaca07a022cb3276d82d6f7ff6dfa9f1057e12ed764c91" => :sierra
-    sha256 "ac0d53e57be4a00dd8ade3c9ea384730d00ba4f540b5db64d697692a66935446" => :el_capitan
-    sha256 "0f6c5ee39192dc9f48f735fd8d68656cc50fda5234758490f5f53d41a85469cd" => :yosemite
+    cellar :any_skip_relocation
+    sha256 "75251e63866d6e338b1a81ee6d5d007e9f4f6f80801cabe80a918be7cea976b7" => :high_sierra
+    sha256 "1435aa8e578bc70ef7847ae191747e75140d04150b1cbf6d2f9f318f326e7453" => :sierra
+    sha256 "b2a1778124b34030e3bf5aaf4f9356f8a07b4d0db9841a4cadd1b70e4e380fad" => :el_capitan
   end
 
-  depends_on "glide" => :build
   depends_on "go" => :build
-  depends_on "readline"
 
   def install
-    ENV["GLIDE_HOME"] = buildpath/"glide_home"
     ENV["GOPATH"] = buildpath
     (buildpath/"src/github.com/xyproto/algernon").install buildpath.children
     cd "src/github.com/xyproto/algernon" do
-      system "glide", "install"
       system "go", "build", "-o", "algernon"
 
       bin.install "desktop/mdview"
@@ -37,7 +35,7 @@ class Algernon < Formula
         exec "#{bin}/algernon", "-s", "-q", "--httponly", "--boltdb", "my.db",
                                 "--addr", ":45678"
       end
-      sleep(1)
+      sleep 20
       output = shell_output("curl -sIm3 -o- http://localhost:45678")
       assert_match /200 OK.*Server: Algernon/m, output
     ensure

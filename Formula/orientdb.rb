@@ -1,15 +1,12 @@
 class Orientdb < Formula
   desc "Graph database"
   homepage "https://orientdb.com/"
-  url "https://orientdb.com/download.php?file=orientdb-community-2.2.18.tar.gz"
-  sha256 "aab85c6a10e1e7d36a163ee6268815e6285e198e90d386f1b068c05b85e19ad6"
+  url "https://orientdb.com/download.php?file=orientdb-community-importers-2.2.29.tar.gz"
+  sha256 "ed6e65b18fed70ace3afa780a125100a19899e9b18f4d6e9bc1111e7ee88d752"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "6d5a4e4b2affc0295febe1bd92ce6dadd0196e1862e7f86632a905ba1ec13d61" => :sierra
-    sha256 "72d91bd654332809220edeb6e1d1795ad4c09d4d1b83a9755b7bd07cdc65a14d" => :el_capitan
-    sha256 "72d91bd654332809220edeb6e1d1795ad4c09d4d1b83a9755b7bd07cdc65a14d" => :yosemite
-  end
+  bottle :unneeded
+
+  depends_on :java => "1.6+"
 
   def install
     rm_rf Dir["{bin,benchmarks}/*.{bat,exe}"]
@@ -47,7 +44,6 @@ class Orientdb < Formula
     sleep 3
     system "#{bin}/orientdb", "start"
     sleep 3
-
   ensure
     system "#{bin}/orientdb", "stop"
   end

@@ -2,15 +2,15 @@ class ConsulTemplate < Formula
   desc "Generic template rendering and notifications with Consul"
   homepage "https://github.com/hashicorp/consul-template"
   url "https://github.com/hashicorp/consul-template.git",
-      :tag => "v0.18.2",
-      :revision => "770d6514fcb34703b594280d73fc5427fe692f1b"
+      :tag => "v0.19.3",
+      :revision => "e08c9043f75346825b122c4b2f9d3dfe27e75c7a"
   head "https://github.com/hashicorp/consul-template.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4810a80f495db526959e6f830cf95c6d219b99ddb4915e934b98797bd95552e0" => :sierra
-    sha256 "4a131cec77f31b38e8821372adc7f2196cfe7723613c53db41f6cd1c4dfc68bd" => :el_capitan
-    sha256 "2e56bcf8fff635631457330a43ee4e5f24901102674020958b5698fbd5c3598e" => :yosemite
+    sha256 "44e2c7d45366b3485a03694d3d744afd4fdd213f2bc5aaba862a7decaf802a04" => :high_sierra
+    sha256 "98b894e6a5c2ca8e406b558db015ff37e0d96eb0ff42b4507887361753480000" => :sierra
+    sha256 "84dfb236c7ca08c26d341e4723a2824e9ad93b1cbd9e238a1d5e3e8a27bbfbff" => :el_capitan
   end
 
   depends_on "go" => :build
@@ -24,8 +24,13 @@ class ConsulTemplate < Formula
     dir.install buildpath.children - [buildpath/".brew_home"]
 
     cd dir do
-      system "make", "bin-local"
-      bin.install "pkg/darwin_#{arch}/consul-template"
+      project = "github.com/hashicorp/consul-template"
+      commit = Utils.popen_read("git rev-parse --short HEAD").chomp
+      ldflags = ["-X #{project}/version.Name=consul-template",
+                 "-X #{project}/version.GitCommit=#{commit}"]
+      system "go", "build", "-o", bin/"consul-template", "-ldflags",
+             ldflags.join(" ")
+      prefix.install_metafiles
     end
   end
 

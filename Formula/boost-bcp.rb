@@ -1,15 +1,16 @@
 class BoostBcp < Formula
   desc "Utility for extracting subsets of the Boost library"
   homepage "https://www.boost.org/doc/tools/bcp/"
-  url "https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.bz2"
-  sha256 "7bcc5caace97baa948931d712ea5f37038dbb1c5d89b43ad4def4ed7cb683332"
+  url "https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2"
+  sha256 "9807a5d16566c57fd74fb522764e0b134a8bbe6b6e8967b83afefd30dcd3be81"
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0a6d2fae665c4913202f7f12672f6950b2a0c6c11e027d26be817b16804cd771" => :sierra
-    sha256 "45199e3f4130b44c7ebb87abc08343ead5b2433984bc31541e5c76cfe30639d1" => :el_capitan
-    sha256 "2c5b4c25630f0ee761fe17cb84811f25fc1c2c4aeae6189d7b61412f43c93439" => :yosemite
+    sha256 "dd37ef056378e4628242b98e1b8ac8c0d867c9b99db357f463910009166c4ba3" => :high_sierra
+    sha256 "2f9715e15a784c42c02d3e96bbebe5cab5bff01191e63db1649bb4cd529e7fdc" => :sierra
+    sha256 "0479bb9b6002bf3c8f0e4063392f67850f34602826d2b3ffccf580509d48d37f" => :el_capitan
+    sha256 "eb23497221bd792d1474b2c86e270a492266ea416e33c7bcfe678b4af0581eea" => :yosemite
   end
 
   depends_on "boost-build" => :build

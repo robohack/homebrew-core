@@ -1,13 +1,14 @@
 class Pango < Formula
   desc "Framework for layout and rendering of i18n text"
   homepage "http://www.pango.org/"
-  url "https://download.gnome.org/sources/pango/1.40/pango-1.40.5.tar.xz"
-  sha256 "24748140456c42360b07b2c77a1a2e1216d07c056632079557cd4e815b9d01c9"
+  url "https://download.gnome.org/sources/pango/1.40/pango-1.40.12.tar.xz"
+  sha256 "75f1a9a8e4e2b28cbc078b50c1fa927ee4ded994d1ade97c5603e2d1f3161cfc"
 
   bottle do
-    sha256 "d6062a0999467c8316d9b15a436ba8ef62c46294feadb47fc1e73e72d211f585" => :sierra
-    sha256 "d9cd6b2ebb90bf42167f6ddf70311ac11dbdd7d133c48639f7a511433a098c43" => :el_capitan
-    sha256 "f8b34e7f18afa1b992a7e3d4d9308314e51b56c6886ab847fe0e2f8dc50834ce" => :yosemite
+    sha256 "ffe4d3da855a72889f8b8ff7540669f714e5fc7aedceffa1f2df94d5a2e0cced" => :high_sierra
+    sha256 "2ab05e9538928347766acb394093fccc664798cf65565e48112ce99706d4c7d2" => :sierra
+    sha256 "c4547f056db49bf7a9d41b9b0061ba0a1f943cbdcecc94e927f9324b326f10ef" => :el_capitan
+    sha256 "a51adb60a74757d0a52ad60166413eb62e21d001176e2308baf5963d46330e84" => :yosemite
   end
 
   head do
@@ -20,32 +21,23 @@ class Pango < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on :x11 => :optional
-  depends_on "glib"
   depends_on "cairo"
-  depends_on "harfbuzz"
   depends_on "fontconfig"
+  depends_on "glib"
   depends_on "gobject-introspection"
+  depends_on "harfbuzz"
 
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --disable-silent-rules
-      --prefix=#{prefix}
-      --enable-man
-      --with-html-dir=#{share}/doc
-      --enable-introspection=yes
-      --enable-static
-    ]
-
-    if build.with? "x11"
-      args << "--with-xft"
-    else
-      args << "--without-xft"
-    end
-
     system "./autogen.sh" if build.head?
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}",
+                          "--with-html-dir=#{share}/doc",
+                          "--enable-introspection=yes",
+                          "--enable-man",
+                          "--enable-static",
+                          "--without-xft"
+
     system "make"
     system "make", "install"
   end

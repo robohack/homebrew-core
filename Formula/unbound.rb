@@ -1,13 +1,13 @@
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://www.unbound.net/downloads/unbound-1.6.1.tar.gz"
-  sha256 "42df63f743c0fe8424aeafcf003ad4b880b46c14149d696057313f5c1ef51400"
+  url "https://www.unbound.net/downloads/unbound-1.6.7.tar.gz"
+  sha256 "4e7bd43d827004c6d51bef73adf941798e4588bdb40de5e79d89034d69751c9f"
 
   bottle do
-    sha256 "8e20e07dbac431ff4eb28f1bd92a08d4fe145f18194d77e50bce68a261f6c735" => :sierra
-    sha256 "b519adb92b04d3fbc3b3520b5bc0c72249e06f191bbc5fbc81332ddf0701a01a" => :el_capitan
-    sha256 "e138a7b0dff669fae17ff8046369375fe1fcf524855abfb3575ab3c030fea935" => :yosemite
+    sha256 "6c2088a0ce3d415e5364c3580bdd797c77f5302f054216d2e5f08455b0654f32" => :high_sierra
+    sha256 "aa331fd3f81151688aefe67289323cfeaf2e7ab176eb3f786f8bfd732337a681" => :sierra
+    sha256 "ffe70f8e112a42fd48128e8cbea512bbef73a04a4416b9137279c8de957930a3" => :el_capitan
   end
 
   depends_on "openssl"
@@ -26,6 +26,7 @@ class Unbound < Formula
 
     if build.with? "python"
       ENV.prepend "LDFLAGS", `python-config --ldflags`.chomp
+      ENV.prepend "PYTHON_VERSION", "2.7"
 
       args << "--with-pyunbound"
       args << "--with-pythonmodule"

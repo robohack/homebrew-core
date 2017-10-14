@@ -1,14 +1,14 @@
 class Gofabric8 < Formula
   desc "CLI for fabric8 running on Kubernetes or OpenShift"
   homepage "https://github.com/fabric8io/gofabric8/"
-  url "https://github.com/fabric8io/gofabric8/archive/v0.4.121.tar.gz"
-  sha256 "9fc6656150e84d469ad9f37cf0e43b2afa146acb4d9f92e7de368ea7ac9075e5"
+  url "https://github.com/fabric8io/gofabric8/archive/v0.4.157.tar.gz"
+  sha256 "0fe0ff370fe4074cffa676b1b92ea1ed36610b9bfe4c24334b9173ba9aa6fecf"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "374a5757c1c3f8ef4531d9d921213c211ac9a863f48c301959cd4d69d0436c0f" => :sierra
-    sha256 "ec4feb35e586cfb5b67a51aaf5adda167a6732d4bc267c8d6fbb1e676eba2b6b" => :el_capitan
-    sha256 "8077f8bf1027d5510475ea1c38a2719954092ba2c715efc446ec823d3a6ac8f0" => :yosemite
+    sha256 "d552fdd8012ca37c45c5b66500cb13b183c6956153d328fff6785d5b29a0085c" => :high_sierra
+    sha256 "862b99895633639e0a13e29a4a61130f6be63a7d4daa3b065ba28f8f853169a2" => :sierra
+    sha256 "59ef19ca74488daf6f22aad80cb6a7309a054c7e9add083673012b4f7e95d69a" => :el_capitan
   end
 
   depends_on "go" => :build

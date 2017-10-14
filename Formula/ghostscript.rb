@@ -1,13 +1,13 @@
 class Ghostscript < Formula
   desc "Interpreter for PostScript and PDF"
   homepage "https://www.ghostscript.com/"
-  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs921/ghostscript-9.21.tar.xz"
-  sha256 "2be1d014888a34187ad4bbec19ab5692cc943bd1cb14886065aeb43a3393d053"
+  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs922/ghostscript-9.22.tar.xz"
+  sha256 "c1f862e6f40f997dbe3feba89355e8cb05d55818994e10f4932b0dd9b627d1bb"
 
   bottle do
-    sha256 "f4de879cfb6e4ef5e5c93dddeab48adf458c5a07a8804682498967fe9d359742" => :sierra
-    sha256 "b8e066aece53c8e75f5883eac8617fde563733938029955a6cf07f7d8b4227c6" => :el_capitan
-    sha256 "37b17208e6839ca273a73c5dd0f0a7e8f625f6d5aa816b74bd57de3375f94b00" => :yosemite
+    sha256 "dec4d99345c0d402cd78e12fc2b6d1c2efa9fc9e207480bb665b60cbcfef1c21" => :high_sierra
+    sha256 "45a8136781fc46574f134114b7db8417994406c81160211ad4e7252b17154810" => :sierra
+    sha256 "f935b2fc2d7a5dc580e530f4e571bca53ed2423633461e1a8c34957990258adf" => :el_capitan
   end
 
   head do
@@ -37,6 +37,8 @@ class Ghostscript < Formula
       --disable-cups
       --disable-compile-inits
       --disable-gtk
+      --disable-fontconfig
+      --without-libidn
     ]
     args << "--without-x" if build.without? "x11"
 

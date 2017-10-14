@@ -1,13 +1,14 @@
 class ApacheBrooklynCli < Formula
   desc "Apache Brooklyn command-line interface"
   homepage "https://brooklyn.apache.org"
-  url "https://github.com/apache/brooklyn-client/archive/rel/apache-brooklyn-0.10.0.tar.gz"
-  sha256 "9273a30e8fea9b5ebdd11ea64ff9164e03500660d4be26e2bc13e4e09c1c9ecc"
+  url "https://github.com/apache/brooklyn-client/archive/rel/apache-brooklyn-0.12.0.tar.gz"
+  sha256 "1d0975252a41f1fd65268b915778d4974a0eff2a8a315280e3dedc0e39ef486f"
 
   bottle do
-    sha256 "0f4d805b9d8a7086c481310d13e5807e90561e0eadaa1597135700c8e7bf1327" => :sierra
-    sha256 "c8bf103b0bd822b5a3caf6200b28405c5de29f93998c69148b0a4edd2dc72035" => :el_capitan
-    sha256 "2f9ee7ed7223009df9a7ea14cfb56091acbf2d3d2b2e880504b917574d4044f4" => :yosemite
+    cellar :any_skip_relocation
+    sha256 "bc1c638f30c4036519eff703b605de6d22313970e585576bcf16183381f59247" => :high_sierra
+    sha256 "b2ad53984d4e98ef3d37622ff0ff9dd987f4ecc2614e251f3df60de13d96b6c2" => :sierra
+    sha256 "39f56956e1ed81dfae64401caa333f910b70312d6e45950ac5e2bb3c0db59cfe" => :el_capitan
   end
 
   depends_on "glide" => :build
@@ -47,7 +48,7 @@ class ApacheBrooklynCli < Formula
 
     begin
       mock_brooklyn_url = "http://localhost:#{server.addr[1]}"
-      assert_equal "Connected to Brooklyn version 1.2.3 at #{mock_brooklyn_url}\n", shell_output("#{bin}/br login #{mock_brooklyn_url}")
+      assert_equal "Connected to Brooklyn version 1.2.3 at #{mock_brooklyn_url}\n", shell_output("#{bin}/br login #{mock_brooklyn_url} username password")
     ensure
       Process.kill("KILL", pid_mock_brooklyn)
     end

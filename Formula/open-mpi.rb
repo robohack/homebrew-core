@@ -1,13 +1,13 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.0.tar.bz2"
-  sha256 "b169e15f5af81bf3572db764417670f508c0df37ce86ff50deb56bd3acb43957"
+  url "https://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.2.tar.bz2"
+  sha256 "3cc5804984c5329bdf88effc44f2971ed244a29b256e0011b8deda02178dd635"
 
   bottle do
-    sha256 "980dee19a68a35981cebdead7c7d7fa66df9b206481d8759c4738da884eb8952" => :sierra
-    sha256 "0f22b4624cb270647bd806a165b12d907b50dec400707d8c3ead64f7eb07fa94" => :el_capitan
-    sha256 "5ae27358f9df385b8ca9a2480f1ab99caf7a6ea9c8c14cfc118199364e532954" => :yosemite
+    sha256 "43e6c6143d990abecc5593715d2d5ad2b4e859540a9025cefd37bedc026b9c33" => :high_sierra
+    sha256 "899bfbcb02796f135715089b1323bef1924b435617af96153256971acb9812bd" => :sierra
+    sha256 "574e505e7e6c7089f0519486ed0d27d35cb6cfe16a2216295ba1566574f332df" => :el_capitan
   end
 
   head do
@@ -56,9 +56,7 @@ class OpenMpi < Formula
 
     # If Fortran bindings were built, there will be stray `.mod` files
     # (Fortran header) in `lib` that need to be moved to `include`.
-    if build.with? "fortran"
-      include.install Dir["#{lib}/*.mod"]
-    end
+    include.install Dir["#{lib}/*.mod"] if build.with? "fortran"
   end
 
   test do

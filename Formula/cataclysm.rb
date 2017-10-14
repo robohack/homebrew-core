@@ -9,6 +9,7 @@ class Cataclysm < Formula
 
   bottle do
     cellar :any
+    sha256 "6e602bda6632b19b42f907e952407b9669398604c7ee43aa19dbcca50166ab71" => :high_sierra
     sha256 "1a821cdc40c5170e95c32877acdeb086fedecf366a505e27c559c557003b31de" => :sierra
     sha256 "939d8b6b945457b91f77860f31675d9facf57a842e1b033ea4ed889ee91ab165" => :el_capitan
     sha256 "e7ea748e9dd53bd0ace6c8456c4eb351616dc9c879621b6724ce742ae2b0d4f2" => :yosemite
@@ -19,8 +20,6 @@ class Cataclysm < Formula
   needs :cxx11
 
   depends_on "gettext"
-  # needs `set_escdelay`, which isn't present in system ncurses before 10.6
-  depends_on "ncurses" if MacOS.version < :snow_leopard
 
   if build.with? "tiles"
     depends_on "sdl2"
@@ -30,10 +29,6 @@ class Cataclysm < Formula
 
   def install
     ENV.cxx11
-
-    # cataclysm tries to #import <curses.h>, but Homebrew ncurses installs no
-    # top-level headers
-    ENV.append_to_cflags "-I#{Formula["ncurses"].include}/ncursesw" if MacOS.version < :snow_leopard
 
     args = %W[
       NATIVE=osx RELEASE=1 OSX_MIN=#{MacOS.version}

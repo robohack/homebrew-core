@@ -1,9 +1,8 @@
 class Neo4j < Formula
   desc "Robust (fully ACID) transactional property graph database"
   homepage "https://neo4j.com/"
-  url "https://neo4j.com/artifact.php?name=neo4j-community-3.1.3-unix.tar.gz"
-  version "3.1.3"
-  sha256 "f0d79b4a98672dc527b708113644b8961ba824668c354e61dc4d2a16d8484880"
+  url "https://neo4j.com/artifact.php?name=neo4j-community-3.2.2-unix.tar.gz"
+  sha256 "de607436b9708ee708447be367439a4c8c30bd97ca77e84e3a081b8b6d378d95"
 
   bottle :unneeded
 
@@ -64,7 +63,6 @@ class Neo4j < Formula
 
   test do
     ENV["NEO4J_HOME"] = libexec
-    ENV.java_cache
     ENV["NEO4J_LOG"] = testpath/"libexec/data/log/neo4j.log"
     ENV["NEO4J_PIDFILE"] = testpath/"libexec/data/neo4j-service.pid"
     mkpath testpath/"libexec/data/log"

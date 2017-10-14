@@ -1,40 +1,50 @@
 class KnotResolver < Formula
   desc "Minimalistic, caching, DNSSEC-validating DNS resolver"
   homepage "https://www.knot-resolver.cz"
-  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-1.2.5.tar.xz"
-  sha256 "30e24f9681e40c79a0aadbbfd78aaa72534dd3bca3347de89dfeae055b2c99e4"
-  head "https://gitlab.labs.nic.cz/knot/resolver.git"
+  revision 2
+  head "https://gitlab.labs.nic.cz/knot/knot-resolver.git"
 
-  bottle do
-    sha256 "482e36e76f79df9a360300cec7f06b465a9e10871d0f9da0628d367960f549f6" => :sierra
-    sha256 "f64e3f234636841fe91692e06fe97409cb6e444936bb2cd80dc02593ec8f707f" => :el_capitan
-    sha256 "b11ee53d173470d439f82291452aed21641355571673a8dd9bed7dda3cdf38cf" => :yosemite
+  stable do
+    url "https://secure.nic.cz/files/knot-resolver/knot-resolver-1.4.0.tar.xz"
+    sha256 "ac19c121fd687c7e4f5f907b46932d26f8f9d9e01626c4dadb3847e25ea31ceb"
+
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/62168c0/knot-resolver/fix-loading-modules-on-Darwin.diff"
+      sha256 "326a720d6ca0bb7455ce1833b9e93d4054b002f32de7676773f28b4023bcf52f"
+    end
   end
 
-  depends_on "knot"
-  depends_on "luajit"
-  depends_on "libuv"
-  depends_on "gnutls"
-  depends_on "lmdb"
-
-  depends_on "cmocka" => :build
-  depends_on "pkg-config" => :build
+  bottle do
+    sha256 "64a4a438402eeef8d2a59a4b786badd810428df9e19c734a4512f87e65ec3886" => :high_sierra
+    sha256 "4288eadcf123debef357df3e31caf4f2fa1b9e492e76331095ff327bbdd550b9" => :sierra
+    sha256 "d9ca2c9605ffb9de25abe4ab0b39ba6ba73edc7e7dc7bf3cb3284e551512f2b9" => :el_capitan
+  end
 
   option "without-nettle", "Compile without DNS cookies support"
   option "with-hiredis", "Compile with Redis cache storage support"
   option "with-libmemcached", "Compile with memcached cache storage support"
+
+  depends_on "cmocka" => :build
+  depends_on "pkg-config" => :build
+  depends_on "gnutls"
+  depends_on "knot"
+  depends_on "luajit"
+  depends_on "libuv"
+  depends_on "lmdb"
   depends_on "nettle" => :recommended
   depends_on "hiredis" => :optional
   depends_on "libmemcached" => :optional
 
   def install
     %w[all check lib-install daemon-install modules-install].each do |target|
-      system "make", target, "PREFIX=#{prefix}"
+      system "make", target, "PREFIX=#{prefix}", "ETCDIR=#{etc}/kresd"
     end
 
     cp "etc/config.personal", "config"
     inreplace "config", /^\s*user\(/, "-- user("
     (etc/"kresd").install "config"
+
+    (etc/"kresd").install "etc/root.hints"
 
     (buildpath/"root.keys").write(root_keys)
     (var/"kresd").install "root.keys"

@@ -1,13 +1,13 @@
 class Gstreamer < Formula
   desc "Development framework for multimedia applications"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.10.4.tar.xz"
-  sha256 "50c2f5af50a6cc6c0a3f3ed43bdd8b5e2bff00bacfb766d4be139ec06d8b5218"
+  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.12.3.tar.xz"
+  sha256 "d388f492440897f02b01eebb033ca2d41078a3d85c0eddc030cdea5a337a216e"
 
   bottle do
-    sha256 "2a6f42fbee059d312431d4f7adebe166068d2635b7ea65463e5426c01265c5e9" => :sierra
-    sha256 "a9664a0b06e0955b86de6ce49afaa455315e962a6153e0250184067d294f46c7" => :el_capitan
-    sha256 "4b2d9208592668303c8e60d3f4c2a59d566d88dd32f368ed590fe988676b994f" => :yosemite
+    sha256 "d238516d2ece029d1071071d4997c5c831be81e577d18b78f63939e85ca0c7bd" => :high_sierra
+    sha256 "d4671f82b7e74bc05baa221ab5463f51610d1bd9cb7aed74461c3525014cdc7b" => :sierra
+    sha256 "3427d79db3da541e6f682ae90fa737aa9da07ed6f8c049696ae29c9a3514aa8c" => :el_capitan
   end
 
   head do

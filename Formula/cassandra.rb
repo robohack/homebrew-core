@@ -1,39 +1,33 @@
 class Cassandra < Formula
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.lua/cassandra/3.10/apache-cassandra-3.10-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/3.10/apache-cassandra-3.10-bin.tar.gz"
-  sha256 "c09c3f92d4f80d5639e3f1624c9eec45d25793bbb6b3e3640937b68a9c6d107f"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=cassandra/3.11.1/apache-cassandra-3.11.1-bin.tar.gz"
+  sha256 "6feed696759e2f3219e0ebde13f4c9080cac0744a77eb3cb43af136ab527f0ed"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "efce0fd800b955a5f3d428696da6cae3f1a757879ea87a2f458189dad6d51e80" => :sierra
-    sha256 "d559b43ebeba88e45a8f0cf04798b7d0221748973b4430217ce843d53dfb4a58" => :el_capitan
-    sha256 "406646e26f02a96dd5494c270f2d420cabbea63d0fdc0750f0d46b9659910d35" => :yosemite
+    sha256 "b499ca4bc8a68c3feb02d9771862b0423700445e9d221040d4b1c137e9e9e214" => :high_sierra
+    sha256 "60411b38aed6d6a9dd1e43fcb72da7ab6dd1ce65aa0a1410b25e371b922cb364" => :sierra
+    sha256 "3a0f52f778ccaceb6600d794b03d1bf3915df7f65314c4f5607b8a2632eea7c4" => :el_capitan
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
+  depends_on "cython"
 
   # Only >=Yosemite has new enough setuptools for successful compile of the below deps.
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/26/d1/dc7fe14ce4a3ff3faebf1ac11350de4104ea2d2a80c98393b55c84362b0c/setuptools-32.1.0.tar.gz"
-    sha256 "86d57bf86edc0ecfd2dc0907ed3710bc4501fb13a06c0fcaf7632305b00ce832"
-  end
-
-  resource "Cython" do
-    url "https://files.pythonhosted.org/packages/b7/67/7e2a817f9e9c773ee3995c1e15204f5d01c8da71882016cac10342ef031b/Cython-0.25.2.tar.gz"
-    sha256 "f141d1f9c27a07b5a93f7dc5339472067e2d7140d1c5a9e20112a5665ca60306"
+    url "https://files.pythonhosted.org/packages/a4/c8/9a7a47f683d54d83f648d37c3e180317f80dc126a304c45dc6663246233a/setuptools-36.5.0.zip"
+    sha256 "ce2007c1cea3359870b80657d634253a0765b0c7dc5a988d77ba803fc86f2c64"
   end
 
   resource "futures" do
-    url "https://files.pythonhosted.org/packages/55/db/97c1ca37edab586a1ae03d6892b6633d8eaa23b23ac40c7e5bbc55423c78/futures-3.0.5.tar.gz"
-    sha256 "0542525145d5afc984c88f914a0c85c77527f65946617edb5274f72406f981df"
+    url "https://files.pythonhosted.org/packages/cc/26/b61e3a4eb50653e8a7339d84eeaa46d1e93b92951978873c220ae64d0733/futures-3.1.1.tar.gz"
+    sha256 "51ecb45f0add83c806c68e4b06106f90db260585b25ef2abfcda0bd95c0132fd"
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/b3/b2/238e2590826bfdd113244a40d9d3eb26918bd798fc187e2360a8367068db/six-1.10.0.tar.gz"
-    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+    url "https://files.pythonhosted.org/packages/16/d8/bc6316cf98419719bd59c91742194c111b6f2e85abac88e496adefaf7afe/six-1.11.0.tar.gz"
+    sha256 "70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
   end
 
   resource "thrift" do
@@ -47,8 +41,8 @@ class Cassandra < Formula
   end
 
   resource "cassandra-driver" do
-    url "https://files.pythonhosted.org/packages/d0/eb/9b9e7f1adcc8e11a9f106a2f40316e22b51af50107a449139ba796e9a71f/cassandra-driver-3.8.0.tar.gz"
-    sha256 "10b0c88854f3bddcfd994cb208d780507de62524ef8dcb4f068c084d335b7054"
+    url "https://files.pythonhosted.org/packages/5a/96/a5b2458a0483d3cefdf13064d40119754c1552ea34b7f0e8c6e03e66eb0a/cassandra-driver-3.11.0.tar.gz"
+    sha256 "643bed0fac08ee91630f0f35556bb62c3b4b007c20d4e6e8d349f769ea648150"
   end
 
   def install

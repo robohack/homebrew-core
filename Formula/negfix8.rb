@@ -6,7 +6,7 @@ class Negfix8 < Formula
 
   bottle :unneeded
 
-  depends_on "imagemagick" => "with-quantum-depth-16"
+  depends_on "imagemagick"
 
   def install
     bin.install "negfix8"
@@ -16,6 +16,6 @@ class Negfix8 < Formula
     (testpath/".negfix8/frameprofile").write "1 1 1 1 1 1 1"
     system "#{bin}/negfix8", "-u", "frameprofile", test_fixtures("test.tiff"),
         "#{testpath}/output.tiff"
-    assert (testpath/"output.tiff").exist?
+    assert_predicate testpath/"output.tiff", :exist?
   end
 end

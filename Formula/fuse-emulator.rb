@@ -1,13 +1,13 @@
 class FuseEmulator < Formula
   desc "Free Unix Spectrum Emulator"
   homepage "https://fuse-emulator.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/fuse-emulator/fuse/1.3.4/fuse-1.3.4.tar.gz"
-  sha256 "3089d2c3e08c72055ccbcbd5bcc69fd6cc492b8ac649ee15fc93703f0d3d9486"
+  url "https://downloads.sourceforge.net/project/fuse-emulator/fuse/1.4.1/fuse-1.4.1.tar.gz"
+  sha256 "817d57db6da95a411b5b44ccae2a00fff332b251b502957a8a886d794d475aa3"
 
   bottle do
-    sha256 "8612c1dd8bda0158b034bc8add94d96291f0cbeccb93c612dd7efa1a6c748e0c" => :sierra
-    sha256 "b03b946fb539111c98f8a11681f22b3bc5b0cd7004dd272012480ecfe6cfecd9" => :el_capitan
-    sha256 "cac10b231831430ebf375e483781e2a6f25533e8060c34f2a9ff55795b42c0f0" => :yosemite
+    sha256 "60785a91bb0f2d50fe18ceaaa999270dfa60b5495d25ba49d6adbefd3916df65" => :high_sierra
+    sha256 "4a8a45aca60a1d609ac31be33b2839cb51cd9479a0b21ea7884de3316428f4b8" => :sierra
+    sha256 "0351ab9d121e21610179d065ce076c45973ffe151decbd3814ba1e16eaffd0d0" => :el_capitan
   end
 
   head do

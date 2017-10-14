@@ -1,25 +1,25 @@
 class FileRoller < Formula
   desc "GNOME archive manager"
   homepage "https://wiki.gnome.org/Apps/FileRoller"
-  url "https://download.gnome.org/sources/file-roller/3.24/file-roller-3.24.1.tar.xz"
-  sha256 "011545e8bd81a415fb068718347bf63ced4ab176210ce36a668904a3124c7f3a"
+  url "https://download.gnome.org/sources/file-roller/3.26/file-roller-3.26.1.tar.xz"
+  sha256 "ecd5e4c9b8435a6515120c59efeed196ec3f07cb84e1bbda7534cb5456e491ae"
 
   bottle do
-    sha256 "5849df35310c0633192061bed9e0d8a23b902361f4902f1d95fb3a0d831f2f8d" => :sierra
-    sha256 "12dcb42aec26bfd72c33ac69c8375370e4d775d2c58782b1cffc023a3aaa057c" => :el_capitan
-    sha256 "59b648f40be70f2ab14fb11429270745158be29977c4a3e93378aa38e62a73d9" => :yosemite
+    sha256 "fb2e0cb4f892a5ead43413e8af3a3b5c2ad7f3be1aebd070568499c07723e86f" => :high_sierra
+    sha256 "97be4885cf6dd4b815155cf48503daa3877f6f7ddbe14a32d2723dc8f9e6ce2b" => :sierra
+    sha256 "4a70941c4394a17fc3ac65fe0c8a330a3fbe2d8eb0f205cfd052026efc9698ef" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
-  depends_on "libxml2" => ["with-python", :build]
+  depends_on "libxml2" => :build
   depends_on "gtk+3"
   depends_on "json-glib"
   depends_on "libmagic"
   depends_on "libarchive"
   depends_on "hicolor-icon-theme"
-  depends_on "gnome-icon-theme"
+  depends_on "adwaita-icon-theme"
 
   # Add linked-library dependencies
   depends_on "atk"
@@ -34,6 +34,7 @@ class FileRoller < Formula
     # be filed for this since it only occurs because Homebrew renames gtk+3's gtk-update-icon-cache
     # to gtk3-update-icon-cache in order to avoid a collision between gtk+ and gtk+3.
     inreplace "data/Makefile.in", "gtk-update-icon-cache", "gtk3-update-icon-cache"
+
     ENV.append "CFLAGS", "-I#{Formula["libmagic"].opt_include}"
     ENV.append "LIBS", "-L#{Formula["libmagic"].opt_lib}"
 

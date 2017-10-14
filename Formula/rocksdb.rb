@@ -1,24 +1,27 @@
 class Rocksdb < Formula
   desc "Embeddable, persistent key-value store for fast storage"
   homepage "http://rocksdb.org"
-  url "https://github.com/facebook/rocksdb/archive/rocksdb-5.2.1.tar.gz"
-  sha256 "13b19d6527e2f2f12712b7356b9df09c5edfe7c8a7e984d935bcebe5342847ac"
+  url "https://github.com/facebook/rocksdb/archive/v5.8.tar.gz"
+  sha256 "d8361d19b3d3e5d7a97c6427b7e39d136541dd88ee58b239ee730bb506a6c9f2"
 
   bottle do
     cellar :any
-    sha256 "66cd5aa07d088048905eb802ea67aa2ad7012920839c3cd90bbbee838e0b3cff" => :sierra
-    sha256 "2ea7d2ab11dbf12a92feb4906596f069e080acaabc0f0142325e33d7b8aae00e" => :el_capitan
-    sha256 "33de2e60bd80074d861e60ae0c69d9f83c464e4e66d41da09919d289fd1e5c7e" => :yosemite
+    sha256 "21ac5764abb6652293668952caa3e09e87d073d2d752585573e80727b24782e1" => :high_sierra
+    sha256 "3bfd94bf7077e4c892d79d73a9f72b44695658e871960cc90c2e11aa9db7029b" => :sierra
+    sha256 "44189a915787d3735d547bf1a26dc13ba5e26087e971151626af9b9bb1cd4750" => :el_capitan
   end
 
   needs :cxx11
   depends_on "snappy"
   depends_on "lz4"
   depends_on "gflags"
+  depends_on "jemalloc"
 
   def install
     ENV.cxx11
     ENV["PORTABLE"] = "1" if build.bottle?
+    ENV["DEBUG_LEVEL"] = "0"
+    ENV["USE_RTTI"] = "1"
 
     # build regular rocksdb
     system "make", "clean"
@@ -69,7 +72,7 @@ class Rocksdb < Formula
     assert_match "rocksdb_sanity_test <path>", shell_output("#{bin}/rocksdb_sanity_test --help 2>&1", 1)
     assert_match "rocksdb_stress [OPTIONS]...", shell_output("#{bin}/rocksdb_stress --help 2>&1", 1)
     assert_match "rocksdb_write_stress [OPTIONS]...", shell_output("#{bin}/rocksdb_write_stress --help 2>&1", 1)
-    assert_match "ldb - LevelDB Tool", shell_output("#{bin}/rocksdb_ldb --help 2>&1", 1)
+    assert_match "ldb - RocksDB Tool", shell_output("#{bin}/rocksdb_ldb --help 2>&1", 1)
     assert_match "rocksdb_repl_stress:", shell_output("#{bin}/rocksdb_repl_stress --help 2>&1", 1)
     assert_match "rocksdb_dump:", shell_output("#{bin}/rocksdb_dump --help 2>&1", 1)
     assert_match "rocksdb_undump:", shell_output("#{bin}/rocksdb_undump --help 2>&1", 1)

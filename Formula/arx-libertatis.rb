@@ -1,6 +1,7 @@
 class ArxLibertatis < Formula
   desc "Cross-platform, open source port of Arx Fatalis"
   homepage "https://arx-libertatis.org/"
+  revision 1
 
   stable do
     url "https://arx-libertatis.org/files/arx-libertatis-1.1.2.tar.xz"
@@ -8,16 +9,17 @@ class ArxLibertatis < Formula
 
     # Add a missing include to CMakeLists.txt
     patch do
-      url "https://github.com/arx/ArxLibertatis/commit/442ba4af978160abd3856a9daec38f5b6e213cb4.patch"
-      sha256 "64a4276b75944da19b91cb812e833339d40826be763eb3d9033d67b698c2ca9f"
+      url "https://github.com/arx/ArxLibertatis/commit/442ba4af978160abd3856a9daec38f5b6e213cb4.patch?full_index=1"
+      sha256 "de361866cc51c14f317a67dcfd3b736160a577238f931c78a525ea2864b1add9"
     end
   end
 
   bottle do
     cellar :any
-    sha256 "1395d10871dada5e6687de4f54f9ef868dd6d9ec285689d7c6d0cf42b84f8ef0" => :sierra
-    sha256 "43e112585b39aef6d6c21a173caa1d75ca2313ad07801731a8be5aa8bb85943e" => :el_capitan
-    sha256 "0e23af82f5b1875dd8de3f0796c56609bf521f72bbf94ebfb829489b83bee5dd" => :yosemite
+    sha256 "eaff0f12ab121a5964e7d0cd8c9272a39daba70a268d039728947c72885be8b2" => :high_sierra
+    sha256 "9a7629e5033f4180f9e0a82bb018c2f00403c09aa473cfa0224301cc405fb6d3" => :sierra
+    sha256 "8824a97e84542832da85eeb48b79a6b1de189ddf6ebe041fc7f1c9cb874fad21" => :el_capitan
+    sha256 "1fc2d3c07f6f1a1cf1470138329290484145f7774b16fc5a8ca82d01ea194312" => :yosemite
   end
 
   head do

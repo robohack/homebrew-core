@@ -1,18 +1,18 @@
 class AprUtil < Formula
   desc "Companion library to apr, the Apache Portable Runtime library"
   homepage "https://apr.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.5.4.tar.bz2"
-  sha256 "a6cf327189ca0df2fb9d5633d7326c460fe2b61684745fd7963e79a6dd0dc82e"
-  revision 4
+  url "https://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.6.0.tar.bz2"
+  sha256 "8474c93fa74b56ac6ca87449abe3e155723d5f534727f3f33283f6631a48ca4c"
+  revision 1
 
   bottle do
-    rebuild 2
-    sha256 "1feb3b7b790cbe28922c4abdec6264f930206ab6674a6c90a8489b668051f5db" => :sierra
-    sha256 "56a0274b232f3f31f627dca837db4df941719d817fec108fdac7c9acac739caa" => :el_capitan
-    sha256 "29aefc556d7712da0a957d9b34e4e6e320f3997922a1b1b18705c486acfb6890" => :yosemite
+    sha256 "b1c1fbfaf17d23b788ac43b8c37694e48b1417326918af000e19c6b329d78410" => :high_sierra
+    sha256 "3b72b3d5133fbc44a9b731c7839502b8dead4cc7d269f3bcd555bb8df15fcf5e" => :sierra
+    sha256 "4b5777d34c8bbbc00a193c3b292d175ead8bdc0a3de0ea520f6630877dc6f60c" => :el_capitan
+    sha256 "f18a9ee269a86582d0c51f3ff825031abc65854bcaf15a1b5713a02df2aad637" => :yosemite
   end
 
-  keg_only :provided_by_osx, "Apple's CLT package contains apr."
+  keg_only :provided_by_osx, "Apple's CLT package contains apr"
 
   depends_on "apr"
   depends_on "openssl"
@@ -47,6 +47,9 @@ class AprUtil < Formula
     system "make"
     system "make", "install"
     bin.install_symlink Dir["#{libexec}/bin/*"]
+
+    rm Dir[libexec/"lib/*.la"]
+    rm Dir[libexec/"lib/apr-util-1/*.la"]
 
     # No need for this to point to the versioned path.
     inreplace libexec/"bin/apu-1-config", libexec, opt_libexec

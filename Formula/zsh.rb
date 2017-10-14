@@ -1,29 +1,20 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "https://www.zsh.org/"
-
-  stable do
-    url "https://downloads.sourceforge.net/project/zsh/zsh/5.3.1/zsh-5.3.1.tar.xz"
-    mirror "https://www.zsh.org/pub/zsh-5.3.1.tar.xz"
-    sha256 "fc886cb2ade032d006da8322c09a7e92b2309177811428b121192d44832920da"
-
-    # We cannot build HTML doc on HEAD, because yodl which is required for
-    # building zsh.texi is not available.
-    option "with-texi2html", "Build HTML documentation"
-    depends_on "texi2html" => [:build, :optional]
-  end
+  url "https://downloads.sourceforge.net/project/zsh/zsh/5.4.2/zsh-5.4.2.tar.gz"
+  mirror "https://www.zsh.org/pub/zsh-5.4.2.tar.gz"
+  sha256 "957bcdb2c57f64c02f673693ea5a7518ef24b6557aeb3a4ce222cefa6d74acc9"
+  revision 1
 
   bottle do
-    sha256 "054988ed570c911f1758f08b71777707154101b180570577d1d4a4380043a041" => :sierra
-    sha256 "8fb846fbfb27744a50b4e5cff2767f6fca49016f356bd6273dedfc8e2abdd919" => :el_capitan
-    sha256 "4ca1f10d588cedb061826c6a6aa0bbde233627cf86188deed0bd07321f91d739" => :yosemite
+    sha256 "5bb5aecd8c5341fbb670489f1c1388ce02561bae2c5ba6d3e80f5d3911f81abf" => :high_sierra
+    sha256 "e12f51411a259c9392384f4bc552dac0980ce2004f4f7560d3dfabe6ad36a1eb" => :sierra
+    sha256 "28db7180a903334df90161bc33fd975ae289a13b6102ad1ef228d28dca04e58e" => :el_capitan
   end
 
   head do
     url "https://git.code.sf.net/p/zsh/code.git"
     depends_on "autoconf" => :build
-
-    option "with-unicode9", "Build with Unicode 9 character width support"
   end
 
   option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
@@ -33,6 +24,12 @@ class Zsh < Formula
 
   depends_on "gdbm"
   depends_on "pcre"
+
+  resource "htmldoc" do
+    url "https://downloads.sourceforge.net/project/zsh/zsh-doc/5.4.2/zsh-5.4.2-doc.tar.xz"
+    mirror "https://www.zsh.org/pub/zsh-5.4.2-doc.tar.xz"
+    sha256 "5229cc93ebe637a07deb5b386b705c37a50f4adfef788b3c0f6647741df4f6bd"
+  end
 
   def install
     system "Util/preconfig" if build.head?
@@ -73,12 +70,15 @@ class Zsh < Formula
     else
       system "make", "install"
       system "make", "install.info"
-      system "make", "install.html" if build.with? "texi2html"
+
+      resource("htmldoc").stage do
+        (pkgshare/"htmldoc").install Dir["Doc/*.html"]
+      end
     end
   end
 
   test do
-    assert_equal "homebrew\n",
-      shell_output("#{bin}/zsh -c 'echo homebrew'")
+    assert_equal "homebrew", shell_output("#{bin}/zsh -c 'echo homebrew'").chomp
+    system bin/"zsh", "-c", "printf -v hello -- '%s'"
   end
 end

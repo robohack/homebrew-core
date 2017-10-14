@@ -1,12 +1,13 @@
 class Cproto < Formula
   desc "Generate function prototypes for functions in input files"
-  homepage "http://invisible-island.net/cproto"
-  url "ftp://invisible-island.net/cproto/cproto-4.7m.tgz"
+  homepage "https://invisible-island.net/cproto/"
+  url "ftp://ftp.invisible-island.net/cproto/cproto-4.7m.tgz"
   mirror "https://mirrors.kernel.org/debian/pool/main/c/cproto/cproto_4.7m.orig.tar.gz"
   sha256 "4b482e80f1b492e94f8dcda74d25a7bd0381c870eb500c18e7970ceacdc07c89"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "4f557a3b96ce60956b1fed9abc873f9bd844ca93492731db3971fd0ada78fa15" => :high_sierra
     sha256 "4dcee9160c276855b7bd94235dc15e4d153c161b4f81f8a1e041fda8da5b4cc7" => :sierra
     sha256 "21d0972269ad52cd7098b921f2500bb8bf827fabe1e0718c24fdfd2d844b7f7e" => :el_capitan
     sha256 "4bd2276c002322ce4d28030d60c0858e1efd4311e0f9de5460917cc5b70bc362" => :yosemite

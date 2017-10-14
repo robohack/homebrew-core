@@ -6,6 +6,7 @@ class Tlsdate < Formula
   head "https://github.com/ioerror/tlsdate.git"
 
   bottle do
+    sha256 "f84b34785fda2e7229b0bef6bb1a13c3d128c03413c1d81c08333d9d0ee0732f" => :high_sierra
     sha256 "0d2b8b903299eae65fe12cfb5d5d7a7bcfabfad1f9be4a0870cdfeee7040b4ff" => :sierra
     sha256 "c7d7ea17bf9e7cb9b897a0f0aeed0ef3c50f2c309e0b6055fdfe7bee3aca5152" => :el_capitan
     sha256 "58bfadb241575316ab6877c584a09e3681084165bfd733430e5c3f4b0b8be494" => :yosemite
@@ -21,8 +22,8 @@ class Tlsdate < Formula
 
   # Upstream PR to fix the build on macOS
   patch do
-    url "https://github.com/ioerror/tlsdate/pull/160.patch"
-    sha256 "78a739d952d2fa0046eec958194136c50751c0e97bfe9f5ed173ecc864f8adb8"
+    url "https://github.com/ioerror/tlsdate/pull/160.patch?full_index=1"
+    sha256 "c2af25386fd7ffa889e421e864fdd72bbf90f2551347e6155ad7fb7b13122b90"
   end
 
   def install

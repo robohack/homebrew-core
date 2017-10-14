@@ -1,27 +1,25 @@
 class Faac < Formula
   desc "ISO AAC audio encoder"
   homepage "http://www.audiocoding.com/faac.html"
-  url "https://downloads.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.gz"
-  sha256 "c5141199f4cfb17d749c36ba8cfe4b25f838da67c22f0fec40228b6b9c3d19df"
+  url "https://downloads.sourceforge.net/project/faac/faac-src/faac-1.29/faac-1.29.7.7.tar.gz"
+  sha256 "b898fcf55e7b52f964ee62d077f56fe9b3b35650e228f006fbef4ce903b4d731"
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "1537586f1bb69e142a32886ba9ac6e8e244dc297d8be441573e46eacd57e7075" => :sierra
-    sha256 "4607ea16f33aec6dabefe6ace66c41cb7ee487b03fff8c7b2d050cbc6340422f" => :el_capitan
-    sha256 "c3fad36cecb8f5d4fc17ad5912d90ee9dffafeb2c5c60b21d27d9ea8bfeb351d" => :yosemite
-    sha256 "1b97bdfb9334decc5d51c9d57788fa23ccf77c56d74a53fcfe6f21a4495ba463" => :mavericks
-    sha256 "e2cf2e63defd76653bc96443956f28bb9e0388a76cda5d0c8c463528d68a191a" => :mountain_lion
+    sha256 "2d57f0cd1c775e6fdf846bfcce8ccd80c41075fd10b57a3fbdca71c1ab2111be" => :high_sierra
+    sha256 "95ea002facf23eddefa87cdfa4c8d98cee8beb268802b6c20c1333b6141ebe0c" => :sierra
+    sha256 "881372bf82be152b0c72a029f89af750490202faa83d734cb0651b2a23bdc8c4" => :el_capitan
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
   end
 
   test do
     system bin/"faac", test_fixtures("test.mp3"), "-P", "-o", "test.m4a"
-    assert File.exist?("test.m4a")
+    assert_predicate testpath/"test.m4a", :exist?
   end
 end

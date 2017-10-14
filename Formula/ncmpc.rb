@@ -1,22 +1,41 @@
 class Ncmpc < Formula
   desc "Curses Music Player Daemon (MPD) client"
   homepage "https://www.musicpd.org/clients/ncmpc/"
-  url "https://www.musicpd.org/download/ncmpc/0/ncmpc-0.26.tar.xz"
-  sha256 "8bd2365cac73692ca03166e60bec2113ee00f42a4137e4ab47742452733b0d14"
+  url "https://www.musicpd.org/download/ncmpc/0/ncmpc-0.28.tar.xz"
+  sha256 "f66e5b6fef83bdfda3b3efaf3fbad6a4d8c47bb1b3b6810bed44d3e35b007804"
 
   bottle do
-    sha256 "c4d24c040b851b642342d196a2e5c5a8146a8d6bed68d79d8cfcb7ec2e4699b9" => :sierra
-    sha256 "fbc08c275e60e7267c5984995ab80725ffcf46c21ab0725950bd4ebe6ec2f61e" => :el_capitan
-    sha256 "ad1fdbc26705129584d628f0c32d8ff527622b7ba19272e107e61d4521818e22" => :yosemite
+    sha256 "b5c63c88c01e38ffbe360c89cf2abff2be9bb74eefc05f2e1aca31d52abbf4fd" => :high_sierra
+    sha256 "6b56075edd90d0e6b7b9e30a5606633c994091bdb22839bbf0626c405ebbe06c" => :sierra
+    sha256 "c853f8a4110be0dbc3a4bdc82af29c1e85d64a5b6b05adce5cfe0734d1972f63" => :el_capitan
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "glib"
   depends_on "libmpdclient"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make", "install"
+    # Fix undefined symbols _COLORS, _COLS, etc.
+    # Reported 21 Sep 2017 https://github.com/MusicPlayerDaemon/ncmpc/issues/6
+    (buildpath/"ncurses.pc").write <<-EOS.undent
+      Name: ncurses
+      Description: ncurses
+      Version: 5.4
+      Libs: -L/usr/lib -lncurses
+      Cflags: -I#{MacOS.sdk_path}/usr/include
+    EOS
+    ENV.prepend_path "PKG_CONFIG_PATH", buildpath
+
+    mkdir "build" do
+      system "meson", "--prefix=#{prefix}", ".."
+      system "ninja", "install"
+    end
+  end
+
+  test do
+    system bin/"ncmpc", "--help"
   end
 end

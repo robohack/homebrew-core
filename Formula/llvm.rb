@@ -19,105 +19,113 @@ end
 
 class Llvm < Formula
   desc "Next-gen compiler infrastructure"
-  homepage "http://llvm.org/"
-  revision 1
+  homepage "https://llvm.org/"
 
   stable do
-    url "http://releases.llvm.org/4.0.0/llvm-4.0.0.src.tar.xz"
-    sha256 "8d10511df96e73b8ff9e7abbfb4d4d432edbdbe965f1f4f07afaf370b8a533be"
+    url "https://releases.llvm.org/5.0.0/llvm-5.0.0.src.tar.xz"
+    sha256 "e35dcbae6084adcf4abb32514127c5eabd7d63b733852ccdb31e06f1373136da"
 
     resource "clang" do
-      url "http://releases.llvm.org/4.0.0/cfe-4.0.0.src.tar.xz"
-      sha256 "cea5f88ebddb30e296ca89130c83b9d46c2d833685e2912303c828054c4dc98a"
+      url "https://releases.llvm.org/5.0.0/cfe-5.0.0.src.tar.xz"
+      sha256 "019f23c2192df793ac746595e94a403908749f8e0c484b403476d2611dd20970"
     end
 
     resource "clang-extra-tools" do
-      url "http://releases.llvm.org/4.0.0/clang-tools-extra-4.0.0.src.tar.xz"
-      sha256 "41b7d37eb128fd362ab3431be5244cf50325bb3bb153895735c5bacede647c99"
+      url "https://releases.llvm.org/5.0.0/clang-tools-extra-5.0.0.src.tar.xz"
+      sha256 "87d078b959c4a6e5ff9fd137c2f477cadb1245f93812512996f73986a6d973c6"
     end
 
     resource "compiler-rt" do
-      url "http://releases.llvm.org/4.0.0/compiler-rt-4.0.0.src.tar.xz"
-      sha256 "d3f25b23bef24c305137e6b44f7e81c51bbec764c119e01512a9bd2330be3115"
+      url "https://releases.llvm.org/5.0.0/compiler-rt-5.0.0.src.tar.xz"
+      sha256 "d5ad5266462134a482b381f1f8115b6cad3473741b3bb7d1acc7f69fd0f0c0b3"
     end
 
     # Only required to build & run Compiler-RT tests on macOS, optional otherwise.
     # https://clang.llvm.org/get_started.html
     resource "libcxx" do
-      url "http://releases.llvm.org/4.0.0/libcxx-4.0.0.src.tar.xz"
-      sha256 "4f4d33c4ad69bf9e360eebe6b29b7b19486948b1a41decf89d4adec12473cf96"
+      url "https://releases.llvm.org/5.0.0/libcxx-5.0.0.src.tar.xz"
+      sha256 "eae5981e9a21ef0decfcac80a1af584ddb064a32805f95a57c7c83a5eb28c9b1"
     end
 
     resource "libunwind" do
-      url "http://releases.llvm.org/4.0.0/libunwind-4.0.0.src.tar.xz"
-      sha256 "0755efa9f969373d4d543123bbed4b3f9a835f6302875c1379c5745857725973"
+      url "https://releases.llvm.org/5.0.0/libunwind-5.0.0.src.tar.xz"
+      sha256 "9a70e2333d54f97760623d89512c4831d6af29e78b77a33d824413ce98587f6f"
     end
 
     resource "lld" do
-      url "http://releases.llvm.org/4.0.0/lld-4.0.0.src.tar.xz"
-      sha256 "33e06457b9ce0563c89b11ccc7ccabf9cff71b83571985a5bf8684c9150e7502"
+      url "https://releases.llvm.org/5.0.0/lld-5.0.0.src.tar.xz"
+      sha256 "399a7920a5278d42c46a7bf7e4191820ec2301457a7d0d4fcc9a4ac05dd53897"
     end
 
     resource "lldb" do
-      url "http://releases.llvm.org/4.0.0/lldb-4.0.0.src.tar.xz"
-      sha256 "2dbd8f05c662c1c9f11270fc9d0c63b419ddc988095e0ad107ed911cf882033d"
+      url "https://releases.llvm.org/5.0.0/lldb-5.0.0.src.tar.xz"
+      sha256 "c0a0ca32105e9881d86b7ca886220147e686edc97fdb9f3657c6659dc6568b7d"
+    end
+
+    # Fixes "error: no type named 'pid_t' in the global namespace"
+    # https://github.com/Homebrew/homebrew-core/issues/17839
+    # Already fixed in upstream trunk
+    resource "lldb-fix-build" do
+      url "https://github.com/llvm-mirror/lldb/commit/324f93b5e30.patch?full_index=1"
+      sha256 "f23fc92c2d61bf6c8bc6865994a75264fafba6ae435e4d2f4cc8327004523fb1"
     end
 
     resource "openmp" do
-      url "http://releases.llvm.org/4.0.0/openmp-4.0.0.src.tar.xz"
-      sha256 "db55d85a7bb289804dc42fc5c8e35ca24dfc3885782261b675a194fd7e206e26"
+      url "https://releases.llvm.org/5.0.0/openmp-5.0.0.src.tar.xz"
+      sha256 "c0ef081b05e0725a04e8711d9ecea2e90d6c3fbb1622845336d3d095d0a3f7c5"
     end
 
     resource "polly" do
-      url "http://releases.llvm.org/4.0.0/polly-4.0.0.src.tar.xz"
-      sha256 "27a5dbf95e8aa9e0bbe3d6c5d1e83c92414d734357aa0d6c16020a65dc4dcd97"
+      url "https://releases.llvm.org/5.0.0/polly-5.0.0.src.tar.xz"
+      sha256 "44694254a2b105cec13ce0560f207e8552e6116c181b8d21bda728559cf67042"
     end
   end
 
   bottle do
     cellar :any
-    sha256 "c9b767b585dea0a0941dc3f65fd06f85af51c16528f3d2cda62e123a4c30dfa7" => :sierra
-    sha256 "fe20c0b3987743371644a701b23e19f7b2c5626549a821f206f1222c17e91f2c" => :el_capitan
-    sha256 "52ecbfa6487ac0615bea0a9865461183c070ea275594bdcc0c17254718df8d80" => :yosemite
+    sha256 "0d1ab6354a7ee67fc8e62b08bbf0aa186be0266434f33c0b24f83da779726ef5" => :high_sierra
+    sha256 "c79e1df313a81c46710e7f048bf3c8fe69a01e0c29b29ac3552fcb2c2a7194eb" => :sierra
+    sha256 "dcd62a3684bb18c74a21363e437b39f2b52f0bb69a66a95f597b6bfbd2a013ec" => :el_capitan
+    sha256 "581c8415ee3ed5a52dd8f8d31ec901be837a4867b1abb148677ec08b0b931607" => :yosemite
   end
 
   head do
-    url "http://llvm.org/git/llvm.git"
+    url "https://llvm.org/git/llvm.git"
 
     resource "clang" do
-      url "http://llvm.org/git/clang.git"
+      url "https://llvm.org/git/clang.git"
     end
 
     resource "clang-extra-tools" do
-      url "http://llvm.org/git/clang-tools-extra.git"
+      url "https://llvm.org/git/clang-tools-extra.git"
     end
 
     resource "compiler-rt" do
-      url "http://llvm.org/git/compiler-rt.git"
+      url "https://llvm.org/git/compiler-rt.git"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/git/libcxx.git"
+      url "https://llvm.org/git/libcxx.git"
     end
 
     resource "libunwind" do
-      url "http://llvm.org/git/libunwind.git"
+      url "https://llvm.org/git/libunwind.git"
     end
 
     resource "lld" do
-      url "http://llvm.org/git/lld.git"
+      url "https://llvm.org/git/lld.git"
     end
 
     resource "lldb" do
-      url "http://llvm.org/git/lldb.git"
+      url "https://llvm.org/git/lldb.git"
     end
 
     resource "openmp" do
-      url "http://llvm.org/git/openmp.git"
+      url "https://llvm.org/git/openmp.git"
     end
 
     resource "polly" do
-      url "http://llvm.org/git/polly.git"
+      url "https://llvm.org/git/polly.git"
     end
   end
 
@@ -131,8 +139,11 @@ class Llvm < Formula
   option "with-shared-libs", "Build shared instead of static libraries"
   option "without-libffi", "Do not use libffi to call external functions"
 
-  depends_on "libffi" => :recommended # http://llvm.org/docs/GettingStarted.html#requirement
-  depends_on "graphviz" => :optional # for the 'dot' tool (lldb)
+  # https://llvm.org/docs/GettingStarted.html#requirement
+  depends_on "libffi" => :recommended
+
+  # for the 'dot' tool (lldb)
+  depends_on "graphviz" => :optional
 
   depends_on "ocaml" => :optional
   if build.with? "ocaml"
@@ -183,6 +194,12 @@ class Llvm < Formula
         pyinclude = "#{pyhome}/include/python2.7"
       end
       (buildpath/"tools/lldb").install resource("lldb")
+
+      if build.stable?
+        resource("lldb-fix-build").stage do
+          system "patch", "-p1", "-i", Pathname.pwd/"324f93b5e30.patch", "-d", buildpath/"tools/lldb"
+        end
+      end
 
       # Building lldb requires a code signing certificate.
       # The instructions provided by llvm creates this certificate in the
@@ -260,6 +277,7 @@ class Llvm < Formula
     end
 
     (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
+    (share/"cmake").install "cmake/modules"
     inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
     bin.install_symlink share/"clang/tools/scan-build/bin/scan-build", share/"clang/tools/scan-view/bin/scan-view"
     man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"

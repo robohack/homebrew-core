@@ -1,13 +1,14 @@
 class Mysql < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.18.tar.gz"
-  sha256 "ae6f5e2cf7b936496cf60260cd7fd5a0862c21f48cd240448021c4ea067a0f0c"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.19.tar.gz"
+  sha256 "22e5034e40e0731eff521b7aaf7584b76297a69875ee50026b12f2bfac3e1bca"
 
   bottle do
-    sha256 "3aa35b07d2472e31d629b9597b4c14ad66c5e29cfcdecd002aa98aa85199f51a" => :sierra
-    sha256 "2c1964485faefa013ae432fa5e4693c08aaf530b377f26062f8831644a4cef20" => :el_capitan
-    sha256 "09f3a2b3032cffc893f6724df450bae3eaa929852eae94e12474d1538aac22e4" => :yosemite
+    sha256 "f596b35f86eb706c459416aec2afdbd0b2fc4ab1d66476a594684dc54482d88e" => :high_sierra
+    sha256 "8afdb9586feb3bf76728c5bfbe9e782f3b2978d2721ad8f208d925b634bf35c5" => :sierra
+    sha256 "5cd412ab981a48952929a25d92c3e90e3c7bb009e2a5bd4287962c6d48b8f904" => :el_capitan
+    sha256 "49722c12a639f81856944f2899bf474bc5d068859fed8e60ead170bf474805d9" => :yosemite
   end
 
   option "with-test", "Build with unit tests"
@@ -56,7 +57,6 @@ class Mysql < Formula
       -DINSTALL_DOCDIR=share/doc/#{name}
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
-      -DWITH_SSL=yes
       -DWITH_SSL=system
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
@@ -113,6 +113,15 @@ class Mysql < Formula
               /^(PATH=".*)(")/,
               "\\1:#{HOMEBREW_PREFIX}/bin\\2"
     bin.install_symlink prefix/"support-files/mysql.server"
+
+    # Install my.cnf that binds to 127.0.0.1 by default
+    (buildpath/"my.cnf").write <<-EOS.undent
+      # Default Homebrew MySQL server config
+      [mysqld]
+      # Only allow connections from localhost
+      bind-address = 127.0.0.1
+    EOS
+    etc.install "my.cnf"
   end
 
   def post_install
@@ -129,6 +138,8 @@ class Mysql < Formula
     s = <<-EOS.undent
     We've installed your MySQL database without a root password. To secure it run:
         mysql_secure_installation
+
+    MySQL is configured to only allow connections from localhost by default
 
     To connect run:
         mysql -uroot
@@ -157,7 +168,6 @@ class Mysql < Formula
       <key>ProgramArguments</key>
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
-        <string>--bind-address=127.0.0.1</string>
         <string>--datadir=#{datadir}</string>
       </array>
       <key>RunAtLoad</key>

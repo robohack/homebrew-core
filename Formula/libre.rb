@@ -1,18 +1,19 @@
 class Libre < Formula
   desc "Toolkit library for asynchronous network I/O with protocol stacks"
   homepage "http://www.creytiv.com"
-  url "http://www.creytiv.com/pub/re-0.5.1.tar.gz"
-  sha256 "4ae7622490b164a992f80592e326c0091654a887905e1bee152cf247dd7d46e3"
+  url "http://www.creytiv.com/pub/re-0.5.5.tar.gz"
+  mirror "https://sources.lede-project.org/re-0.5.5.tar.gz"
+  sha256 "90917a173de962d3b20ab5f9875ad3051b7b307da4acb80c184b72e6c2ba7bb4"
 
   bottle do
     cellar :any
-    sha256 "fdb943ecd678e49f4fcb9d6859bd136d0f7adfd9cf4846bb117af22a9faf908f" => :sierra
-    sha256 "c8b8ac2b582cd31a22fb1bb94c4b105e2a5cfe0db8b37958750f30cf7ddc878f" => :el_capitan
-    sha256 "b7b223f2d9cfce1cb1037dd7ebc37b79915c62e474f0c67238ad6114a0d311a2" => :yosemite
+    rebuild 1
+    sha256 "e0b8b1dec451dc20dd3f996623198a97071677f4263d4296cb58ebcfdb434783" => :high_sierra
+    sha256 "a6ab339d81c065d2792529a0f85a4f8e111b46f82b4a8885fe6cacbea62961f8" => :sierra
+    sha256 "f1316e1a83572201a3d05e87f104e9354898e80377f823dc4d410384b5b85554" => :el_capitan
   end
 
   depends_on "openssl"
-  depends_on "lzlib"
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
@@ -25,6 +26,6 @@ class Libre < Formula
         return libre_init();
       }
     EOS
-    system ENV.cc, "test.c", "-lre"
+    system ENV.cc, "test.c", "-L#{lib}", "-lre"
   end
 end

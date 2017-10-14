@@ -1,14 +1,17 @@
 class VarnishAT4 < Formula
   desc "High-performance HTTP accelerator"
   homepage "https://www.varnish-cache.org/"
-  url "https://repo.varnish-cache.org/source/varnish-4.1.3.tar.gz"
-  sha256 "9f9469b9fda2a578da2a9d282c71c34eeb5c42eda7f8d8728284d92282108429"
+  url "https://varnish-cache.org/_downloads/varnish-4.1.8.tgz"
+  sha256 "908e7fbfa0325498717686b2050181134aa0a69d1495c02b2625cd34d35a4ff1"
 
   bottle do
-    sha256 "b5b1bd53802b5cf9c5ebb990a9802be8dd78dad2b6af30bf7c89192e0e946df1" => :sierra
-    sha256 "f6ccd8d31f046d53257e4d36cf2f9c5a4e1cf1159b6bc9c39a687088a8686cba" => :el_capitan
-    sha256 "53c5be1fc285c6b87be4e4fc745095d17f8c7cde37873250e671a1520b62fcc5" => :yosemite
+    sha256 "e6a4e3609fb8caec16a3e0a55abda963aa62f6e41d4457296062f1246f1af27e" => :high_sierra
+    sha256 "feee2d796d10d27aab921d531d74be2e0a7ec789d5e5387d55d1628f0eb1d25a" => :sierra
+    sha256 "8e8e30c902fbce8dc6ed1533bf604a9d4a197645240ca770fe51928a29ec3aaf" => :el_capitan
+    sha256 "7ff168bb774232159547fdc251f4548e4e68cdcc7d01261b612872ef90c6030f" => :yosemite
   end
+
+  keg_only :versioned_formula
 
   depends_on "pkg-config" => :build
   depends_on "docutils" => :build

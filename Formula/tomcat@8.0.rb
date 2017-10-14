@@ -11,13 +11,13 @@ class TomcatAT80 < Formula
     resource "fulldocs" do
       url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.43/bin/apache-tomcat-8.0.43-fulldocs.tar.gz"
       mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.43/bin/apache-tomcat-8.0.43-fulldocs.tar.gz"
-      version "8.0.43"
       sha256 "568bd83e85e0f1b66470b19f6198ea705061379e8d92188dae7acd7aa3bd6568"
     end
   end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "c13f014149e69c0f01de3baffc6b8b64d7bf662d2b33305f2e5db257ab1cef98" => :high_sierra
     sha256 "8cb785857c3e1929cb0a73343d89f5054ea7b09b70ad38766d80efb396aa933f" => :sierra
     sha256 "b9775fa8e0ecdc7320d82b661c77ab9bf525a505713345883307dcf2089bfba9" => :el_capitan
     sha256 "b9775fa8e0ecdc7320d82b661c77ab9bf525a505713345883307dcf2089bfba9" => :yosemite
@@ -53,6 +53,6 @@ class TomcatAT80 < Formula
     ensure
       Process.wait pid
     end
-    File.exist? testpath/"logs/catalina.out"
+    assert_predicate testpath/"logs/catalina.out", :exist?
   end
 end

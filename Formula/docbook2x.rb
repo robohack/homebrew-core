@@ -6,6 +6,7 @@ class Docbook2x < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "81734088203909fc5db96462d14116596058910cd1b7ab67389a7bf93c9bae63" => :high_sierra
     sha256 "a1110d4bd90cecf9ce8edacc27a3edc84dfcd4db7ab50b67269af0eb6a9bb00a" => :sierra
     sha256 "acfdd1c80cb523b213dea0125819b1b6fc783d6d740cc8fc0047f44756b57889" => :el_capitan
     sha256 "e3efe4afe190e126174c6e3bec0a9feb4ad37ddd0ecaef778b1e8df8a60e8717" => :yosemite
@@ -20,5 +21,26 @@ class Docbook2x < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
+    (testpath/"brew.1.xml").write <<-EOS.undent
+      <?xml version="1.0" encoding="ISO-8859-1"?>
+      <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+                         "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+      <refentry id='brew1'>
+      <refmeta>
+        <refentrytitle>brew</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </refmeta>
+      <refnamediv>
+        <refname>brew</refname>
+        <refpurpose>The missing package manager for macOS</refpurpose>
+      </refnamediv>
+      </refentry>
+    EOS
+    system bin/"docbook2man", testpath/"brew.1.xml"
+    assert_predicate testpath/"brew.1", :exist?, "Failed to create man page!"
   end
 end

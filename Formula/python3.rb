@@ -1,15 +1,19 @@
 class Python3 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz"
-  sha256 "a01810ddfcec216bcdb357a84bfaafdfaa0ca42bbdaa4cb7ff74f5a9961e4041"
+  url "https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz"
+  sha256 "cda7d967c9a4bfa52337cdf551bcc5cff026b6ac50a8834e568ce4a794ca81da"
   head "https://github.com/python/cpython", :using => :git
 
   bottle do
-    rebuild 1
-    sha256 "77fddf274eed11c29f7d9dc0b7b1183860fa70ffff00bcf046150a0f65cd675c" => :sierra
-    sha256 "e9060ef5d5e291e55533e2b8e7ce742906e53c2eb1302ed54036301016eefe19" => :el_capitan
-    sha256 "16753928434530a84ec309c0a083ba3da9535b8e7750fd5b2440e77c71c8f7b0" => :yosemite
+    sha256 "4790e06c30036c19b62f7a3a188363f776ad58bdb8f58185b8b14f4f3e936718" => :high_sierra
+    sha256 "057f4c743c787a77e10c81b446a9251c5cdfefd799a110a75c2b68ea0c87cf4b" => :sierra
+    sha256 "c3bc7112f01d803c6e5db81d22f7e580594f7efc9e7bd5c5b703a8142ec8a6fb" => :el_capitan
+  end
+
+  devel do
+    url "https://www.python.org/ftp/python/3.7.0/Python-3.7.0a1.tar.xz"
+    sha256 "aab053dc3c23b829c60e973ce5972c4e58ffb5e26210acc26611e0d766a06eea"
   end
 
   option "with-tcl-tk", "Use Homebrew's Tk instead of macOS Tk (has optional Cocoa and threads support)"
@@ -32,8 +36,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6"
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/87/1a/33d3d05569e857c5c5cc3e90d197bf4d9696dc740a05f66a09599d66e5bd/setuptools-32.2.0.zip"
-    sha256 "634313924fd186a2be0489c96965f5a909b666bd652eb3e16724913c707ec33f"
+    url "https://files.pythonhosted.org/packages/a4/c8/9a7a47f683d54d83f648d37c3e180317f80dc126a304c45dc6663246233a/setuptools-36.5.0.zip"
+    sha256 "ce2007c1cea3359870b80657d634253a0765b0c7dc5a988d77ba803fc86f2c64"
   end
 
   resource "pip" do
@@ -42,8 +46,8 @@ class Python3 < Formula
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/c9/1d/bd19e691fd4cfe908c76c429fe6e4436c9e83583c4414b54f6c85471954a/wheel-0.29.0.tar.gz"
-    sha256 "1ebb8ad7e26b448e9caa4773d2357849bf80ff9e313964bcaf79cbf0201a1648"
+    url "https://files.pythonhosted.org/packages/fa/b4/f9886517624a4dcb81a1d766f68034344b7565db69f13d52697222daeb72/wheel-0.30.0.tar.gz"
+    sha256 "9515fe0a94e823fd90b08d22de45d7bde57c90edce705b22f5e1ecf7e1b653c8"
   end
 
   fails_with :clang do
@@ -276,7 +280,7 @@ class Python3 < Formula
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
-      # <http://docs.brew.sh/Homebrew-and-Python.html>
+      # <https://docs.brew.sh/Homebrew-and-Python.html>
       import re
       import os
       import sys
@@ -326,7 +330,7 @@ class Python3 < Formula
       They will install into the site-package directory
         #{HOMEBREW_PREFIX/"lib/python#{xy}/site-packages"}
 
-      See: http://docs.brew.sh/Homebrew-and-Python.html
+      See: https://docs.brew.sh/Homebrew-and-Python.html
     EOS
 
     # Tk warning only for 10.6

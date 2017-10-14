@@ -17,10 +17,8 @@ class PaxConstruct < Formula
   end
 
   test do
-    ENV.java_cache
-
     system bin/"pax-create-project", "-g", "Homebrew", "-a", "testing",
                "-v", "alpha-1"
-    assert File.exist?("testing/pom.xml")
+    assert_predicate testpath/"testing/pom.xml", :exist?
   end
 end

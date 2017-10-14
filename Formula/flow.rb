@@ -1,22 +1,27 @@
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "https://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.44.1.tar.gz"
-  sha256 "2dbe1c863ea8c594dfde8e2924b32033336f31f039d61ab07e276467195c2028"
+  url "https://github.com/facebook/flow/archive/v0.57.2.tar.gz"
+  sha256 "d1ad45384ab325719caa9c51749dfd67d67f768f053fe1682f55b79634983653"
   head "https://github.com/facebook/flow.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "438f3f4f9ba716cf284de96c6b281b539aacd06079afb1309f569845a448488f" => :sierra
-    sha256 "2de79b53b4b4ced45cb20bb6571f226f141ade3bee47e290cd2c41a6b7872f7e" => :el_capitan
-    sha256 "dc3219feca7362d2a4cd594da510c7e026b0196863fbac82029501b6203e5d35" => :yosemite
+    sha256 "386e6a67eded41486aa2e9e886ac217eb002adf6ed00f762f68d07c3a3950fb2" => :high_sierra
+    sha256 "00fec92e55d86a6fbb96ffd57ecd0112e6fcb5b2b70e9af55ac79f58890e2e19" => :sierra
+    sha256 "83ae0d58d70bd6bd59ca22ce2a40c0c478c4d3e42d2624eb8de22d68961aa635" => :el_capitan
   end
 
   depends_on "ocaml" => :build
-  depends_on "ocamlbuild" => :build
+  depends_on "opam" => :build
+
+  # Fix "compilation of ocaml-migrate-parsetree failed"
+  # Reported 24 Jul 2017 https://github.com/ocaml/opam/issues/3007
+  patch :DATA
 
   def install
-    system "make"
+    system "make", "all-homebrew"
+
     bin.install "bin/flow"
 
     bash_completion.install "resources/shell/bash-completion" => "flow-completion.bash"
@@ -33,3 +38,20 @@ class Flow < Formula
     assert_match expected, shell_output("#{bin}/flow check #{testpath}", 2)
   end
 end
+
+__END__
+diff --git a/Makefile b/Makefile
+index 515e581..8886bf6 100644
+--- a/Makefile
++++ b/Makefile
+@@ -174,8 +174,8 @@ all-homebrew:
+	export OPAMYES="1"; \
+	export FLOW_RELEASE="1"; \
+	opam init --no-setup && \
+-	opam pin add flowtype . && \
+-	opam install flowtype --deps-only && \
++	opam pin add -n flowtype . && \
++	opam config exec -- opam install flowtype --deps-only && \
+	opam config exec -- make
+
+ clean:

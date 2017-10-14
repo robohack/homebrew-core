@@ -3,12 +3,14 @@ class Ocamlbuild < Formula
   homepage "https://github.com/ocaml/ocamlbuild"
   url "https://github.com/ocaml/ocamlbuild/archive/0.11.0.tar.gz"
   sha256 "1717edc841c9b98072e410f1b0bc8b84444b4b35ed3b4949ce2bec17c60103ee"
+  revision 2
   head "https://github.com/ocaml/ocamlbuild.git"
 
   bottle do
-    sha256 "4d0f363b71bc36cb80150e751d932fad7dc382806f1ea066f54e13072c4d9611" => :sierra
-    sha256 "8dd4e27320e0a3cf3ae81c49a2bd9d3521bd85cd0c4e0aebc1d52789344ff350" => :el_capitan
-    sha256 "e3d1ce11e94eb7207bae02a447ce69a22567a708457f1d2dc36beb81769de305" => :yosemite
+    sha256 "70f1b6d7ebf6d4b4dc3ec5f7f0da31d342419ffa52e9028cdad578e3e229130b" => :high_sierra
+    sha256 "e8438ae3c391e979cb38682cc8db1d5cb4cbd228b8332255e39c7b866e7a01da" => :sierra
+    sha256 "c8dc260e66ddfdc78d6844320be9a7c2f8e191eb8fc7421ad5bf6e5482e7570b" => :el_capitan
+    sha256 "498e4af06474baa080371eabf1b83b4608aa376e834f38b3291093c6d29ccca6" => :yosemite
   end
 
   depends_on "ocaml"

@@ -1,40 +1,45 @@
 class GnomeRecipes < Formula
   desc "Formula for GNOME recipes"
   homepage "https://wiki.gnome.org/Apps/Recipes"
-  url "https://download.gnome.org/sources/gnome-recipes/1.0/gnome-recipes-1.0.4.tar.xz"
-  sha256 "f8f1f0f79121e91130a589b1c20ad4739d93d2253232ecdc3d4bc966db7efc45"
+  url "https://download.gnome.org/sources/gnome-recipes/1.6/gnome-recipes-1.6.2.tar.xz"
+  sha256 "8a11ed483b422dbbedb10237dac8b47fe94d76d40cac87ae6d19292942c94f9c"
 
   bottle do
-    sha256 "52eadb3c7c53eac0b2400561e42cbd394a9ad1c4c835319b9a5fdd5d8e66adf4" => :sierra
-    sha256 "2190b83cc8fb87b09cbec5733d0a5c24030247be427d1a33548bc52618a0d9c9" => :el_capitan
-    sha256 "f41f08d49438c62e0744a0e8cdff12d2f7608c46f8b94968dcd06cf39d42f17a" => :yosemite
+    rebuild 1
+    sha256 "cf42a7711b8baaa341b2aa1e1bafa7ac0ca8b58f02cdfc221556dc23f869b896" => :high_sierra
+    sha256 "a643b6dd52e83abdc01ef3c0e5d08a05c78ad20179d3b5190fadccab85dda0e2" => :sierra
+    sha256 "d81b4cac80b65e170ba85e5b31fd3bf7d2ec6891fd7dc44d0312829a4cf98992" => :el_capitan
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "itstool" => :build
+  depends_on :python3 => :build
   depends_on "gtk+3"
-  depends_on "gnome-icon-theme"
+  depends_on "adwaita-icon-theme"
   depends_on "libcanberra"
   depends_on "gnome-autoar"
   depends_on "gspell"
+  depends_on "libsoup"
+  depends_on "gnu-tar"
 
   def install
-    # orces use of gtk3-update-icon-cache instead of gtk-update-icon-cache. No bugreport should
-    # be filed for this since it only occurs because Homebrew renames gtk+3's gtk-update-icon-cache
-    # to gtk3-update-icon-cache in order to avoid a collision between gtk+ and gtk+3.
-    inreplace "data/Makefile.in", "gtk-update-icon-cache", "gtk3-update-icon-cache"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--enable-autoar",
-                          "--enable-gspell",
-                          "--disable-schemas-compile"
-    system "make", "install"
+    # BSD tar does not support the required options
+    inreplace "src/gr-recipe-store.c", "argv[0] = \"tar\";", "argv[0] = \"gtar\";"
+    # stop meson_post_install.py from doing what needs to be done in the post_install step
+    ENV["DESTDIR"] = ""
+    ENV.delete "PYTHONPATH"
+    mkdir "build" do
+      system "meson", "--prefix=#{prefix}", ".."
+      system "ninja"
+      system "ninja", "install"
+    end
   end
 
   def post_install
     system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
+    system "#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache", "-f", "-t", "#{HOMEBREW_PREFIX}/share/icons/hicolor"
   end
 
   test do

@@ -1,13 +1,14 @@
 class PostgresqlAT94 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v9.4.11/postgresql-9.4.11.tar.bz2"
-  sha256 "e3eb51d045c180b03d2de1f0c3af9356e10be49448e966ca01dfc2c6d1cc9d23"
+  url "https://ftp.postgresql.org/pub/source/v9.4.14/postgresql-9.4.14.tar.bz2"
+  sha256 "8e7df23a104b057b360d03180ebcb67f645e198a4a0bee94bf56b2bc9505ec6b"
 
   bottle do
-    sha256 "64c96e272b4c3e959740c1a1f9001486aaff9aa4a641b451985c8184fb615f7a" => :sierra
-    sha256 "8a19d613cf84baafb05aad54ce62ae485974396ae4553ebdd981d9cf402dc15e" => :el_capitan
-    sha256 "4ccd2cd0600da4c27cd4b1f0be251820f95097f4752521ecb17d0e1ba5b8d7b9" => :yosemite
+    sha256 "a66cb718bcef0bf531b3c600587686d2f94d52d9ed43380a89d9d8feb5025ee2" => :high_sierra
+    sha256 "195d2d4472ed45cf1c377bedda84c0bd867f7d414ca099193d1f3945d807cdcd" => :sierra
+    sha256 "e06a5ce1ca401d146a8b6c6c2ca2b172010ccfa160dcfb2bd273f36b2caf9004" => :el_capitan
+    sha256 "4ce5801b9f3330ab7036c0711f1b57fcd9fefb8b63fce1f1e053ab2fa602be0e" => :yosemite
   end
 
   keg_only :versioned_formula
@@ -18,7 +19,6 @@ class PostgresqlAT94 < Formula
 
   depends_on "openssl"
   depends_on "readline"
-  depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
 
   fails_with :clang do
@@ -47,15 +47,14 @@ class PostgresqlAT94 < Formula
     ]
 
     args << "--with-perl" if build.with? "perl"
-
     args << "--with-python" if build.with? "python"
 
     # The CLT is required to build tcl support on 10.7 and 10.8 because tclConfig.sh is not part of the SDK
     if build.with?("tcl") && (MacOS.version >= :mavericks || MacOS::CLT.installed?)
       args << "--with-tcl"
 
-      if File.exist?("#{MacOS.sdk_path}/usr/lib/tclConfig.sh")
-        args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+      if File.exist?("#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework/tclConfig.sh")
+        args << "--with-tclconfig=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework"
       end
     end
 
@@ -78,7 +77,7 @@ class PostgresqlAT94 < Formula
     s = <<-EOS.undent
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
-      https://github.com/Homebrew/homebrew/issues/issue/2510
+      https://github.com/Homebrew/legacy-homebrew/issues/2510
 
     To migrate existing data from a previous major version (pre-9.3) of PostgreSQL, see:
       https://www.postgresql.org/docs/9.3/static/upgrading.html

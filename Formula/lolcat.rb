@@ -2,14 +2,15 @@ class Lolcat < Formula
   desc "Rainbows and unicorns in your console!"
   homepage "https://github.com/busyloop/lolcat"
   url "https://github.com/busyloop/lolcat.git",
-      :tag => "v42.24.0",
-      :revision => "dfc68649f6bdac255d5be052d2123f3fbe3f555c"
+      :tag => "v90.8.8",
+      :revision => "d78d039699256d6280583d72117270180b8c1ec9"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "418b84a736d082079aeca4af6d2446c185e6062c2c1c15647ddd4357e9ea73fa" => :sierra
-    sha256 "0bf6b7d10ce44f854e3f81c1392d75ba0e4346a92807fb66b97223b8ccd6ad6d" => :el_capitan
-    sha256 "9878b6167975b0ad58868d55f1b36465f9a88910dcf22c119950f3d7203a0d83" => :yosemite
+    sha256 "79a876424a8942e9bd196c73778c61479d1092d96ce1833ccdecc5814a484cfc" => :high_sierra
+    sha256 "492e7fe98802675c99f981a57ad9526b248351a9c62ff4c65c92cc91a7ce7d0a" => :sierra
+    sha256 "ede0105710e8d64af8998252e978dc4983efa10a234ecdab25b6bd61a8d11a08" => :el_capitan
+    sha256 "b338cd33256e246e29f7e3c79b2442d8abb895e10e97e5fb988c7d8dced2ac36" => :yosemite
   end
 
   def install

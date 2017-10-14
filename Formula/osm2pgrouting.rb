@@ -1,21 +1,21 @@
 class Osm2pgrouting < Formula
   desc "Import OSM data into pgRouting database"
   homepage "http://pgrouting.org/docs/tools/osm2pgrouting.html"
-  url "https://github.com/pgRouting/osm2pgrouting/archive/v2.2.0.tar.gz"
-  sha256 "bdd3095123cf21ee2f56e5cf04b2ea7b781dea629bff909fa45ebc5dbe50f8a6"
-  revision 2
+  url "https://github.com/pgRouting/osm2pgrouting/archive/v2.3.0.tar.gz"
+  sha256 "8a9b8aa58240bd3e8e74ea64598ea1df0ff0b84a1250e23649a2f55adbef1898"
   head "https://github.com/pgRouting/osm2pgrouting.git"
 
   bottle do
     cellar :any
-    sha256 "5a05bebaabb117bfc0d0e493bb7aeacdc78bcb8bfb4b4427cc4b3ae56d7cc1a2" => :sierra
-    sha256 "a46e7b8fecc6a0eaa9f9e3a76b46ce341994eaaacb25e90780cde128c6678043" => :el_capitan
-    sha256 "e7bfdbb223bec3cb1744dae76e1f5654ab5a4f07cdf6f99bce83c3ea76b7b189" => :yosemite
+    sha256 "a4ef893061d83d9a19f54d024f7e908ea9541d106a25557e61195c38b1bea704" => :high_sierra
+    sha256 "7ce918a10a08a8849f7db69370a594bac6f3ce6274c10f6bb4d9539a543dc03d" => :sierra
+    sha256 "a9644ae921e22f85751a59fc9f50e71e744d532613048b35cd657812b4adca0f" => :el_capitan
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "expat"
+  depends_on "libpqxx"
   depends_on "pgrouting"
   depends_on "postgis"
   depends_on :postgresql

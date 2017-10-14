@@ -1,15 +1,15 @@
 class Compcert < Formula
   desc "Formally verified C compiler"
   homepage "http://compcert.inria.fr"
-  url "http://compcert.inria.fr/release/compcert-3.0.1.tgz"
-  sha256 "09c7dc18c681231c6e83a963b283b66a9352a9611c9695f4b0c4b7df8c90f935"
-  revision 1
+  url "https://github.com/AbsInt/CompCert/archive/v3.1.tar.gz"
+  sha256 "9d0dd07f05a9a59b865041417dc61f16a664d85415f0271eb854412638e52e47"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1b5a827dcf7d127a989f7475bd7d0c923aa0361d163d84769238131957eab29c" => :sierra
-    sha256 "0cb660af3446b5cca31680d87d323ae9d30950d6dd94f3c12ac3a67948de42c4" => :el_capitan
-    sha256 "9d026755e06b16382ba088383240da2e8d5d217440ce8ab7d3afbf011c2db425" => :yosemite
+    sha256 "9a5256529b943edaa4d0d613d0dfed827df8ebb1f4de9fbd67e1cceb2d7d218f" => :high_sierra
+    sha256 "02d892ec34b7c991629d747b822a0f75c5e9a790113886ac4925c2df67bbcce9" => :sierra
+    sha256 "ae065d7a0008a20c42277b33166e1197931d64af120ae2dc06ff96425bf96e30" => :el_capitan
+    sha256 "895f0814f70ddc41a07496f6f99c865d132bca38654d9c44581c2a89e828dc9b" => :yosemite
   end
 
   option "with-config-x86_64", "Build Compcert with ./configure 'x86_64'"

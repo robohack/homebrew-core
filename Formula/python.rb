@@ -1,15 +1,14 @@
 class Python < Formula
   desc "Interpreted, interactive, object-oriented programming language"
-  homepage "https://www.python.org"
-  url "https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz"
-  sha256 "35d543986882f78261f97787fd3e06274bfa6df29fac9b4a94f73930ff98f731"
+  homepage "https://www.python.org/"
+  url "https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tar.xz"
+  sha256 "71ffb26e09e78650e424929b2b457b9c912ac216576e6bd9e7d204ed03296a66"
   head "https://github.com/python/cpython.git", :branch => "2.7"
 
   bottle do
-    rebuild 1
-    sha256 "04406760996fadee04eecd6fae7870291e659145c590f88d85da70b0bda21df6" => :sierra
-    sha256 "119c368e8d776cb909d860b5bc816f5c425317ec472dd2ba98faaae660af7bec" => :el_capitan
-    sha256 "b8cd522582741df7a034846b8458d8f46516b2c80a19dbfe04e7eaffe915d85b" => :yosemite
+    sha256 "3659f6c46f76cf28a671b942ec765013ee83618d7dade8eeab91b60ba618bddd" => :high_sierra
+    sha256 "06edf884300cb7bef5b66c377c7736a1f8bff553288fc0b8b6709bcfc51bd23b" => :sierra
+    sha256 "ee90369b3812099c0f7eb60b1bfd4e365861a621830968745fb6b4db736c7acf" => :el_capitan
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -36,12 +35,9 @@ class Python < Formula
   depends_on "tcl-tk" => :optional
   depends_on "berkeley-db@4" => :optional
 
-  skip_clean "bin/pip", "bin/pip-2.7"
-  skip_clean "bin/easy_install", "bin/easy_install-2.7"
-
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/26/d1/dc7fe14ce4a3ff3faebf1ac11350de4104ea2d2a80c98393b55c84362b0c/setuptools-32.1.0.tar.gz"
-    sha256 "86d57bf86edc0ecfd2dc0907ed3710bc4501fb13a06c0fcaf7632305b00ce832"
+    url "https://files.pythonhosted.org/packages/a4/c8/9a7a47f683d54d83f648d37c3e180317f80dc126a304c45dc6663246233a/setuptools-36.5.0.zip"
+    sha256 "ce2007c1cea3359870b80657d634253a0765b0c7dc5a988d77ba803fc86f2c64"
   end
 
   resource "pip" do
@@ -50,8 +46,8 @@ class Python < Formula
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/c9/1d/bd19e691fd4cfe908c76c429fe6e4436c9e83583c4414b54f6c85471954a/wheel-0.29.0.tar.gz"
-    sha256 "1ebb8ad7e26b448e9caa4773d2357849bf80ff9e313964bcaf79cbf0201a1648"
+    url "https://files.pythonhosted.org/packages/fa/b4/f9886517624a4dcb81a1d766f68034344b7565db69f13d52697222daeb72/wheel-0.30.0.tar.gz"
+    sha256 "9515fe0a94e823fd90b08d22de45d7bde57c90edce705b22f5e1ecf7e1b653c8"
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
@@ -152,7 +148,7 @@ class Python < Formula
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
-    # `brew install enchant && pip install pyenchant`
+    # `brew install enchant && pip2 install pyenchant`
     inreplace "./Lib/ctypes/macholib/dyld.py" do |f|
       f.gsub! "DEFAULT_LIBRARY_FALLBACK = [", "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
       f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
@@ -218,6 +214,24 @@ class Python < Formula
         doc.install Dir["build/html/*"]
       end
     end
+
+    # Remove commands shadowing system python.
+    {
+      "2to3" => "2to3-2",
+      "easy_install" => "easy_install-2.7",
+      "idle" => "idle2",
+      "pip" => "pip2",
+      "pydoc" => "pydoc2",
+      "python" => "python2",
+      "python-config" => "python2-config",
+      "pythonw" => "pythonw2",
+      "smtpd.py" => "smtpd2.py",
+      "wheel" => nil,
+    }.each do |unversioned_name, versioned_name|
+      rm_f bin/unversioned_name
+      next unless versioned_name
+      (libexec/"bin").install_symlink bin/versioned_name => unversioned_name
+    end
   end
 
   def post_install
@@ -250,13 +264,13 @@ class Python < Formula
                   "--install-scripts=#{bin}",
                   "--install-lib=#{site_packages}"]
 
-    (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
-    (libexec/"pip").cd { system "#{bin}/python", *setup_args }
-    (libexec/"wheel").cd { system "#{bin}/python", *setup_args }
+    (libexec/"setuptools").cd { system "#{bin}/python2", *setup_args }
+    (libexec/"pip").cd { system "#{bin}/python2", *setup_args }
+    (libexec/"wheel").cd { system "#{bin}/python2", *setup_args }
 
     # When building from source, these symlinks will not exist, since
     # post_install happens after linking.
-    %w[pip pip2 pip2.7 easy_install easy_install-2.7 wheel].each do |e|
+    %w[pip2 pip2.7 easy_install-2.7].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
@@ -289,7 +303,7 @@ class Python < Formula
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
-      # <http://docs.brew.sh/Homebrew-and-Python.html>
+      # <https://docs.brew.sh/Homebrew-and-Python.html>
       import re
       import os
       import sys
@@ -336,25 +350,30 @@ class Python < Formula
   end
 
   def caveats; <<-EOS.undent
+    This formula installs a python2 executable to #{HOMEBREW_PREFIX}/bin.
+    If you wish to have this formula's python executable in your PATH then add
+    the following to #{shell_profile}:
+      export PATH="#{opt_libexec}/bin:$PATH"
+
     Pip and setuptools have been installed. To update them
-      pip install --upgrade pip setuptools
+      pip2 install --upgrade pip setuptools
 
     You can install Python packages with
-      pip install <package>
+      pip2 install <package>
 
     They will install into the site-package directory
       #{site_packages}
 
-    See: http://docs.brew.sh/Homebrew-and-Python.html
+    See: https://docs.brew.sh/Homebrew-and-Python.html
     EOS
   end
 
   test do
     # Check if sqlite is ok, because we build with --enable-loadable-sqlite-extensions
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
-    system "#{bin}/python", "-c", "import sqlite3"
+    system "#{bin}/python2", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
-    system "#{bin}/python", "-c", "import Tkinter; root = Tkinter.Tk()"
-    system bin/"pip", "list"
+    system "#{bin}/python2", "-c", "import Tkinter; root = Tkinter.Tk()"
+    system bin/"pip2", "list"
   end
 end

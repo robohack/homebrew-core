@@ -1,14 +1,14 @@
 class Gphoto2 < Formula
   desc "Command-line interface to libgphoto2"
   homepage "http://gphoto.org/"
-  url "https://downloads.sourceforge.net/project/gphoto/gphoto/2.5.11/gphoto2-2.5.11.tar.bz2"
-  sha256 "392844d6a06512b0d85e7983a5a0c85c8039feb6ab3bc420674ffdbf7536f9e9"
+  url "https://downloads.sourceforge.net/project/gphoto/gphoto/2.5.15/gphoto2-2.5.15.tar.bz2"
+  sha256 "ae571a227983dc9997876702a73af5431d41f287ea0f483cda897c57a6084a77"
 
   bottle do
     cellar :any
-    sha256 "9eb52529f40552c3eba2b808b53eff1df1e656a10d11840a929b2a33952c390c" => :sierra
-    sha256 "0e2934121f7ca8161647a59a8cb31346ecf3a52615cb37600d4572a8f1be800f" => :el_capitan
-    sha256 "6ed9ca92245da54f0f617ff4aaf6d92bb3d1bb02f42b2bbd26e77f2c6382afcc" => :yosemite
+    sha256 "28856ab94ba2f28245649734265ac41cb29911d78818bd5aea0dddbbfc005510" => :high_sierra
+    sha256 "1c1e980bde3f0cd72de42d9196254ffbec516b4ee667232090f0f68bb9284a73" => :sierra
+    sha256 "f663e168d3e139ea2544e560aa4666441622a95bc425fa755c7fbd6060c5aaa0" => :el_capitan
   end
 
   depends_on "pkg-config" => :build

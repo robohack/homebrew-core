@@ -12,13 +12,14 @@ class Hidapi < Formula
   # with HidApi were not behaving correctly on OSX.
   # pull request on Hidapi's repo: https://github.com/signal11/hidapi/pull/219
   patch do
-    url "https://github.com/signal11/hidapi/pull/219.patch"
-    sha256 "d0a21a150425629a8388320df86818109e33d3230f6b0780c60524c9d15030ee"
+    url "https://github.com/signal11/hidapi/pull/219.patch?full_index=1"
+    sha256 "c0ff6eb370d6b875c06d72724a1a12fa0bafcbd64b2610014abc50a516760240"
   end
 
   bottle do
     cellar :any
     rebuild 2
+    sha256 "c534434485aeac388fa1ab7223264ceb9915c4c8aa3815895939d9d6c2fd13b0" => :high_sierra
     sha256 "2c16239b99b23f5fee3992391f8450a317b3c421d61efd248ad69c063cb7ffef" => :sierra
     sha256 "cea4750ae62177a9b399b43d463eec41852161f691a148b03d7b7f91789932fc" => :el_capitan
     sha256 "06daf7b3080f0c87c46b3f69c869ce3b88de5ce1187db2435cd8e3a1db2e9871" => :yosemite

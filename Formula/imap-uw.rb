@@ -9,6 +9,7 @@ class ImapUw < Formula
 
   bottle do
     cellar :any
+    sha256 "b051874130e8c65f442ff4fdb9875ec981da9f73e24ba0e1577bb23f4c379d8d" => :high_sierra
     sha256 "714de61f534fb8f9264183a96b527868ffee4e568f10b2ad5c283276896ffa2f" => :sierra
     sha256 "2b9f5cbd682299610f20f1fda87c5d5c63b378ec071be2ed4889276bed53f0b4" => :el_capitan
     sha256 "001a10201375e639d4dbb4c8cba174ef02b19b89ba8e71ce2e2182610b6f120d" => :yosemite
@@ -25,7 +26,7 @@ class ImapUw < Formula
               "SSLINCLUDE=#{Formula["openssl"].opt_include}/openssl"
       s.gsub! "SSLLIB=/usr/lib",
               "SSLLIB=#{Formula["openssl"].opt_lib}"
-      s.gsub! "-DMAC_OSX_KLUDGE=1", "" if MacOS.version >= :snow_leopard
+      s.gsub! "-DMAC_OSX_KLUDGE=1", ""
     end
     inreplace "src/osdep/unix/ssl_unix.c", "#include <x509v3.h>\n#include <ssl.h>",
                                            "#include <ssl.h>\n#include <x509v3.h>"

@@ -7,9 +7,11 @@ class Molecule < Formula
   sha256 "41c995cb654a201042c956e892aba3c42f9889b0970831dc6ee843b4122e5136"
 
   bottle do
-    sha256 "db42c3a42e54cf3da190fa669df522072880b7c4349531b8d3e4cc81e2d06286" => :sierra
-    sha256 "a64728d0cdc6ed1c182d1685d7933b9a9865f369036e6387c30ec494c35af48a" => :el_capitan
-    sha256 "92980f819d28826c7732b7ef455443bd1f67f1afcec836a66377892b8a08442b" => :yosemite
+    cellar :any
+    rebuild 2
+    sha256 "bb2c94a0b78cadbf9ddd9ace48f479a7fb9ab69fe2300ecd730c620dfc111165" => :high_sierra
+    sha256 "23e417ecf65861515498f99ce76b31f474b8e3f089c7dcc4e0643d1bc94b96e0" => :sierra
+    sha256 "1b1e618a6f47580ab6badf747ffd8bb7dd68d9f4c4fe2a2b5e6e60f4ff93e35c" => :el_capitan
   end
 
   depends_on :python
@@ -60,8 +62,8 @@ class Molecule < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/a1/32/e3d6c3a8b5461b903651dd6ce958ed03c093d2e00128e3f33ea69f1d7965/cffi-1.9.1.tar.gz"
-    sha256 "563e0bd53fda03c151573217b3a49b3abad8813de9dd0632e10090f6190fdaf8"
+    url "https://files.pythonhosted.org/packages/4e/32/4070bdf32812c89eb635c80880a5caa2e0189aa7999994c265577e5154f3/cffi-1.11.0.tar.gz"
+    sha256 "5f4ff33371c6969b39b293d9771ee91e81d26f9129be093ca1b7be357fcefd15"
   end
 
   resource "chardet" do
@@ -90,8 +92,8 @@ class Molecule < Formula
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/ec/5f/d5bc241d06665eed93cd8d3aa7198024ce7833af7a67f6dc92df94e00588/cryptography-1.8.1.tar.gz"
-    sha256 "323524312bb467565ebca7e50c8ae5e9674e544951d28a2904a50012a8828190"
+    url "https://files.pythonhosted.org/packages/9c/1a/0fc8cffb04582f9ffca61b15b0681cf2e8588438e55f61403eb9880bd8e0/cryptography-2.0.3.tar.gz"
+    sha256 "d04bb2425086c3fe86f7bc48915290b13e798497839fbb18ab7f6dffcf98cc3a"
   end
 
   resource "docker-py" do
@@ -276,8 +278,8 @@ class Molecule < Formula
   test do
     # Test the Vagrant driver
     system bin/"molecule", "init", "--role", "foo-vagrant", "--driver", "vagrant", "--verifier", "testinfra"
-    assert File.exist?(testpath/"foo-vagrant/molecule.yml"), "Failed to create 'foo-vagrant/molecule.yml' file!"
-    assert File.exist?(testpath/"foo-vagrant/tests/test_default.py"), "Failed to create 'foo-vagrant/tests/test_default.py' file!"
+    assert_predicate testpath/"foo-vagrant/molecule.yml", :exist?, "Failed to create 'foo-vagrant/molecule.yml' file!"
+    assert_predicate testpath/"foo-vagrant/tests/test_default.py", :exist?, "Failed to create 'foo-vagrant/tests/test_default.py' file!"
     cd "foo-vagrant" do
       system bin/"molecule", "list"
     end

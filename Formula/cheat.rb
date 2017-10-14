@@ -3,15 +3,15 @@ class Cheat < Formula
 
   desc "Create and view interactive cheat sheets for *nix commands"
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.2.0.tar.gz"
-  sha256 "a7860535fbb4156f8bc06d901080fb0eb0ba6526bcf336a80bed8b9355656c79"
+  url "https://github.com/chrisallenlane/cheat/archive/2.2.2.tar.gz"
+  sha256 "d898247e4d74e71afbf05943ca1430b3526cd8ec573fe3ee20e73bafcacc0e63"
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "671a39b92371c3bdfa79f3a3cd17395c23362b1b5c06297363a53ffe56ced9a0" => :sierra
-    sha256 "46be2714a5ed03794e45b7c89b439b1adc34f3ba0949167e1f835b17e5d73736" => :el_capitan
-    sha256 "687ef459bad701073c784ddbd5ee9864e422d5910a37702b479dba643a387b5e" => :yosemite
+    sha256 "5eb69f05c29b9be7a0b453d5dff25abf91af51c5a5c4c5a3956b78955bd0be6c" => :high_sierra
+    sha256 "65a2bf9dc7f1c50718f9811ad89958409ec14a24c140332a468d8b6520989328" => :sierra
+    sha256 "5da06a7464f2ef810c33d96f075dad2b5d5245e5d8e7700903d89daa029ca46a" => :el_capitan
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -22,8 +22,8 @@ class Cheat < Formula
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/b8/67/ab177979be1c81bc99c8d0592ef22d547e70bb4c6815c383286ed5dec504/Pygments-2.1.3.tar.gz"
-    sha256 "88e4c8a91b2af5962bfa5ea2447ec6dd357018e86e94c7d14bd8cacbc5b55d81"
+    url "https://files.pythonhosted.org/packages/71/2a/2e4e77803a8bd6408a2903340ac498cb0a2181811af7c9ec92cb70b0308a/Pygments-2.2.0.tar.gz"
+    sha256 "dbae1046def0efb574852fab9e90209b23f556367b5a320c0bcb871c77c3e8cc"
   end
 
   def install

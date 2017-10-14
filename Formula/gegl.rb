@@ -1,14 +1,15 @@
 class Gegl < Formula
   desc "Graph based image processing framework"
   homepage "http://www.gegl.org/"
-  url "https://download.gimp.org/pub/gegl/0.3/gegl-0.3.14.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/g/gegl/gegl_0.3.14.orig.tar.bz2"
-  sha256 "09f5e2e6899697641d4660e3e274aed696f5bacc96ba389ac77674ee1156590a"
+  url "https://download.gimp.org/pub/gegl/0.3/gegl-0.3.20.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gegl/gegl_0.3.20.orig.tar.bz2"
+  sha256 "821568d17dc92a46f6105644c4f4d497daea2be794006140a016ed34e05eb084"
 
   bottle do
-    sha256 "de3bf15f63cf1f67629c5d1be02739ad97bb619fc45fd6b704499b9f4c84cf86" => :sierra
-    sha256 "498e5f473d434882ba526dc95d775fac924dc2188fc3e47ff624e4cac9d6266b" => :el_capitan
-    sha256 "e521cc46e8f23e79f8be2a051457145033d7dddf9e5068d8af35ca57eea36a42" => :yosemite
+    sha256 "b4d34a41ea043965e04128dc62208b5845e273487aae2cd3fc777ddf72de06ef" => :high_sierra
+    sha256 "47259d001b9f169c0514af1e171d8178ffa1690b5985a33be8d19c431316e246" => :sierra
+    sha256 "52715a437f3311a576278669d32ed17c2cce469df531a99d740ffca7ff1c2ae3" => :el_capitan
+    sha256 "dbb07b8f6f434331c4a3f53776f5eece7f9fb1b78ce7dbcef2d82e1bfb90e8d0" => :yosemite
   end
 
   head do
@@ -33,6 +34,8 @@ class Gegl < Formula
   depends_on "lua" => :optional
   depends_on "pango" => :optional
   depends_on "sdl" => :optional
+
+  conflicts_with "coreutils", :because => "both install `gcut` binaries"
 
   def install
     system "./autogen.sh" if build.head?

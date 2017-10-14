@@ -1,14 +1,13 @@
 class Watchexec < Formula
   desc "Execute commands when watched files change"
   homepage "https://github.com/mattgreen/watchexec"
-  url "https://github.com/mattgreen/watchexec/archive/1.8.0.tar.gz"
-  sha256 "57579971a698a6f846e78358cfd5048e4baeed0bface50fe7d8f95c56beb3eef"
+  url "https://github.com/mattgreen/watchexec/archive/1.8.6.tar.gz"
+  sha256 "4caa882a17d3e826dca92af157382145c599ac204e9b9ea810dc309402a200e8"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0dcd9d26314e075f4e135479456bfa5e8ffad447083857fb327ef8f4f4e1b83e" => :sierra
-    sha256 "f747b55ff6c1119e66a7b4396475c93bf2126fe177c2ef0f4d28831755b70eb9" => :el_capitan
-    sha256 "d687076db8729ed6a911f1afea51e93c6d10b14ea702404179303215f527c0d3" => :yosemite
+    sha256 "1187169dd33f3a96a46e4e47f718250fe18a9876e8d6aaa2a2b470d64d6ea9f8" => :high_sierra
+    sha256 "6e0d65a52c506214c0ce5d82d3e3c492224cd5aa33b9eca268e792b5071a2e1e" => :sierra
+    sha256 "31ee106d09477b9a6d3d1959f115d7469174b4383bf368bc423ece55e91890af" => :el_capitan
   end
 
   depends_on "rust" => :build

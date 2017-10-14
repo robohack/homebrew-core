@@ -1,17 +1,15 @@
 class Openjpeg < Formula
   desc "Library for JPEG-2000 image manipulation"
   homepage "http://www.openjpeg.org/"
-  url "https://github.com/uclouvain/openjpeg/archive/v2.1.2.tar.gz"
-  sha256 "4ce77b6ef538ef090d9bde1d5eeff8b3069ab56c4906f083475517c2c023dfa7"
-  revision 1
-
+  url "https://github.com/uclouvain/openjpeg/archive/v2.3.0.tar.gz"
+  sha256 "3dc787c1bb6023ba846c2a0d9b1f6e179f1cd255172bde9eb75b01f1e6c7d71a"
   head "https://github.com/uclouvain/openjpeg.git"
 
   bottle do
     cellar :any
-    sha256 "e5d4bcad36795653f31a5deec4ed17ece781891d7421cb2841336ca48ce37d9d" => :sierra
-    sha256 "6a2608996b46e5889a8ca154b03bd6af6e01efbdd54af269b41abb859e37bebc" => :el_capitan
-    sha256 "b6321a8848d7d86113a32663bff217c2e12565ead59d1ecaf3cfe9b3d8fd8467" => :yosemite
+    sha256 "87762c08c68afefa25166be5d0727a052fd6ad628b25a2d1d57d54b42e3b06d3" => :high_sierra
+    sha256 "66694c288e9c15f54ab8332183d4d15ea204623dd13a5acadb211eef28cd5076" => :sierra
+    sha256 "b5041fc90ace09f0b556072ce5fedfa99ff9025f031a4eb70fdee5b90f9aa438" => :el_capitan
   end
 
   option "without-doxygen", "Do not build HTML documentation."
@@ -22,15 +20,6 @@ class Openjpeg < Formula
   depends_on "little-cms2"
   depends_on "libtiff"
   depends_on "libpng"
-
-  # https://github.com/uclouvain/openjpeg/issues/862
-  # https://github.com/uclouvain/openjpeg/issues/863
-  patch do
-    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/o/openjpeg2/openjpeg2_2.1.2-1.1.debian.tar.xz"
-    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/o/openjpeg2/openjpeg2_2.1.2-1.1.debian.tar.xz"
-    sha256 "b19b15ac6306c19734f0626f974c8863e4dc21a1df849a8ae81008479b5b0daf"
-    apply "patches/CVE-2016-9572_CVE-2016-9573.patch"
-  end
 
   def install
     args = std_cmake_args
@@ -55,7 +44,7 @@ class Openjpeg < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-I#{include}/openjpeg-2.1", "-L#{lib}", "-lopenjp2",
+    system ENV.cc, "-I#{include.children.first}", "-L#{lib}", "-lopenjp2",
            testpath/"test.c", "-o", "test"
     system "./test"
   end

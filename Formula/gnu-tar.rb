@@ -7,6 +7,7 @@ class GnuTar < Formula
   revision 1
 
   bottle do
+    sha256 "20f2d3cad911cb885ac3760daa283d5fd709e570f8a97486e91a6f41a49183c8" => :high_sierra
     sha256 "d87139778146e9fe39f5db5dcf020c51a5a8ed7528987e31ecd2a2a36ab239e2" => :sierra
     sha256 "ba2d4a54ae4abf2520b816d19373ed0a8bd0bb0e894b271d98ee1c7eba51af16" => :el_capitan
     sha256 "cb0a9258bfeb0530540af1748b37a4fe79cf07ec5848e7bce48c47d51289bdb7" => :yosemite
@@ -29,9 +30,7 @@ class GnuTar < Formula
     # https://github.com/Homebrew/homebrew/issues/44993
     # This is thought to be an el_capitan bug:
     # https://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
-    if MacOS.version == :el_capitan
-      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
-    end
+    ENV["gl_cv_func_getcwd_abort_bug"] = "no" if MacOS.version == :el_capitan
 
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--program-prefix=g" if build.without? "default-names"

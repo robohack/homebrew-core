@@ -5,26 +5,24 @@ class Idris < Formula
 
   desc "Pure functional programming language with dependent types"
   homepage "https://www.idris-lang.org/"
-  url "https://github.com/idris-lang/Idris-dev/archive/v1.0.tar.gz"
-  sha256 "aaed0d01c0395cb7cac2562f689f8589072ad7568acaeb5e20451ffeebab963e"
+  url "https://github.com/idris-lang/Idris-dev/archive/v1.1.1.tar.gz"
+  sha256 "27fff953189739d18cb8aa01223d8bac0d3ad9ec29c5fcc752454711a30b43e8"
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
-    sha256 "fe5231d29fbf3927e83ae1add29ae9b86fd94a13771e94a4a0dc4316b1d1f4b3" => :sierra
-    sha256 "f9ca5a80a938c2089cf2b4873220f6329e0e98b2bc5d998f7fe1c1afc447b9cf" => :el_capitan
-    sha256 "8fed2cb59d66a0990aeed6ab21c10e6e45d5517bbc8c14ed8061458f8334a0ac" => :yosemite
+    sha256 "a3cb09de4df1065d058dbe1450b7049291554180c1d7f5e951ac094b1be7233f" => :high_sierra
+    sha256 "ebe09791a9d22982c3798a1dee303ebc2984194364186f235782d156160430db" => :sierra
+    sha256 "87b951e346e1abd5fb01237b3f88f19c1e31fc5fe15d84144b090acf22c83363" => :el_capitan
+    sha256 "324862f1b5b9077a1cc2623766f55026c9e6fc2613d57e2b0c65311afc665f7c" => :yosemite
   end
 
-  depends_on "ghc" => :build
   depends_on "cabal-install" => :build
+  depends_on "ghc" => :build
   depends_on "pkg-config" => :build
-
-  depends_on "gmp"
-  depends_on "libffi" => :recommended
+  depends_on "libffi"
 
   def install
-    args = []
-    args << "-f FFI" if build.with? "libffi"
+    args = ["-f FFI"]
     args << "-f release" if build.stable?
     install_cabal_package *args
   end

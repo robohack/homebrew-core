@@ -1,16 +1,18 @@
 class Teleport < Formula
   desc "Modern SSH server for teams managing distributed infrastructure"
   homepage "https://gravitational.com/teleport"
-  url "https://github.com/gravitational/teleport/archive/v2.0.1.tar.gz"
-  sha256 "d154e1822b8671ac8035f0a91769e95ed85a338228d9e27c2291dec77df5b7fe"
+  url "https://github.com/gravitational/teleport/archive/v2.3.1.tar.gz"
+  sha256 "d15e79811903d1fe8f34358355a5c6572d8a209e684ccc835600d3a273448c3f"
 
   bottle do
-    sha256 "dcfe9e35cf36b52c8dadf88ffe0baa7fe23956fa4948d9762b68b1ad3485660e" => :sierra
-    sha256 "a5e9e2e489f544bccd42d8c34ff2de8a247a6adafe347dcd3659a6f15029cea4" => :el_capitan
-    sha256 "fae6211b5b69f8b15709619dca2e0f9e1c1fb53228b77f0b9344d71cab8f1f38" => :yosemite
+    sha256 "9480a138955b7bc317a4d8de3b12a2ad323c121905e7d509431759c393fe99b7" => :high_sierra
+    sha256 "39c0cd3bd8059e410e8e76c4482da138df47fbb21b72b7a4f7ad19e8274acfdb" => :sierra
+    sha256 "f080e1e098055748c5413968a78284da7326d36dedb6db978553c4fa7b3c4326" => :el_capitan
   end
 
   depends_on "go" => :build
+
+  conflicts_with "etsh", :because => "both install `tsh` binaries"
 
   def install
     ENV["GOOS"] = "darwin"

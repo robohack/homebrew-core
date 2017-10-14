@@ -1,18 +1,16 @@
 class Presto < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestodb.io"
-  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.165/presto-server-0.165.tar.gz"
-  sha256 "a22a1d912b11755cf8353f3c714740b7bf04237beaf171689ef20ab0590696d8"
+  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.185/presto-server-0.185.tar.gz"
+  sha256 "097940b74ea0d48c1a96450d8df490d4fcc4304a5bf21bd28503a226a2c081d6"
 
   bottle :unneeded
 
   depends_on :java => "1.8+"
 
-  cli_version = version
   resource "presto-cli" do
-    version cli_version
-    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/#{version}/presto-cli-#{version}-executable.jar"
-    sha256 "8b831133ceff433ad7c0e42eea8411baa47e52caceef86e6ee976c70fc68343a"
+    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.185/presto-cli-0.185-executable.jar"
+    sha256 "b97243c5b2d0b9e1cfd85f6cda53c28f0d3db53409460485719508f59c72bd56"
   end
 
   def install
@@ -32,7 +30,7 @@ class Presto < Formula
       -XX:+UseGCOverheadLimit
       -XX:+ExplicitGCInvokesConcurrent
       -XX:+HeapDumpOnOutOfMemoryError
-      -XX:OnOutOfMemoryError=kill -9 %p
+      -XX:+ExitOnOutOfMemoryError
     EOS
 
     (libexec/"etc/config.properties").write <<-EOS.undent
@@ -97,5 +95,6 @@ class Presto < Formula
 
   test do
     system bin/"presto-server", "run", "--help"
+    assert_equal "Presto CLI #{version}", shell_output("#{bin}/presto --version").chomp
   end
 end

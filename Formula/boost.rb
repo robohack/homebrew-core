@@ -1,27 +1,16 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "https://www.boost.org/"
-  revision 1
+  url "https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2"
+  sha256 "9807a5d16566c57fd74fb522764e0b134a8bbe6b6e8967b83afefd30dcd3be81"
   head "https://github.com/boostorg/boost.git"
-
-  stable do
-    url "https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.bz2"
-    sha256 "7bcc5caace97baa948931d712ea5f37038dbb1c5d89b43ad4def4ed7cb683332"
-
-    # Remove for > 1.64.0
-    # "Replace boost::serialization::detail::get_data function."
-    # Upstream PR from 26 Jan 2017 https://github.com/boostorg/mpi/pull/39
-    patch :p2 do
-      url "https://github.com/boostorg/mpi/commit/f5bdcc1.patch"
-      sha256 "c7af75a83fef90fdb9858bc988d64ca569ae8d940396b9bc60a57d63fca2587b"
-    end
-  end
 
   bottle do
     cellar :any
-    sha256 "94c29d2d149a6383fa4050e7cb478e3dcae66895d78b0a0492d8fff63dd73a14" => :sierra
-    sha256 "24ae06f30527b4b2375cc2c375ce1af22e4dc0db04dd65896c80231e46ea0ba8" => :el_capitan
-    sha256 "ab391a24436ffb4e32dd580d4b0de42e25f822d985273f16595ee865d7a5d995" => :yosemite
+    sha256 "b7b199b8c4e40a8a32a9c8852989645c1e1e30e9f11b49927f400299ab60b1cf" => :high_sierra
+    sha256 "3d896801bccfc3f3ee1934e5764a5a613eaae8fda5567deb8e9f8b3fa0c2727f" => :sierra
+    sha256 "97f9486b46396c659741b069697e9acc5e146c8df12631a4981d7ad168f806e2" => :el_capitan
+    sha256 "0970b4eef313fe6188a4318b949a727d658ef31522aebc3ddaa44a877b67444a" => :yosemite
   end
 
   option "with-icu4c", "Build regexp engine with icu support"
@@ -31,20 +20,9 @@ class Boost < Formula
 
   deprecated_option "with-icu" => "with-icu4c"
 
-  if build.cxx11?
-    depends_on "icu4c" => [:optional, "c++11"]
-  else
-    depends_on "icu4c" => :optional
-  end
+  depends_on "icu4c" => :optional
 
   needs :cxx11 if build.cxx11?
-
-  # fix error: no member named 'make_array' in namespace 'boost::serialization'
-  # https://svn.boost.org/trac/boost/ticket/12978
-  patch :p2 do
-    url "https://github.com/boostorg/serialization/commit/1d86261.diff"
-    sha256 "155f603a00975a1702808be072c1420964feac8323de39c111a9d3a363a4ed9a"
-  end
 
   def install
     # Force boost to compile with the desired compiler
@@ -78,6 +56,7 @@ class Boost < Formula
             "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",
+            "-sNO_LZMA=1",
             "install"]
 
     if build.with? "single"

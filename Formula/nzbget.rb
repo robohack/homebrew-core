@@ -1,14 +1,15 @@
 class Nzbget < Formula
   desc "Binary newsgrabber for nzb files"
-  homepage "http://nzbget.net/"
-  url "https://github.com/nzbget/nzbget/releases/download/v18.1/nzbget-18.1-src.tar.gz"
-  sha256 "ddf7f9eda1cc4d6f01cd28a5ee4362ef7a399085cda45a82ffdf250d56393819"
+  homepage "https://nzbget.net/"
+  url "https://github.com/nzbget/nzbget/releases/download/v19.1/nzbget-19.1-src.tar.gz"
+  sha256 "06df42356ac2d63bbc9f7861abe9c3216df56fa06802e09e8a50b05f4ad95ce6"
   head "https://github.com/nzbget/nzbget.git"
 
   bottle do
-    sha256 "cbe259fd1797cbc7d3ed37fbeb039633f20e1b3dfd25c5f319b45d4b7472c6ed" => :sierra
-    sha256 "34b1ec57b94619f6cf72a868339faf8fa8f27ad96ec5b7d771ff5a7351c5c23b" => :el_capitan
-    sha256 "c011158f5c16c10c6906f95a18a50b993c3f0dbf8d37e697c378d55de13cab62" => :yosemite
+    sha256 "0f508d759d085ea42af708598eba3d2f589614f6025f8ca160b93c6170d5576b" => :high_sierra
+    sha256 "b2b460f1f4a850d282b3faa56a0cdc66d7d9f2072e34528fe1fc875f615e3705" => :sierra
+    sha256 "3aa8bd8510dbde22143fa6d9637d664951c4a48758c840548dcee0ce48f3b95f" => :el_capitan
+    sha256 "f9731421aa1289d62d9f30691c3e643e8548eb066d55c72511ad74d994e826e7" => :yosemite
   end
 
   depends_on "pkg-config" => :build

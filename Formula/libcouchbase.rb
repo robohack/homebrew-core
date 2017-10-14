@@ -1,37 +1,31 @@
 class Libcouchbase < Formula
   desc "C library for Couchbase"
   homepage "https://developer.couchbase.com/documentation/server/4.5/sdk/c/start-using-sdk.html"
-  url "https://s3.amazonaws.com/packages.couchbase.com/clients/c/libcouchbase-2.7.4.tar.gz"
-  sha256 "2b2cfb7acffd05f077c51e67ef67b4cf64228875acb08de2e0b07562a8f0b0cc"
+  url "https://s3.amazonaws.com/packages.couchbase.com/clients/c/libcouchbase-2.8.1.tar.gz"
+  sha256 "b48c72b5c407ae0f31ec0634b2d31c3e034f1fcec58c60dd14b711ddca55d214"
   head "https://github.com/couchbase/libcouchbase.git"
 
   bottle do
-    sha256 "42ace37908f48aaee48ebaac970ca1a2bb41dcb76e17912cd704d6868e382480" => :sierra
-    sha256 "bb43818050ed2588c1630b298f838157a3f4e2bca1f547da9aec68aa1c090512" => :el_capitan
-    sha256 "af79e1ce62fd3002a99a5111353e84aea5338c3334d05f3e251a8f601ae44c24" => :yosemite
+    sha256 "c7e69d74a02e0d0ab5791199712652839ab64ed3ffd0c44ed65b4dafcd62bb36" => :high_sierra
+    sha256 "5e587507752ca48c56506ac07115b8a994aa1fced9d9231cc075aad1fc8dfded" => :sierra
+    sha256 "0f88bd920da9825405e966071fc3f6ce56f2318227e2437a1be077d9dba29827" => :el_capitan
   end
 
   option "with-libev", "Build libev plugin"
-  option "without-libevent", "Do not build libevent plugin"
 
   deprecated_option "with-libev-plugin" => "with-libev"
-  deprecated_option "without-libevent-plugin" => "without-libevent"
 
   depends_on "libev" => :optional
   depends_on "libuv" => :optional
-  depends_on "libevent" => :recommended
+  depends_on "libevent"
   depends_on "openssl"
   depends_on "cmake" => :build
 
   def install
-    args = std_cmake_args
-    args << "-DLCB_NO_TESTS=1"
+    args = std_cmake_args << "-DLCB_NO_TESTS=1" << "-DLCB_BUILD_LIBEVENT=ON"
 
-    ["libev", "libevent", "libuv"].each do |dep|
+    ["libev", "libuv"].each do |dep|
       args << "-DLCB_BUILD_#{dep.upcase}=" + (build.with?(dep) ? "ON" : "OFF")
-    end
-    if build.without?("libev") && build.without?("libuv") && build.without?("libevent")
-      args << "-DLCB_NO_PLUGINS=1"
     end
 
     mkdir "LCB-BUILD" do

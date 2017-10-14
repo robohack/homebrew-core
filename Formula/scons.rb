@@ -1,14 +1,22 @@
 class Scons < Formula
   desc "Substitute for classic 'make' tool with autoconf/automake functionality"
   homepage "http://www.scons.org"
-  url "https://downloads.sourceforge.net/project/scons/scons/2.5.1/scons-2.5.1.tar.gz"
-  sha256 "0b25218ae7b46a967db42f2a53721645b3d42874a65f9552ad16ce26d30f51f2"
+  url "https://downloads.sourceforge.net/project/scons/scons/3.0.0/scons-3.0.0.tar.gz"
+  sha256 "0f532f405b98c60b731d231b3c503ab5bf47d89a6f66f70cb62c9249e9f45216"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c74c517cbd71ac009888a308226f60a89b55cfa911c667d3e1f773cb5cac2bd1" => :sierra
-    sha256 "c74c517cbd71ac009888a308226f60a89b55cfa911c667d3e1f773cb5cac2bd1" => :el_capitan
-    sha256 "c74c517cbd71ac009888a308226f60a89b55cfa911c667d3e1f773cb5cac2bd1" => :yosemite
+    sha256 "45b5033015138593fb5b2a6dfa4d74b1db3feff8c6a6e49a8a510682af6bcd3f" => :high_sierra
+    sha256 "45b5033015138593fb5b2a6dfa4d74b1db3feff8c6a6e49a8a510682af6bcd3f" => :sierra
+    sha256 "45b5033015138593fb5b2a6dfa4d74b1db3feff8c6a6e49a8a510682af6bcd3f" => :el_capitan
+  end
+
+  # Remove for > 3.0.0
+  # Upstream commit from 20 Sep 2017 "Support python 2 print statements in SConscripts"
+  patch :p2 do
+    url "https://github.com/SConsProject/scons/commit/2e0de3c5.patch?full_index=1"
+    sha256 "ca9348417478a729f6fdaae62cc25d73a30371c4d467415196246f1d0dcfd195"
   end
 
   def install

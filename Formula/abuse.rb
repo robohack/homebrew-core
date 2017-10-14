@@ -1,5 +1,5 @@
 class Abuse < Formula
-  desc "dark 2D side-scrolling platform game"
+  desc "Dark 2D side-scrolling platform game"
   homepage "http://abuse.zoy.org/"
   url "http://abuse.zoy.org/raw-attachment/wiki/download/abuse-0.8.tar.gz"
   sha256 "0104db5fd2695c9518583783f7aaa7e5c0355e27c5a803840a05aef97f9d3488"
@@ -7,6 +7,7 @@ class Abuse < Formula
 
   bottle do
     cellar :any
+    sha256 "3fdc2ccd00bf320b994747d982b5cbde4b73c45c094c9a0f89acf13aea3eb847" => :high_sierra
     sha256 "6971b6eebf4c00eaaed72a1104a49be63861eabc95d679a0c84040398e320059" => :sierra
     sha256 "456dfbfb6e7486d0c5a50ac01423efabf5243b08d3235c83477681090a42c652" => :el_capitan
     sha256 "3ca083d0d99c00ad26f306c026ef35ee565a24f0171b94457deb64d5e170edf9" => :yosemite

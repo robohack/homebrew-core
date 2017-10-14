@@ -1,14 +1,14 @@
 class Getmail < Formula
   desc "Extensible mail retrieval system with POP3, IMAP4, SSL support"
   homepage "http://pyropus.ca/software/getmail/"
-  url "http://pyropus.ca/software/getmail/old-versions/getmail-4.54.0.tar.gz"
-  sha256 "d45657945353c68785b106dd9c5fae6bc2cec8f99fbb202d9dddd4967f483a65"
+  url "http://pyropus.ca/software/getmail/old-versions/getmail-5.4.tar.gz"
+  sha256 "ba896f7b3fbae4e9e79f7135e6c2b10b281170d2877b91fb2b265c927ed29ac7"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b3100ee5adc9cceeff6e29185032cfc98b29f3780b79b75a4058985fec9722a7" => :sierra
-    sha256 "b3100ee5adc9cceeff6e29185032cfc98b29f3780b79b75a4058985fec9722a7" => :el_capitan
-    sha256 "b3100ee5adc9cceeff6e29185032cfc98b29f3780b79b75a4058985fec9722a7" => :yosemite
+    sha256 "f0b2f0b2b099e8e7c0f78b4c5c8dbb9aa9d55631de470e4b484490a749d41eb5" => :high_sierra
+    sha256 "f0b2f0b2b099e8e7c0f78b4c5c8dbb9aa9d55631de470e4b484490a749d41eb5" => :sierra
+    sha256 "f0b2f0b2b099e8e7c0f78b4c5c8dbb9aa9d55631de470e4b484490a749d41eb5" => :el_capitan
   end
 
   def install

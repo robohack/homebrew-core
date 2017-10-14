@@ -1,14 +1,15 @@
 class Bochs < Formula
   desc "Open source IA-32 (x86) PC emulator written in C++"
   homepage "https://bochs.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/bochs/bochs/2.6.8/bochs-2.6.8.tar.gz"
-  sha256 "79700ef0914a0973f62d9908ff700ef7def62d4a28ed5de418ef61f3576585ce"
+  url "https://downloads.sourceforge.net/project/bochs/bochs/2.6.9/bochs-2.6.9.tar.gz"
+  sha256 "ee5b677fd9b1b9f484b5aeb4614f43df21993088c0c0571187f93acb0866e98c"
   revision 1
 
   bottle do
-    sha256 "b2e82d738775f2a48b8f77cfc8d327d474f9dcb89adbe14c15c80a93ab557cf2" => :sierra
-    sha256 "260f1b38a089d49cf04f9222d1e7fab064a4f97978b7c83fefbfc75785cffa90" => :el_capitan
-    sha256 "40de2be3e8bd6c575b8897bf4dc6d44996af9f63c22216546f656e4e29f87806" => :yosemite
+    sha256 "1acbd357ca0d7394d2ca6ac261a7cbecf4d42d73fac2f5a6e237e7b33a01e51d" => :high_sierra
+    sha256 "8dd191ff5085b435ff26cd53026d8afada7fa9e18d84a985da2a6a9d6b179a64" => :sierra
+    sha256 "395ce5d3047ee0b98c8eb2130a8661d319a0926c19e7ebf6b31fc01dee0e8edf" => :el_capitan
+    sha256 "b32844f457ead67e1a656a1a6d05c0a67d56cc1b68d0ffb60f86d3c8ec0f50cf" => :yosemite
   end
 
   option "with-gdb-stub", "Enable GDB Stub"
@@ -16,6 +17,15 @@ class Bochs < Formula
 
   depends_on "pkg-config" => :build
   depends_on "sdl2" => :recommended
+
+  # Fix pointer cast issue
+  # https://sourceforge.net/p/bochs/patches/537/
+  if DevelopmentTools.clang_build_version >= 900
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/e9b520dd4c/bochs/xcode9.patch"
+      sha256 "373c670083a3e96f4012cfe7356d8b3584e2f0d10196b4294d56670124f5e5e7"
+    end
+  end
 
   def install
     args = %W[
@@ -38,11 +48,10 @@ class Bochs < Formula
       --enable-show-ips
       --enable-logging
       --enable-usb
-      --enable-ne2000
       --enable-cpu-level=6
       --enable-clgd54xx
       --enable-avx
-      --enable-vmx
+      --enable-vmx=2
       --enable-smp
       --enable-long-phy-addres
       --with-term
@@ -70,6 +79,7 @@ class Bochs < Formula
         error: action=report
         info: action=ignore
         debug: action=ignore
+        display_library: nogui
       EOS
 
     expected = <<-ERR.undent

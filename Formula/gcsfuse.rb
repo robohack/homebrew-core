@@ -1,15 +1,16 @@
 class Gcsfuse < Formula
   desc "User-space file system for interacting with Google Cloud"
   homepage "https://github.com/googlecloudplatform/gcsfuse"
-  url "https://github.com/GoogleCloudPlatform/gcsfuse/archive/v0.21.0.tar.gz"
-  sha256 "e379abf9e6ce1f9f522c03a86407803e2799b8d8abdbdb6396ba2c447655c0d7"
+  url "https://github.com/GoogleCloudPlatform/gcsfuse/archive/v0.23.0.tar.gz"
+  sha256 "beb90ef68d5ab673bf09357c90d1ace94695bebb6f823ba715a92b30e61e7c39"
   head "https://github.com/GoogleCloudPlatform/gcsfuse.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "23a599117b658f33dc999c6246ea881f1d6651fe15b5e5142a2120c3ed63a93f" => :sierra
-    sha256 "acad03f1ad38e9f53f6120d7194160767c4aefb8f7bc480cec0ab71637edf305" => :el_capitan
-    sha256 "817b2e3443bf39027b7aadc20cfde103801cbf0447e641774718ce3ac4865781" => :yosemite
+    sha256 "4b0e7e4e145c199f18d21293e4002b8a6d3e626e5b5f330daee08ccfc3f1d7d9" => :high_sierra
+    sha256 "9f42846472bbe6bc06b1016f6494415b16e148de6262fdcbb5bf9677fbee0a36" => :sierra
+    sha256 "f4a837589708aed85da5762394004fa2398a2e907b37cb1c9554282578e635e7" => :el_capitan
+    sha256 "4f1e5e0db02f9f148a61d9062626f754ba3f55dcf8df9ff69fc0f84cf5363577" => :yosemite
   end
 
   depends_on :osxfuse

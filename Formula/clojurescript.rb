@@ -1,12 +1,13 @@
 class Clojurescript < Formula
   desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
-  url "https://github.com/clojure/clojurescript/releases/download/r1.9.293/cljs.jar"
-  version "1.9.293"
-  sha256 "a008956fca610e6af2caa49c174f85679ca80bf0ff3f94537a5094253ce3a120"
+  url "https://github.com/clojure/clojurescript/releases/download/r1.9.908/cljs.jar"
+  sha256 "468f891f042fa673196da39890598e537854ef833735bb6e52ac5d2352ac19cf"
   head "https://github.com/clojure/clojurescript.git"
 
   bottle :unneeded
+
+  depends_on :java => "1.8+"
 
   def install
     libexec.install "cljs.jar"
@@ -15,7 +16,7 @@ class Clojurescript < Formula
 
   def caveats; <<-EOS.undent
     This formula is useful if you need to use the ClojureScript compiler directly.
-    For a more integrated workflow, Leiningen with lein-cljsbuild is recommended.
+    For a more integrated workflow use Leiningen, Boot, or Maven.
     EOS
   end
 

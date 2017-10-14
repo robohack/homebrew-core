@@ -1,24 +1,13 @@
 class RubyAT23 < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-
-  url "https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.4.tar.xz"
-  sha256 "341cd9032e9fd17c452ed8562a8d43f7e45bfe05e411d0d7d627751dd82c578c"
-
-  # Reverts an upstream commit which incorrectly tries to install headers
-  # into SDKROOT, if defined
-  # See https://bugs.ruby-lang.org/issues/11881
-  # The issue has been fixed on HEAD as of 1 Jan 2016, but has not been
-  # backported to the 2.3 branch yet and patch is still required.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/ba8cc6b88e6b7153ac37739e5a1a6bbbd8f43817/ruby/mkconfig.patch"
-    sha256 "929c618f74e89a5e42d899a962d7d2e4af75716523193af42626884eaba1d765"
-  end
+  url "https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.5.tar.xz"
+  sha256 "7d3a7dabb190c2da06c963063342ca9a214bcd26f2158e904f0ec059b065ffda"
 
   bottle do
-    sha256 "51a3027c44128bbb9655b9d793a2bd2b14496870bc8ab353ab62b853871d0e35" => :sierra
-    sha256 "be70a90b4589fa664ece570627ab5886373eb01db3e57555588b1a81d5a532bb" => :el_capitan
-    sha256 "3d0cb6bdbac9062f6c3ee880013e2282f33351d0e6dd7951c3fe43f21c9362d3" => :yosemite
+    sha256 "ecf89c3600423c8cff3c84c9d0aafea10b093994f831f0c7169310823b7dcdf4" => :high_sierra
+    sha256 "98867e66b8b1068389483c8403821aa496aea11efe04e223e51e8d7a6c2c29f8" => :sierra
+    sha256 "cb707841db0b23de225442f709716329517285c62d483a5e849245ddbcd5da20" => :el_capitan
   end
 
   keg_only :versioned_formula
@@ -110,7 +99,7 @@ class RubyAT23 < Formula
   end
 
   def rubygems_bindir
-    "#{HOMEBREW_PREFIX}/bin"
+    "#{HOMEBREW_PREFIX}/lib/ruby/gems/#{abi_version}/bin"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -176,6 +165,14 @@ class RubyAT23 < Formula
       end
     end
     EOS
+  end
+
+  def caveats; <<-EOS.undent
+    By default, binaries installed by gem will be placed into:
+      #{rubygems_bindir}
+
+    You may want to add this to your PATH.
+  EOS
   end
 
   test do

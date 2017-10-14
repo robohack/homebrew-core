@@ -9,6 +9,7 @@ class QtAT57 < Formula
   head "https://code.qt.io/qt/qt5.git", :branch => "5.7", :shallow => false
 
   bottle do
+    sha256 "32a455f59b246b7fb5d6b3d239ab7c4c0b53d5e7052eef3bd647786d003b5629" => :high_sierra
     sha256 "e8eb4c729e6c3a788c982a740efc95bc96c0055ae929c5662b603bbd7a5a76b0" => :sierra
     sha256 "c1a3f9d43de1cf014060b6d66575ae97e6ae77d9102c28971884a7b28a654e0e" => :el_capitan
     sha256 "a5fe56be34bf03a68d0c42aae04d381ce1254cd3e72959793af33f4800f602ec" => :yosemite
@@ -51,6 +52,20 @@ class QtAT57 < Formula
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/e8fe6567/qt5/restore-pc-files.patch"
     sha256 "48ff18be2f4050de7288bddbae7f47e949512ac4bcd126c2f504be2ac701158b"
+  end
+
+  if MacOS.version >= :high_sierra
+    # Fix QTBUG-62266
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/0af7ca663c/qt%405.7/QTBUG-62266.patch"
+      sha256 "60471b893eb394db18dacae8bd38727a955742626da641dd980dbb87a8808e9e"
+    end
+
+    # Fix QTBUG-62658
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/48b7e84036/qt%405.7/QTBUG-62658.patch"
+      sha256 "1fe7fcbff566bcec3ef9c253f82a8474a0c08f4965565d5d1135df973cd75398"
+    end
   end
 
   def install
@@ -162,8 +177,8 @@ class QtAT57 < Formula
 
     system bin/"qmake", testpath/"hello.pro"
     system "make"
-    assert File.exist?("hello")
-    assert File.exist?("main.o")
+    assert_predicate testpath/"hello", :exist?
+    assert_predicate testpath/"main.o", :exist?
     system "./hello"
   end
 end

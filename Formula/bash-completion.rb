@@ -6,13 +6,14 @@ class BashCompletion < Formula
   url "https://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2"
   mirror "http://pkgs.fedoraproject.org/repo/pkgs/bash-completion/bash-completion-1.3.tar.bz2/a1262659b4bbf44dc9e59d034de505ec/bash-completion-1.3.tar.bz2"
   sha256 "8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec"
-  revision 2
+  revision 3
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fff005f76bbc76442d6106429651df40180543840a1e145eddc58fdd57db1b80" => :sierra
-    sha256 "fff005f76bbc76442d6106429651df40180543840a1e145eddc58fdd57db1b80" => :el_capitan
-    sha256 "fff005f76bbc76442d6106429651df40180543840a1e145eddc58fdd57db1b80" => :yosemite
+    sha256 "b069be5574bdf6d12fd1fda17c3162467b68165541166d95d1a9474653a63abc" => :high_sierra
+    sha256 "58be92ef01d5068f37b1c00af8e9b202bdb409c93121bb0e07dcbb5e55dc3be2" => :sierra
+    sha256 "58be92ef01d5068f37b1c00af8e9b202bdb409c93121bb0e07dcbb5e55dc3be2" => :el_capitan
+    sha256 "58be92ef01d5068f37b1c00af8e9b202bdb409c93121bb0e07dcbb5e55dc3be2" => :yosemite
   end
 
   conflicts_with "bash-completion@2", :because => "Differing version of same formula"
@@ -25,6 +26,10 @@ class BashCompletion < Formula
     sha256 "bd242a35b8664c340add068bcfac74eada41ed26d52dc0f1b39eebe591c2ea97"
   end
 
+  # Backports (a variant of) the following upstream patch to fix man completion:
+  # https://anonscm.debian.org/cgit/bash-completion/bash-completion.git/patch/completions/man?id=fb2d657fac6be93a1c4ffa76018d8042859e0a03
+  patch :DATA
+
   def install
     inreplace "bash_completion" do |s|
       s.gsub! "/etc/bash_completion", etc/"bash_completion"
@@ -36,7 +41,7 @@ class BashCompletion < Formula
   end
 
   def caveats; <<-EOS.undent
-    Add the following lines to your ~/.bash_profile:
+    Add the following line to your ~/.bash_profile:
       [ -f #{etc}/bash_completion ] && . #{etc}/bash_completion
     EOS
   end
@@ -45,3 +50,15 @@ class BashCompletion < Formula
     system "bash", "-c", ". #{etc}/profile.d/bash_completion.sh"
   end
 end
+__END__
+--- a/completions/man
++++ b/completions/man
+@@ -27,7 +27,7 @@
+     fi
+
+     uname=$( uname -s )
+-    if [[ $uname == @(Linux|GNU|GNU/*|FreeBSD|Cygwin|CYGWIN_*) ]]; then
++    if [[ $uname == @(Darwin|Linux|GNU|GNU/*|FreeBSD|Cygwin|CYGWIN_*) ]]; then
+         manpath=$( manpath 2>/dev/null || command man --path )
+     else
+         manpath=$MANPATH

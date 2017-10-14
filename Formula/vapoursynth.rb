@@ -3,20 +3,21 @@ class Vapoursynth < Formula
 
   desc "Video processing framework with simplicity in mind"
   homepage "http://www.vapoursynth.com"
-  url "https://github.com/vapoursynth/vapoursynth/archive/R37.tar.gz"
-  sha256 "25fee086442f07f8b6caf1508c18e6a694d52e125eec5959f89570990e6070bc"
+  url "https://github.com/vapoursynth/vapoursynth/archive/R39.tar.gz"
+  sha256 "792a0002c71a7fc9d1d366df8d463f0b9918df4f871e4ab9a87120163a44c5c7"
   head "https://github.com/vapoursynth/vapoursynth.git"
 
   bottle do
-    sha256 "1b7b7b169cf3b275c4189f0fe30b0270874253d7fc1d9c299b45941fedead3cd" => :sierra
-    sha256 "b976b0a202f2174d9428884ed9e1b4b608cba94585686f27f7dfbe39a5322efd" => :el_capitan
+    sha256 "395ceeb23551cfe36b1fcacf15c3dce35697373b287caf59e6f1918b874e6c3a" => :high_sierra
+    sha256 "223896633f0a26a4fa6281fb47ce3339071b5e2eb00b69ce8add6988984d282b" => :sierra
+    sha256 "f1fce97b0975d8e8b9651e02f89e762958da784ff5cd2600f13e943fc9a23851" => :el_capitan
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "yasm" => :build
+  depends_on "nasm" => :build
 
   depends_on "libass"
   depends_on :macos => :el_capitan # due to zimg dependency
@@ -25,8 +26,8 @@ class Vapoursynth < Formula
   depends_on "zimg"
 
   resource "Cython" do
-    url "https://files.pythonhosted.org/packages/2f/ae/0bb6ca970b949d97ca622641532d4a26395322172adaf645149ebef664eb/Cython-0.25.1.tar.gz"
-    sha256 "e0941455769335ec5afb17dee36dc3833b7edc2ae20a8ed5806c58215e4b6669"
+    url "https://files.pythonhosted.org/packages/10/32/21873ff231e069f860098b1602bb9e3ae2806d2f73ba661b5d806f200243/Cython-0.27.1.tar.gz"
+    sha256 "e6840a2ba2704f4ffb40e454c36f73aeb440a4005453ee8d7ff6a00d812ba176"
   end
 
   def install
@@ -39,7 +40,9 @@ class Vapoursynth < Formula
   end
 
   test do
-    system bin/"vspipe", "--version"
+    py3 = Language::Python.major_minor_version "python3"
+    ENV.prepend_path "PYTHONPATH", lib/"python#{py3}/site-packages"
     system "python3", "-c", "import vapoursynth"
+    system bin/"vspipe", "--version"
   end
 end

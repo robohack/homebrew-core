@@ -1,13 +1,14 @@
 class Gnumeric < Formula
   desc "GNOME Spreadsheet Application"
   homepage "https://projects.gnome.org/gnumeric/"
-  url "https://download.gnome.org/sources/gnumeric/1.12/gnumeric-1.12.34.tar.xz"
-  sha256 "0b4920812d82ec4c25204543dff9dd3bdbac17bfaaabd1aa02d47fbe2981c725"
+  url "https://download.gnome.org/sources/gnumeric/1.12/gnumeric-1.12.35.tar.xz"
+  sha256 "77b1e3ce523578a807767ad71680fb865ac021d7bfadf93eada99ae094c06c0a"
 
   bottle do
-    sha256 "928a5374903cb03433f98d7c94dbbbf10f38fbaa8aaf963d67be98f64b122103" => :sierra
-    sha256 "7742e84a1d57cd6f7965e34d99b84ffbad27e17e563119231e8f339cb4e8123b" => :el_capitan
-    sha256 "9c73013f58f6c088b26347d5b9d14a89b733986814c12796d601be81bb7eb11c" => :yosemite
+    rebuild 1
+    sha256 "eee1f26786c0c4773616dc6e1a2bd1e60f1697321310e99f0e875e45300f59f8" => :high_sierra
+    sha256 "606c2d0fc786ee45c0a7e3349def6e596ce666518d53dc2ef583a309da5a9b8e" => :sierra
+    sha256 "1955c0ae14d94c849b399c19485bc16f7bb981ee84ecc926d8cefd1494a67b39" => :el_capitan
   end
 
   option "with-python-scripting", "Enable Python scripting."
@@ -20,7 +21,7 @@ class Gnumeric < Formula
   depends_on "gettext"
   depends_on "goffice"
   depends_on "rarian"
-  depends_on "gnome-icon-theme"
+  depends_on "adwaita-icon-theme"
   depends_on "pygobject" if build.with? "python-scripting"
 
   def install

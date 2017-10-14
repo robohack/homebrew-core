@@ -3,15 +3,14 @@ require "language/node"
 class Webpack < Formula
   desc "Bundler for JavaScript and friends"
   homepage "https://webpack.js.org/"
-  url "https://registry.npmjs.org/webpack/-/webpack-2.4.1.tgz"
-  sha256 "6c7998db7719986842886b77cbabb137639bc06541d093b567a4882c934bd61b"
+  url "https://registry.npmjs.org/webpack/-/webpack-3.7.1.tgz"
+  sha256 "1e135fc189ede52004d4c8d28e9866257d7c8fde1657b54733fd1c20ffe6ca2a"
   head "https://github.com/webpack/webpack.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "7d3387e7084970cd6d9be909871b31ec6265bc68acc4861b0732525f938b94af" => :sierra
-    sha256 "da1aedef083b3e640fdb1e497ab94d0a6bacc9ce478c9b5774ad7f41a143f7ba" => :el_capitan
-    sha256 "c75f4c38f7d38f3dec66f0c0bca7e99ede6d30a3463e77b0c8f058bbed2ac051" => :yosemite
+    sha256 "aab55cf92fbef20e21cfbec4979eba43bf9d857315718eb0a8cfa0a77db771ad" => :high_sierra
+    sha256 "858227c078cdf26403d6bd3a5ad0ef16ae117feacb0b5d86153e346935edcc72" => :sierra
+    sha256 "c82a8a4eabfb3d80cd30016934fdf5b0a2759e78c5a5c184d72bcea31ff95a7d" => :el_capitan
   end
 
   depends_on "node"
@@ -33,6 +32,6 @@ class Webpack < Formula
     EOS
 
     system bin/"webpack", "index.js", "bundle.js"
-    assert File.exist?("bundle.js"), "bundle.js was not generated"
+    assert_predicate testpath/"bundle.js", :exist?, "bundle.js was not generated"
   end
 end

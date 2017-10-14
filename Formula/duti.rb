@@ -8,6 +8,7 @@ class Duti < Formula
   bottle do
     cellar :any_skip_relocation
     rebuild 2
+    sha256 "7d2f8e2a40a50e580c10af176ce1f3aacab03059e671705d02309ac46382b993" => :high_sierra
     sha256 "8f34c5664b0a9c05274fd67102fca6c969f7dc966279b2ca0f11906df3d2d03a" => :sierra
     sha256 "53748f3ad97a48b468326e66d869e20c05fc1f67219ac3ea8a147b558717ee45" => :el_capitan
     sha256 "c2661fc4e59d5cc941a416bf7abad035af3d15f75e7bca73d2bc29706d89f560" => :yosemite
@@ -17,11 +18,10 @@ class Duti < Formula
   depends_on "autoconf" => :build
 
   # Add hardcoded SDK path for El Capitan or later.
-  # See https://github.com/moretension/duti/pull/20.
   if MacOS.version >= :el_capitan
     patch do
-      url "https://github.com/moretension/duti/pull/20.patch"
-      sha256 "8fab50d10242f8ebc4be10e9a9e11d3daf91331d438d06f692fb6ebd6cbec2f8"
+      url "https://github.com/moretension/duti/commit/7dbcae8.patch?full_index=1"
+      sha256 "09ea9bec926f38beb217c597fc224fc19c972e44835783a57fe8a54450cb8fb6"
     end
   end
 
@@ -32,6 +32,7 @@ class Duti < Formula
   end
 
   test do
-    system "#{bin}/duti", "-x", "txt"
+    assert_match "com.apple.TextEdit", shell_output("#{bin}/duti -l public.text"),
+                 "TextEdit not found among the handlers for public.text"
   end
 end

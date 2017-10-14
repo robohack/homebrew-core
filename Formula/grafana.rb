@@ -1,21 +1,20 @@
-require "language/node"
-
 class Grafana < Formula
   desc "Gorgeous metric visualizations and dashboards for timeseries databases."
-  homepage "https://grafana.com/"
-  url "https://github.com/grafana/grafana/archive/v4.1.1.tar.gz"
-  sha256 "34ecd6c7d3e30b7b0eecf78f57383ad3b4754f5da9da77f031ca4b5866fe9893"
-
+  homepage "https://grafana.com"
+  url "https://github.com/grafana/grafana/archive/v4.5.2.tar.gz"
+  sha256 "bd0db92baa964b222b2da5bdb937aa1b3afff6ba5c6ef5d32f8c1a5909e326a2"
   head "https://github.com/grafana/grafana.git"
 
   bottle do
-    sha256 "36e61585e585aef974a99c8169060a48efa3891e3cd3d74fde35a35d34024052" => :sierra
-    sha256 "d9c0db0692a96c3f386cd94d73687adc37f74d6a2098c2559cae9030fcf9bd5a" => :el_capitan
-    sha256 "85ac4a720c9b3fe8179f6ccc07a54402b1e228d508a780f0e11f96ff9c3f89c3" => :yosemite
+    cellar :any_skip_relocation
+    sha256 "53b862eba615d034e700cf497ac298b85231a2f178eeb54c3294be9732daedd2" => :high_sierra
+    sha256 "88e0db96b1539dfad9fcb368c887f6cc6678d7fb69dfb452ac2e66e5a7ddf1f1" => :sierra
+    sha256 "002a5be3d23082b8d25ed9d5168e013c73117b1ec8351ee3dbfdd622302a2c75" => :el_capitan
   end
 
   depends_on "go" => :build
   depends_on "node" => :build
+  depends_on "yarn" => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -23,11 +22,14 @@ class Grafana < Formula
     grafana_path.install buildpath.children
 
     cd grafana_path do
-      system "go", "run", "build.go", "setup"
       system "go", "run", "build.go", "build"
-      system "npm", "install", *Language::Node.local_npm_install_args
-      system "npm", "install", "grunt-cli", *Language::Node.local_npm_install_args
-      system "node_modules/grunt-cli/bin/grunt", "build"
+
+      system "yarn", "install", "--ignore-engines"
+
+      args = ["build"]
+      # Avoid PhantomJS error "unrecognized selector sent to instance"
+      args << "--force" unless build.bottle?
+      system "node_modules/grunt-cli/bin/grunt", *args
 
       bin.install "bin/grafana-cli"
       bin.install "bin/grafana-server"

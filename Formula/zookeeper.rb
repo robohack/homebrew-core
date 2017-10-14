@@ -1,14 +1,16 @@
 class Zookeeper < Formula
   desc "Centralized server for distributed coordination of services"
   homepage "https://zookeeper.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz"
-  sha256 "e7f340412a61c7934b5143faef8d13529b29242ebfba2eba48169f4a8392f535"
+  url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz"
+  mirror "http://mirror.nbtelecom.com.br/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz"
+  sha256 "7f7f5414e044ac11fee2a1e0bc225469f51fb0cdf821e67df762a43098223f27"
 
   bottle do
     cellar :any
-    sha256 "bbc85efad319f22fb13a453cfece11636eaafb8cc4ff0fd18bb78178a154629e" => :sierra
-    sha256 "a48486dcbf0155d12340e8ca6beae48d096719a0a7864726f17aacb7adf0efce" => :el_capitan
-    sha256 "bba0b4ed698c79f2bedb0d26a161107570cbcca88a88599587880c543626d0f6" => :yosemite
+    rebuild 1
+    sha256 "08431d9c2f04f5a735149f374975df4f2e0d8140b1cc901f505d379ef7e20fe0" => :high_sierra
+    sha256 "8c7304be183d4c28c0f5d88e22626188c76794bee004e1b330c3e79bf5ae9d53" => :sierra
+    sha256 "2d792cb3963a7caf57922635888ae4e3cf363ef5a81d23f13a11d0ee42a780cf" => :el_capitan
   end
 
   head do
@@ -45,7 +47,7 @@ class Zookeeper < Formula
   def default_log4j_properties
     <<-EOS.undent
       log4j.rootCategory=WARN, zklog
-      log4j.appender.zklog = org.apache.log4j.FileAppender
+      log4j.appender.zklog = org.apache.log4j.RollingFileAppender
       log4j.appender.zklog.File = #{var}/log/zookeeper/zookeeper.log
       log4j.appender.zklog.Append = true
       log4j.appender.zklog.layout = org.apache.log4j.PatternLayout
@@ -158,7 +160,5 @@ class Zookeeper < Formula
   test do
     output = shell_output("#{bin}/zkServer -h 2>&1")
     assert_match "Using config: #{etc}/zookeeper/zoo.cfg", output
-    output = shell_output("ZOOCFGDIR=/tmp #{bin}/zkServer -h 2>&1")
-    assert_match "Using config: /tmp/zoo.cfg", output
   end
 end

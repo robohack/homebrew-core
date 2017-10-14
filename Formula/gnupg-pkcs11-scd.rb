@@ -1,16 +1,19 @@
 class GnupgPkcs11Scd < Formula
   desc "Enable the use of PKCS#11 tokens with GnuPG"
   homepage "https://gnupg-pkcs11.sourceforge.io"
-  url "https://github.com/alonbl/gnupg-pkcs11-scd/releases/download/gnupg-pkcs11-scd-0.7.6/gnupg-pkcs11-scd-0.7.6.tar.bz2"
-  sha256 "2962dc39a80c5aa9e71f0b847de8f66a9f02b620696d213bb138c17ffec9f7af"
+  url "https://github.com/alonbl/gnupg-pkcs11-scd/releases/download/gnupg-pkcs11-scd-0.9.1/gnupg-pkcs11-scd-0.9.1.tar.bz2"
+  sha256 "abd3d13eb889c3793da319ddedd0f9b688572abb51b050d8284d1b44dfca94a9"
 
   bottle do
     cellar :any
-    sha256 "038f17f2991af6a5dff4b951e6626db731c7028604df7d39ea1e81b488c33cfe" => :sierra
-    sha256 "61573ec6f827dc0743a4929d0516fea8ed2ed96a4eef541274769d67298e415e" => :el_capitan
-    sha256 "8188dd42d4251fc2a9f381d4c476c47a10a84315717e2c312a851cece85e648a" => :yosemite
+    sha256 "b1b94851685ebb8dc920e4e5212c2b7effa2e831f184d8b8e66e44b1c9630d93" => :high_sierra
+    sha256 "eccf8f2df5f2007142529fd3b34085ef3f81500173dc6fccd0a94dfe76c7ad19" => :sierra
+    sha256 "0b236bc743da30e0db9458d55a1e511c792d9ed85c97c726a87b5932e8a21dc7" => :el_capitan
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "libgpg-error"
   depends_on "libassuan"
@@ -18,15 +21,18 @@ class GnupgPkcs11Scd < Formula
   depends_on "pkcs11-helper"
 
   def install
+    system "autoreconf", "-fiv"
     system "./configure", "--disable-dependency-tracking",
                           "--with-libgpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}",
                           "--with-libassuan-prefix=#{Formula["libassuan"].opt_prefix}",
                           "--with-libgcrypt-prefix=#{Formula["libgcrypt"].opt_prefix}",
                           "--prefix=#{prefix}"
+    system "make"
+    system "make", "check"
     system "make", "install"
   end
 
   test do
-    system "#{bin}/gnupg-pkcs11-scd --help > /dev/null ; [ $? -eq 1 ]"
+    system "#{bin}/gnupg-pkcs11-scd", "--help"
   end
 end

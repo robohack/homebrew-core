@@ -1,13 +1,13 @@
 class Librsvg < Formula
   desc "Library to render SVG files using Cairo"
   homepage "https://live.gnome.org/LibRsvg"
-  url "https://download.gnome.org/sources/librsvg/2.40/librsvg-2.40.17.tar.xz"
-  sha256 "e6f6c5cbecc405bb945c7cd15061276035ae3173bbb3bb25e8a916779c7f69cc"
+  url "https://download.gnome.org/sources/librsvg/2.40/librsvg-2.40.19.tar.xz"
+  sha256 "612b4d8b8609036f5d899be3fe70d9866b5f6ac5c971154c1c0ef7242216c1f7"
 
   bottle do
-    sha256 "e05329eb1c45b6b31c6c7be6ac1447462e65b4cbbd0030e8fe1a6ccc0d33f274" => :sierra
-    sha256 "7b737acced525fe16ffc497641133e6d0f17fd610d5e9ae90adca894c4ce0427" => :el_capitan
-    sha256 "8bf5bf795950832d804397c8ddfafc61ad1e98a93ac2f6d880b24bb3c8e05e18" => :yosemite
+    sha256 "072c7a4450eee5154aa380ada8cd193ca37f81ff1d3eaeb21a7e80eae384392b" => :high_sierra
+    sha256 "a764af163564b1a20b4d85b8ce408cacd28e3dfdc369a31341edd788be34dde8" => :sierra
+    sha256 "2be12f4d27cd0b87cefcb526ad4af4dde9555fe67e64b2218d4d15d8a58e2615" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
@@ -16,7 +16,6 @@ class Librsvg < Formula
   depends_on "glib"
   depends_on "libcroco"
   depends_on "pango"
-  depends_on "libgsf" => :optional
   depends_on "gtk+3" => :optional
 
   def install
@@ -28,7 +27,6 @@ class Librsvg < Formula
       --enable-pixbuf-loader=yes
       --enable-introspection=yes
     ]
-    args << "--enable-svgz" if build.with? "libgsf"
 
     system "./configure", *args
 

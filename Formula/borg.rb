@@ -2,12 +2,13 @@ require "language/go"
 
 class Borg < Formula
   desc "Terminal based search engine for bash commands"
-  homepage "https://ok-b.org/"
+  homepage "https://github.com/ok-borg/borg"
   url "https://github.com/ok-borg/borg/archive/v0.0.3.tar.gz"
   sha256 "d90a55b9c25c2b1fa0c662f1f22fa79f19e77479ad10368756ddf2fa9bee21cc"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "9fe24cedf3b86f48d3d70a22cd161145d690fb0592d6169ccc175e874a89a209" => :high_sierra
     sha256 "bd251596f570c3ec103d60ad04f78626c69a79cc20fe99f5bc483ffce12b695f" => :sierra
     sha256 "f88e6457bfdd91b124d18395f80c988ae0ef4020153f43028ccdfd4e5fdff0e8" => :el_capitan
     sha256 "4b4c4781a4b90104c1bda9243bb3d8f901eba9e57a3e2f2d923bf573e5065819" => :yosemite

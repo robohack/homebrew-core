@@ -1,13 +1,14 @@
 class Nagios < Formula
   desc "Network monitoring and management system"
   homepage "https://www.nagios.org/"
-  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.3.1/nagios-4.3.1.tar.gz"
-  sha256 "dfc2f5f146eb508b2a28d28af7c338ef9eb604327efdc50142642026f7e79f82"
+  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.3.4/nagios-4.3.4.tar.gz"
+  sha256 "c90b7812d9e343db12be19a572e15c415c5d6353a91c5e226e432c2d4aaa44f1"
 
   bottle do
-    sha256 "79647a680bf4c5b99ae068df83e3a95f97ecf9c8fb4d68c04e625a79e63ce958" => :sierra
-    sha256 "5aef5640ea45b147e93b42e3dfaded072c6e00220e640406b24ee4a49995ea0a" => :el_capitan
-    sha256 "7edc0e4ad782cee30cdfc1ec0a1f632e76aaabaf97c6b686b151ac0e7396b95e" => :yosemite
+    sha256 "d1d4071289fd037542a4f36f205ba522d3aae397e5379def5c402e6befb19f72" => :high_sierra
+    sha256 "979dbfa690a58f825c7c06376e2c27ed0b680a1415a996a4666325a2dfaf9ed3" => :sierra
+    sha256 "0f33981e12c49a84137d57bfd3c9163da1632ab9c1a9ab97f699d4a7f722811a" => :el_capitan
+    sha256 "a521392cf589fab9d9dda30b4cb1e5a7c23baf22b898114a3d65b40a830b2a81" => :yosemite
   end
 
   depends_on "gd"
@@ -62,7 +63,7 @@ class Nagios < Formula
     system "make", "install-webconf"
   end
 
-  def postinstall
+  def post_install
     (var/"lib/nagios/rw").mkpath
 
     config = etc/"nagios/nagios.cfg"

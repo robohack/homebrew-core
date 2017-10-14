@@ -1,16 +1,16 @@
 class Metricbeat < Formula
   desc "Collect metrics from your systems and services."
   homepage "https://www.elastic.co/products/beats/metricbeat"
-  url "https://github.com/elastic/beats/archive/v5.3.1.tar.gz"
-  sha256 "392c647fd3a4fd40b70d911950f38c0fd65a3ad4bb8548fcd0afd77c01d31d9e"
+  url "https://github.com/elastic/beats/archive/v5.6.3.tar.gz"
+  sha256 "52a4c9094287f725a089e161dc71d9cdf0caf73595e8835a5d0636d3ad333bbe"
 
   head "https://github.com/elastic/beats.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3c17d765b8ae9523f19a82a722a63f3f2753a2d80e355e89721ba4463c7d21d3" => :sierra
-    sha256 "fd9d98d67aa69becd06b8bbddc7d97f53c1a7cf00d195f96e7df7d51d2e7fe91" => :el_capitan
-    sha256 "aab5550bfdb9713464346ebdd63659aedf0edf86bec246c1b85584a77b280062" => :yosemite
+    sha256 "8b0e10adad19b779a0eaca9b54f27156e306850d1ebb00f5ee7596b22743365f" => :high_sierra
+    sha256 "2783b43ecf5955adb13c988a01881db073d8b2c9ff3ca0dcc5aa0a72072a88a8" => :sierra
+    sha256 "f20449c667532200439d04552e47fe389863abdc03308cc398836539fb0a1d99" => :el_capitan
   end
 
   depends_on "go" => :build
@@ -25,9 +25,11 @@ class Metricbeat < Formula
       system "make"
       libexec.install "metricbeat"
 
+      (etc/"metricbeat").install "metricbeat.full.yml"
       (etc/"metricbeat").install "metricbeat.yml"
       (etc/"metricbeat").install "metricbeat.template.json"
       (etc/"metricbeat").install "metricbeat.template-es2x.json"
+      (etc/"metricbeat").install "metricbeat.template-es6x.json"
     end
 
     (bin/"metricbeat").write <<-EOS.undent
@@ -77,7 +79,7 @@ class Metricbeat < Formula
 
     begin
       sleep 2
-      assert File.exist? testpath/"data/metricbeat"
+      assert_predicate testpath/"data/metricbeat", :exist?
     ensure
       Process.kill("TERM", metricbeat_pid)
     end

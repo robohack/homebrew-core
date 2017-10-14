@@ -1,14 +1,14 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.0.3.tar.bz2"
-  sha256 "60fa21550b278b41f58701af31c9f2b121badf271fb9d7642f6d35bfbea8e282"
+  url "https://downloads.powerdns.com/releases/pdns-4.0.4.tar.bz2"
+  sha256 "d974ab89de69477c7f581a3233bc731eacbb43d479291e472b2c531c83b6d763"
 
   bottle do
     rebuild 1
-    sha256 "1cbf7b9fee0547821a2e1272024a8f422f3a7d29352189fd31350058a48a9fa1" => :sierra
-    sha256 "21d3740b76c2db623bd0af082b19428491a8015ceb66a43b63ddc2bb0e582442" => :el_capitan
-    sha256 "b16f12210c373ed1c75b620617a59c74b5b458f7e151fe1ac5483e33586b42ed" => :yosemite
+    sha256 "1ddd05ec549ad270acf46184f617a0ad919dbe0a64049f2fb886dd444c05d256" => :high_sierra
+    sha256 "3f2d038fcdbdd1893218e65972ec7231484824169492af0be78a36de4ea349a7" => :sierra
+    sha256 "887996ed6bdca5b0beb0e1e327c83f40d94696f29ed83e2bd68f67f0ca7cb9cd" => :el_capitan
   end
 
   head do
@@ -21,6 +21,7 @@ class Pdns < Formula
   end
 
   option "with-postgresql", "Enable the PostgreSQL backend"
+  option "with-remote", "enable the Remote backend"
 
   deprecated_option "pgsql" => "with-postgresql"
   deprecated_option "with-pgsql" => "with-postgresql"
@@ -31,6 +32,13 @@ class Pdns < Formula
   depends_on "openssl"
   depends_on "sqlite"
   depends_on :postgresql => :optional
+
+  # Use upstream commit that fixes build with Xcode 9
+  # https://github.com/PowerDNS/pdns/pull/4940
+  patch do
+    url "https://github.com/PowerDNS/pdns/commit/885bddbd.patch?full_index=1"
+    sha256 "a6c08599f8b6e368eaec99614e09da49be213666850c44101673fe2b3b4c2558"
+  end
 
   def install
     args = %W[
@@ -43,6 +51,8 @@ class Pdns < Formula
     # Include the PostgreSQL backend if requested
     if build.with? "postgresql"
       args << "--with-modules=gsqlite3 gpgsql"
+    elsif build.with? "remote"
+      args << "--with-modules=gsqlite3 remote"
     else
       # SQLite3 backend only is the default
       args << "--with-modules=gsqlite3"

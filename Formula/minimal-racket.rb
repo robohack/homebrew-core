@@ -1,14 +1,13 @@
 class MinimalRacket < Formula
   desc "Modern programming language in the Lisp/Scheme family"
   homepage "https://racket-lang.org/"
-  url "https://mirror.racket-lang.org/installers/6.8/racket-minimal-6.8-src-builtpkgs.tgz"
-  version "6.8"
-  sha256 "db17e919cd4216a9fdfc6f7c49ba09f67927000d128e2ba8ada82d6fb3df3e20"
+  url "https://mirror.racket-lang.org/installers/6.10.1/racket-minimal-6.10.1-src-builtpkgs.tgz"
+  sha256 "a6d80de7b286ee6a683b41623942c83c4d2965dee5d3b5e25f220eec4952264d"
 
   bottle do
-    sha256 "23ae8dafa6071ec3b468898e3cd75f369efdff002e623b78d3fb223621a0d31a" => :sierra
-    sha256 "7ae11f9e863353e78a97bf662a3f6372f2288dd6d5e7cb2ca35f5105087cf96d" => :el_capitan
-    sha256 "78157ad14904c4a2e3ce4120105323e23e29ff16f48248308d46c89eecf1adb5" => :yosemite
+    sha256 "ec279e799d2c6d37d4ba48fc47db0e87e78ea06d09c5d84e058fc3f9dc757c58" => :high_sierra
+    sha256 "d84e402df127c858978ea1bcd70d02b0865f100dd3f2660f7769a79307fb7140" => :sierra
+    sha256 "ffc363a76a589fbfa51b19e81cf9f9a6e7f1036074bfb9688cac1c413d175cbc" => :el_capitan
   end
 
   # these two files are amended when (un)installing packages
@@ -62,7 +61,7 @@ class MinimalRacket < Formula
 
     # show that the config file isn't malformed
     output = shell_output("'#{bin}/raco' pkg config")
-    assert $?.success?
+    assert $CHILD_STATUS.success?
     assert_match Regexp.new(<<-EOS.undent), output
       ^name:
         #{version}

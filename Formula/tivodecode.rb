@@ -2,11 +2,11 @@ class Tivodecode < Formula
   desc "Convert .tivo to .mpeg"
   homepage "https://tivodecode.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/tivodecode/tivodecode/0.2pre4/tivodecode-0.2pre4.tar.gz"
-  version "0.2pre4"
   sha256 "788839cc4ad66f5b20792e166514411705e8564f9f050584c54c3f1f452e9cdf"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "0016f711d79454b154708804c574633c48e472b9a81c257730e5cf4aa00dd220" => :high_sierra
     sha256 "5682668b2e721933054656cebc49ccb46c382428b77409d94251c6f1dfd3092d" => :sierra
     sha256 "d50450e62c6fcf71643ceaf5f33dcf4e904e389c89597ccbe148de3053839ccd" => :el_capitan
     sha256 "cb74afdc87eca67025849836bee29e04f6c8e7755753a9daa52c84cfc9201cd8" => :yosemite

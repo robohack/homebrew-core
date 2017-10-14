@@ -1,13 +1,14 @@
 class VimAT74 < Formula
-  desc "Vi \"workalike\" with many additional features"
+  desc "Vi 'workalike' with many additional features"
   homepage "http://www.vim.org/"
   url "https://github.com/vim/vim/archive/v7.4.2367.tar.gz"
   sha256 "a9ae4031ccd73cc60e771e8bf9b3c8b7f10f63a67efce7f61cd694cd8d7cda5c"
+  revision 4
 
   bottle do
-    sha256 "f74dfb734068fcf341cc164ab0d7f021be0fc60d2326e011ac72a7488c023c48" => :sierra
-    sha256 "1c697f6dca835a058ef730614b924f932f2f54bd05e485696e16ea3948560f11" => :el_capitan
-    sha256 "8a87232e4269533964f9faabc2c41533b6b489b63ab01b2d08d7d3e1b47033d3" => :yosemite
+    sha256 "3ef8f4d5c5bec24bca69c67fc827017d87b884f8d44fb53e113d5aa12e911f79" => :high_sierra
+    sha256 "ce9cf505a9bc21212b309b62b8b8972859f67b048e51c9ca9b13b4543e5a9a1b" => :sierra
+    sha256 "cbb4a60db7146875d5df859a57eb6eb38d8336d9983e27d3df2000c38215d071" => :el_capitan
   end
 
   keg_only :versioned_formula
@@ -116,9 +117,9 @@ class VimAT74 < Formula
 
       # Expand the link and get the python exec path
       vim_framework_path = Pathname.new(otool_output).realpath.dirname.to_s.chomp
-      system_framework_path = `python-config --exec-prefix`.chomp
+      python_framework_path = `python2-config --exec-prefix`.chomp
 
-      assert_equal system_framework_path, vim_framework_path
+      assert_equal python_framework_path, vim_framework_path
     end
   end
 end

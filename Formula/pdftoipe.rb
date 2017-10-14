@@ -3,19 +3,23 @@ class Pdftoipe < Formula
   homepage "https://github.com/otfried/ipe-tools"
   url "https://github.com/otfried/ipe-tools/archive/v7.2.7.tar.gz"
   sha256 "889cb31bd8769ba111f541ba795cf53fad474aeeafbc87b7cd37c8a24b2dc6f6"
-  revision 1
+  revision 6
 
   bottle do
     cellar :any
-    sha256 "d24959adb48c689e98ce9538df703f736c70fe02da6e456711191c39457fd48e" => :sierra
-    sha256 "de224b1e96f9ac3756fa201169d347e4512a21cfe3a6105489ef24f821ae9e44" => :el_capitan
-    sha256 "e5c6c123552838e0fce75c06045091ac040d930dc345ea84d3d0eaacc5db97bf" => :yosemite
+    sha256 "4297507bef3b13975118ddecbfcf9bf3dfd095fbea26cfef804acb05a13b148d" => :high_sierra
+    sha256 "01677cbdc5a359db81b0e55726af5f27a7e03025470bc7cb0a4e2b8ab382441b" => :sierra
+    sha256 "315460aeba084711794f89a7c67b7242b80fc628f7128c0c920dfa84aa0872ba" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
   depends_on "poppler"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
+
     cd "pdftoipe" do
       system "make"
       bin.install "pdftoipe"

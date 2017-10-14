@@ -1,8 +1,8 @@
 class Qca < Formula
   desc "Qt Cryptographic Architecture (QCA)"
   homepage "http://delta.affinix.com/qca/"
-  head "https://anongit.kde.org/qca.git"
   revision 1
+  head "https://anongit.kde.org/qca.git"
 
   stable do
     url "https://github.com/KDE/qca/archive/v2.1.3.tar.gz"
@@ -10,27 +10,28 @@ class Qca < Formula
 
     # upstream fixes for macOS building (remove on 2.2.0 upgrade)
     patch do
-      url "https://github.com/KDE/qca/commit/7ba0ee591e0f50a7e7b532f9eb7e500e7da784fb.diff"
-      sha256 "fee535fdd01c1ba981bb5ece381cfa01e6e3decca38d62b24c4f20fd8620c1ce"
+      url "https://github.com/KDE/qca/commit/7ba0ee591e0f50a7e7b532f9eb7e500e7da784fb.diff?full_index=1"
+      sha256 "3f6c8a8bbd246556c690142c209a34973981be66e46fee991a456fb2e8b66d72"
     end
     patch do
-      url "https://github.com/KDE/qca/commit/b435c1b87b14ac2d2de9f83e586bfd6d8c2a755e.diff"
-      sha256 "187de5c4f4cb8975ca562ee7ca38592ce12a844b9606a68af8e3dd932f67818d"
+      url "https://github.com/KDE/qca/commit/b435c1b87b14ac2d2de9f83e586bfd6d8c2a755e.diff?full_index=1"
+      sha256 "9ea01ad6b21282ff62b18ac02588f7106b75056ab8379dff3fdfcff13a6c122f"
     end
     patch do
-      url "https://github.com/KDE/qca/commit/f4b2eb0ced5310f3c43398eb1f03e0c065e08a82.diff"
-      sha256 "a3529a29dd55008be9575bc965cb760365b650a62f5c6c8c441d433e9c9556db"
+      url "https://github.com/KDE/qca/commit/f4b2eb0ced5310f3c43398eb1f03e0c065e08a82.diff?full_index=1"
+      sha256 "d6c27ebfd8fec5284e4a0a39faf62e44764be5baff08141bd7f4da6d0b9f438d"
     end
 
     # use major version for framework, instead of full version
     # see: https://github.com/KDE/qca/pull/3
     patch do
-      url "https://github.com/KDE/qca/pull/3.patch"
-      sha256 "ec90fc28c64629ecb81571f5d0e4962cfd6237892b692ac488cd0c87a0adb7b9"
+      url "https://github.com/KDE/qca/pull/3.patch?full_index=1"
+      sha256 "37281b8fefbbdab768d7abcc39fb1c1bf85159730c2a4de6e84f0bf318ebac2c"
     end
   end
 
   bottle do
+    sha256 "ed324934d67ea40f70c3d17e1fda7e3b7cedca31a04cada753142cecafc126bc" => :high_sierra
     sha256 "d906fecec28f2af312e2309398c43c9d5208ace0a24f65462d5c0ee6999acaa6" => :sierra
     sha256 "7ef949fefdbddb7309cd3f687fa2ad2a4c02622b7ca92d7416494bd13d40eb4c" => :el_capitan
     sha256 "d3a865bed9af87d7d54b87080cc973341385ced03dd5d257a9bc590e4d656c80" => :yosemite
@@ -54,7 +55,7 @@ class Qca < Formula
 
   if build.with? "api-docs"
     depends_on "graphviz" => :build
-    depends_on "doxygen" => [:build, "with-graphviz"]
+    depends_on "doxygen" => :build
   end
 
   def install

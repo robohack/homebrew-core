@@ -1,20 +1,19 @@
 class Gearman < Formula
   desc "Application framework to farm out work to other machines or processes"
   homepage "http://gearman.org/"
-  url "https://github.com/gearman/gearmand/releases/download/1.1.15/gearmand-1.1.15.tar.gz"
-  sha256 "ac61a005c5395a525d963b9f60ec387d371b8709e91bd4a2546a89d3e80a4cd0"
+  url "https://github.com/gearman/gearmand/releases/download/1.1.17/gearmand-1.1.17.tar.gz"
+  sha256 "f9fa59d60c0ad03b449942c6fe24abe09456056852fae89a05052fa25c113c0f"
 
   bottle do
-    sha256 "aabcb5dc7a9c3336fb3fa624022b8de3f228224bbf79efc5c546fb1f19ac8861" => :sierra
-    sha256 "caf74d852f4e7cb7e6063d94798ccecd0d8a8818eb57a20b5470988b096528f6" => :el_capitan
-    sha256 "7bad59b760574eba9929d47c78538e10581c1c4e79e3a032efccf8ccf18f8bc3" => :yosemite
+    sha256 "91bbdfb493befa2b4f45c68b43182dc2df36af5a72b0c28e4dd97adcdc9eb3ed" => :high_sierra
+    sha256 "529a37d7f9648ed0371529bab74b12173ca3ead3c9d6bd4e193f2097c0a9fe83" => :sierra
+    sha256 "8f70079e03761e0711231a5ca77f450e490bfeb4e668e4be9c8ce6de2ef52fee" => :el_capitan
+    sha256 "12616febecef3a1a5951296bf3f7efa30637688318713969c74931b95f01313f" => :yosemite
   end
 
   option "with-mysql", "Compile with MySQL persistent queue enabled"
   option "with-postgresql", "Compile with Postgresql persistent queue enabled"
 
-  # https://bugs.launchpad.net/gearmand/+bug/1318151
-  # https://bugs.launchpad.net/gearmand/+bug/1236815
   # https://github.com/Homebrew/homebrew/issues/33246
   patch :DATA
 
@@ -32,6 +31,10 @@ class Gearman < Formula
   depends_on "tokyo-cabinet" => :optional
 
   def install
+    # Work around "error: no member named 'signbit' in the global namespace"
+    # encountered when trying to detect boost regex in configure
+    ENV.delete("SDKROOT") if DevelopmentTools.clang_build_version >= 900
+
     # https://bugs.launchpad.net/gearmand/+bug/1368926
     Dir["tests/**/*.cc", "libtest/main.cc"].each do |test_file|
       next unless /std::unique_ptr/ =~ File.read(test_file)
@@ -105,22 +108,6 @@ class Gearman < Formula
 end
 
 __END__
-diff --git a/libgearman-1.0/gearman.h b/libgearman-1.0/gearman.h
-index 7f6d5e7..a39978a 100644
---- a/libgearman-1.0/gearman.h
-+++ b/libgearman-1.0/gearman.h
-@@ -50,7 +50,11 @@
- #endif
- 
- #ifdef __cplusplus
-+#ifdef _LIBCPP_VERSION
- #  include <cinttypes>
-+#else
-+# include <tr1/cinttypes>
-+#endif
- #  include <cstddef>
- #  include <cstdlib>
- #  include <ctime>
 diff --git a/libgearman/byteorder.cc b/libgearman/byteorder.cc
 index 674fed9..b2e2182 100644
 --- a/libgearman/byteorder.cc
@@ -140,16 +127,3 @@ index 674fed9..b2e2182 100644
  }
 +
 +#endif
-diff --git a/libgearman/client.cc b/libgearman/client.cc
-index d76d479..324f535 100644
---- a/libgearman/client.cc
-+++ b/libgearman/client.cc
-@@ -946,7 +946,7 @@ gearman_return_t gearman_client_job_status(gearman_client_st *client_shell,
-       *denominator= do_task->impl()->denominator;
-     }
- 
--    if (is_known == false and is_running == false)
-+    if (! is_known and ! is_running)
-     {
-       if (do_task->impl()->options.is_running) 
-       {

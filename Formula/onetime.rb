@@ -9,20 +9,21 @@ class Onetime < Formula
     # Fixes the Makefile to permit destination specification
     # https://github.com/kfogel/OneTime/pull/12
     patch do
-      url "https://github.com/kfogel/OneTime/commit/61e534e2.patch"
-      sha256 "2c22ca15dd61448d71515ce7e03b7e05d38450fd59b673323c47ade7023cb64c"
+      url "https://github.com/kfogel/OneTime/commit/61e534e2.patch?full_index=1"
+      sha256 "b74d1769e8719f06755c7c3c4ac759063b31d9d0554b64c5fb600c7edf5cc5ea"
     end
 
     # Follow up to PR12 to fix my clumsiness in a variable call.
     patch do
-      url "https://github.com/kfogel/OneTime/commit/fb0a12f2.patch"
-      sha256 "68be20314f513d126287e7d799dc6c57fb0ece4d28b85588c102a5144422bc80"
+      url "https://github.com/kfogel/OneTime/commit/fb0a12f2.patch?full_index=1"
+      sha256 "11417d66886630f7a3c527f63227a75a39aee18029e60de99d7cb68ebe7769f5"
     end
   end
 
   bottle do
     cellar :any_skip_relocation
     rebuild 2
+    sha256 "45ada732e4c0b19f46fe618300da803cbffe4c1c8ff3111cd9547dda3c371958" => :high_sierra
     sha256 "37cf417291ce11a6313bde209490f3cce0ca5f47b17579e28720568088de89fa" => :sierra
     sha256 "4d27502d9a4b8d257182dcaf99b05121033352928c3716a1ebe932a24276e73a" => :el_capitan
     sha256 "561f129baa60ba8aa08f47130a35f531fdd7ddda80c3e0636bd39c96c3d06930" => :yosemite

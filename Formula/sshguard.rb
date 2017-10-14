@@ -3,17 +3,26 @@ class Sshguard < Formula
   homepage "https://www.sshguard.net/"
   url "https://downloads.sourceforge.net/project/sshguard/sshguard/2.0.0/sshguard-2.0.0.tar.gz"
   sha256 "e87c6c4a6dddf06f440ea76464eb6197869c0293f0a60ffa51f8a6a0d7b0cb06"
+  revision 2
   version_scheme 1
-  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8a0e7842c9f1fc96dd135086b653b1fefe45353cbf630fb560f8852ea6aa91a0" => :sierra
-    sha256 "00091e528d72236eaa0f71a384f6ddd006349e36f9e3ac46b3bd2cf57941faeb" => :el_capitan
-    sha256 "280351ac89ad14d0b1aa589779d60c024bb1821d08571044a689c6aae39193d4" => :yosemite
+    sha256 "aeaddb790295b448bd6c7bad3420d669eacc55ecc009c78109e868d2696eaa44" => :high_sierra
+    sha256 "9402de003b2efd8eba69140b77415b2eddcb1d6f4cc3cda0fff0cd6b9e94922b" => :sierra
+    sha256 "09761016c1525c138e1da75de8e205fa7c8b7933b5716f215232a76c46158d42" => :el_capitan
+  end
+
+  head do
+    url "https://bitbucket.org/sshguard/sshguard.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "docutils" => :build
   end
 
   def install
+    system "autoreconf", "-fiv" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
@@ -21,8 +30,8 @@ class Sshguard < Formula
     system "make", "install"
     cp "examples/sshguard.conf.sample", "examples/sshguard.conf"
     inreplace "examples/sshguard.conf" do |s|
-      s.gsub! /^#BACKEND=.*$/, "BACKEND=\"#{libexec}/sshg-fw-#{firewall}\""
-      if MacOS.version >= :sierra
+      s.gsub! /^#BACKEND=.*$/, "BACKEND=\"#{opt_libexec}/sshg-fw-#{firewall}\""
+      if MacOS.version == :sierra
         s.gsub! %r{^#LOGREADER="/usr/bin/log}, "LOGREADER=\"/usr/bin/log"
       else
         s.gsub! /^#FILES.*$/, "FILES=#{log_path}"
@@ -32,11 +41,11 @@ class Sshguard < Formula
   end
 
   def firewall
-    MacOS.version >= :lion ? "pf" : "ipfw"
+    (MacOS.version >= :lion) ? "pf" : "ipfw"
   end
 
   def log_path
-    MacOS.version >= :lion ? "/var/log/system.log" : "/var/log/secure.log"
+    (MacOS.version >= :lion) ? "/var/log/system.log" : "/var/log/secure.log"
   end
 
   def caveats

@@ -6,6 +6,7 @@ class Liblwgeom < Formula
   stable do
     url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
     sha256 "0d0e27f72f12b8dba456fbde25ed0f6913f42baf57332a7f1b9bbc6f29fddbf4"
+
     # Strip all the PostgreSQL functions from PostGIS configure.ac, to allow
     # building liblwgeom.dylib without needing PostgreSQL
     # NOTE: this will need to be maintained per postgis version
@@ -18,6 +19,7 @@ class Liblwgeom < Formula
 
   bottle do
     cellar :any
+    sha256 "a0f1de43d92642fb933e3a5365ad1985e79377f3f47e0f33bc547b73cdcd7267" => :high_sierra
     sha256 "55bc93a06f6981f5aea43764ef2c228a0527187f6127c91c672cf2dd1617bf85" => :sierra
     sha256 "d93db626f97638f2d267444e5fa85222b35673293245d576e0a3ab0020fb187b" => :el_capitan
     sha256 "c793550ab04e4c40a3f3c2dfbb63476e2e1629182a52d6b9e404ca8ca52e5d64" => :yosemite
@@ -28,7 +30,7 @@ class Liblwgeom < Formula
     depends_on "postgresql" => :build # don't maintain patches for HEAD
   end
 
-  keg_only "Conflicts with PostGIS, which also installs liblwgeom.dylib"
+  keg_only "conflicts with PostGIS, which also installs liblwgeom.dylib"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

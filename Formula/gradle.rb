@@ -1,8 +1,8 @@
 class Gradle < Formula
   desc "Build system based on the Groovy language"
   homepage "https://www.gradle.org/"
-  url "https://services.gradle.org/distributions/gradle-3.5-all.zip"
-  sha256 "d84bf6b6113da081d0082bcb63bd8547824c6967fe68704d1e3a6fde822b7212"
+  url "https://services.gradle.org/distributions/gradle-4.2.1-all.zip"
+  sha256 "7897b59fb45148cd8a79f078e5e4cef3861a252dd1a1af729d0c6e8a0a8703a8"
 
   bottle :unneeded
 
@@ -11,13 +11,13 @@ class Gradle < Formula
   depends_on :java => "1.7+"
 
   def install
+    rm_f Dir["bin/*.bat"]
     libexec.install %w[bin lib]
     libexec.install %w[docs media samples src] if build.with? "all"
-    bin.install_symlink libexec/"bin/gradle"
+    (bin/"gradle").write_env_script libexec/"bin/gradle", Language::Java.overridable_java_home_env
   end
 
   test do
-    ENV.java_cache
     assert_match version.to_s, shell_output("#{bin}/gradle --version")
   end
 end

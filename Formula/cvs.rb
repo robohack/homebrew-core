@@ -8,15 +8,12 @@ class Cvs < Formula
   homepage "http://cvs.nongnu.org/"
   url "https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2"
   sha256 "78853613b9a6873a30e1cc2417f738c330e75f887afdaf7b3d0800cb19ca515e"
+  revision 1
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "48e3daba0b967f76f790792c5882002b82b5867a18fe4b9aa4ee13b0044277cf" => :sierra
-    sha256 "c454f576c58dbabc3d3ce4af4974dfdcf47c4232af3de9275f171a93dbdf264a" => :el_capitan
-    sha256 "3b6a02a69d14c6a6476727ade22b47a542dae280df6375a9bce9374a21176f86" => :yosemite
-    sha256 "ff6b161b7379b44bf42635828f45e7f43c932d2be9fbf9691714f2f4a356ec7f" => :mavericks
-    sha256 "cbabf7f11bb08b7018117f5b45dda26d55a0584f9ef7e00c0a134bbbe1284655" => :mountain_lion
+    sha256 "11b8be2fda1de3c8b77b20bdc283ceb12ba511826a0d3b79147dbfaeb83420db" => :high_sierra
+    sha256 "01f9517d330037a248bc6d36c8127a4f99eb364a8a0d1cc5f8520cca261b7163" => :sierra
+    sha256 "32dcf27cf028e270e826ba9850bde2f403f77c2c16a4b534d59cf68c0446e1fb" => :el_capitan
   end
 
   keg_only :provided_until_xcode5
@@ -36,6 +33,13 @@ class Cvs < Formula
           "patches/remove-info.diff",
           "patches/tag.diff",
           "patches/zlib.diff"
+  end
+
+  # Fixes error: 'Illegal instruction: 4'; '%n used in a non-immutable format string' on 10.13
+  # Patches the upstream-provided gnulib on all platforms as is recommended
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/24118ec737c7/cvs/vasnprintf-high-sierra-fix.diff"
+    sha256 "affa485332f66bb182963680f90552937bf1455b855388f7c06ef6a3a25286e2"
   end
 
   def install

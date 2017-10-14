@@ -6,6 +6,7 @@ class Clens < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "e9dfe6e9228a928f9cb1a4048d92ec576be5f89f48408401b7f3020c1482a7c6" => :high_sierra
     sha256 "f034c79bf5a16265db249c673b2d2a3e6850676dba739adeb6e90394d8f77475" => :sierra
     sha256 "f6c68d7dce9d824274e16e3867926528cc79d161418fac0a0052e37dc6604668" => :el_capitan
     sha256 "b08580c90a8ed647005c437158972a1dbd770792c2db74391eec8ed5f4ec1b6e" => :yosemite
@@ -13,8 +14,8 @@ class Clens < Formula
   end
 
   patch do
-    url "https://github.com/conformal/clens/commit/83648cc9027d9f76a1bc79ddddcbed1349b9d5cd.diff"
-    sha256 "a685d970c9bc785dcc892f39803dad2610ce979eb58738da5d45365fd81a14be"
+    url "https://github.com/conformal/clens/commit/83648cc9027d9f76a1bc79ddddcbed1349b9d5cd.diff?full_index=1"
+    sha256 "efd43aa84f7ff1582c3716282ac1b3b650c16af9a0f55039d20bfd4b085188e2"
   end
 
   def install

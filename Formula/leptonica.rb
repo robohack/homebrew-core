@@ -1,14 +1,17 @@
 class Leptonica < Formula
   desc "Image processing and image analysis library"
   homepage "http://www.leptonica.org/"
-  url "http://www.leptonica.org/source/leptonica-1.74.1.tar.gz"
-  sha256 "746a517a47a3bd2a90bc8d581ca6464c10f30e91a60209735efe45b3778bec62"
+  url "https://github.com/DanBloomberg/leptonica/releases/download/1.74.4/leptonica-1.74.4.tar.gz"
+  mirror "http://www.leptonica.org/source/leptonica-1.74.4.tar.gz"
+  sha256 "29c35426a416bf454413c6fec24c24a0b633e26144a17e98351b6dffaa4a833b"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "e15c1a9d55f926ff2665e9e9a18b6865506d6106474237b2f0e28b95b2253db6" => :sierra
-    sha256 "aae7d2d5d03176734707c5900d6e37fc7a9ef282b4429b5477d2a4415b50d59e" => :el_capitan
-    sha256 "6e7e6f9085592590d5ab8728a58674667e486dbf62d12737261a0c283bbd8ed1" => :yosemite
+    sha256 "003dce941c5eb1d0faf314fae1fd4501f023e29b0b73ddb20a72ff807a48aa7c" => :high_sierra
+    sha256 "824ca9ea9a3c6a0908f576288cf392244e0cab32835a3b01c8d125c8195ae476" => :sierra
+    sha256 "e567de6c8cb4caabe45b61e314fa482e8792bc1c3719755760ee55a694096716" => :el_capitan
+    sha256 "b1b8d75b21f7512dabd7cf665dbda4977bf1b34cc61bdc0daa23748a9c072208" => :yosemite
   end
 
   depends_on "libpng" => :recommended
@@ -18,9 +21,6 @@ class Leptonica < Formula
   depends_on "openjpeg" => :optional
   depends_on "webp" => :optional
   depends_on "pkg-config" => :build
-
-  conflicts_with "osxutils",
-    :because => "both leptonica and osxutils ship a `fileinfo` executable."
 
   def install
     args = %W[

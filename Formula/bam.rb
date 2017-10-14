@@ -7,6 +7,7 @@ class Bam < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "71b25578865fa044fdb5d233eee5ca327d602c9ef291af2e98780aef6b469ca2" => :high_sierra
     sha256 "1ed38b80dc9aaad3e9a4655cd28ad95d8f2d7392f5b5bbdb1dbd210665aa4281" => :sierra
     sha256 "bdf84408b791d7e5dca2e0f96cec0aea62f549611a8f6e1c0ea4b8dd8b03d7c0" => :el_capitan
     sha256 "1d76b73f0b46d0bb9f0ba998128abd1271f79ca5d2016703ac783a55369892e2" => :yosemite
@@ -15,8 +16,8 @@ class Bam < Formula
 
   # Fixes "[string "src/tools.lua"]:165: no driver set"; patch is from upstream
   patch do
-    url "https://github.com/matricks/bam/commit/27b28f09.patch"
-    sha256 "12488633b7feaf486c92427d64a0ebad41ddf5b3195a8d4708e51a8db8c7b7c0"
+    url "https://github.com/matricks/bam/commit/27b28f09.patch?full_index=1"
+    sha256 "9dabe77480156b49dda02378a936597e5f6b1aefaae2d88f2887c6161675d5ee"
   end
 
   def install

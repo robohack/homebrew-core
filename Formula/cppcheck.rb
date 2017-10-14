@@ -1,15 +1,14 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
   homepage "https://sourceforge.net/projects/cppcheck/"
-  url "https://github.com/danmar/cppcheck/archive/1.78.tar.gz"
-  sha256 "31048901dd8744d12b3e6ac1bc904c08a72cad8118bd6a1f56ce489701ffd1b6"
+  url "https://github.com/danmar/cppcheck/archive/1.81.tar.gz"
+  sha256 "12396eee334b22bf3aa3d629d483f27f287125348b97586dfd4da87b26ae2a56"
   head "https://github.com/danmar/cppcheck.git"
 
   bottle do
-    rebuild 1
-    sha256 "ed03ed3ef038cc7da0e4aa83d520f6c9e34e92d9a7b4f4efae0bd7b54ace775b" => :sierra
-    sha256 "10bf6ee8d192ae51cade858efe9575b8c1112e06e955e5d0406d78978a20271b" => :el_capitan
-    sha256 "3e64f1ee49d495cad0fdec7ed6af73ab9c7e0da4c9461b09c786fd5c08174afc" => :yosemite
+    sha256 "d92360a0974ae00e273cb313f428cd235752cd952e8ede41eead31a3f35b0259" => :high_sierra
+    sha256 "f52a30f12d779c44da05b82c610248547cd890d89c235ed34a00e31185940ef0" => :sierra
+    sha256 "e14819c084affa65e3d5f3aceefa145c2f6914e04215a6d344413b862f59563c" => :el_capitan
   end
 
   option "without-rules", "Build without rules (no pcre dependency)"
@@ -134,7 +133,7 @@ class Cppcheck < Formula
 
     system "#{bin}/cppcheck", "--dump", test_cpp_file
     test_cpp_file_dump = "#{test_cpp_file}.dump"
-    assert File.exist? test_cpp_file_dump
+    assert_predicate testpath/test_cpp_file_dump, :exist?
     python_addon_output = shell_output "python #{sample_addon_file} #{test_cpp_file_dump}"
     assert_match "#{expect_function_names}\n#{expect_token_count}", python_addon_output
   end

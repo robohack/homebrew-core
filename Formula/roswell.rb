@@ -1,14 +1,14 @@
 class Roswell < Formula
   desc "Lisp installer and launcher for major environments"
   homepage "https://github.com/roswell/roswell"
-  url "https://github.com/roswell/roswell/archive/v17.3.8.75.tar.gz"
-  sha256 "ac65fd78b01dc46937bcf77f585e4a770acfa269d0a907c04db6636ced71f619"
+  url "https://github.com/roswell/roswell/archive/v17.10.10.83.tar.gz"
+  sha256 "c837475a4e2ee27d2ad323b1f37ebc915f2977f92a91f8f6cbbfd432e8c55703"
   head "https://github.com/roswell/roswell.git"
 
   bottle do
-    sha256 "efd5d01681ac104e8c2599465461cf2b7947dde91d65c9e69cd4c62702f71782" => :sierra
-    sha256 "4383bca9fa4851ebc2c4b604b4b737b6a3b2aa46cc3bcd0067fef7caa97d11fc" => :el_capitan
-    sha256 "8c7be4949f3b3cbc733e117734f33de5a9a05835a1db187b9fccc78f043f9f49" => :yosemite
+    sha256 "5ccaa4445940a0033ba14045c6dd5b58467a533766dd605b2acded79820554d1" => :high_sierra
+    sha256 "4080da6092a2d496bf5863fb95a66eb8a89b850f884321cfbcdfee9e4bdab208" => :sierra
+    sha256 "02b49a7de62b160f48a6f3c9881f07e4b7d8d32f1b4d1cf5dad739adc9bf7db9" => :el_capitan
   end
 
   depends_on "automake" => :build
@@ -27,6 +27,6 @@ class Roswell < Formula
   test do
     ENV["ROSWELL_HOME"] = testpath
     system bin/"ros", "init"
-    File.exist? testpath/".roswell/config"
+    assert_predicate testpath/"config", :exist?
   end
 end

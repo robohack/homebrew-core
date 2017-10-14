@@ -1,13 +1,13 @@
 class Krb5 < Formula
   desc "Network authentication protocol"
   homepage "https://web.mit.edu/kerberos/"
-  url "https://web.mit.edu/kerberos/dist/krb5/1.14/krb5-1.14.4.tar.gz"
-  sha256 "03a61a4280c9161771fb39019085dbe6a57aa602080515ff93b43cd6137e0b95"
+  url "https://web.mit.edu/kerberos/dist/krb5/1.15/krb5-1.15.2.tar.gz"
+  sha256 "1639e392edf25e3b6cfec2ae68f97eb53e07c2dbe74bfeede0108465d5d1c87e"
 
   bottle do
-    sha256 "a8dcbc521a970ac8025d588553e30bb5d2d3ef627d9d440c85dc35ae9e91ad48" => :sierra
-    sha256 "a3330737603312971c3774d11b2ed6266cc032aa7a7395b2c0d6fba2313b2e1c" => :el_capitan
-    sha256 "cd615e303ffccfabd5dfd6c112c5882b54bd6e55003f62af2d6ee0e6d5c941bc" => :yosemite
+    sha256 "6795f2fc03f5fe5ee3caf2040d9ed6064e445fc06c2f7e1947007bf6ef32a084" => :high_sierra
+    sha256 "31103d3d3f36f0b36082dba99702818aca880ab9f27634d59e290d6b98f46bcf" => :sierra
+    sha256 "d10c24058b8a207ed2a33f8ee7f961af8bb8a63bcb98fb0ae8511a080ab96828" => :el_capitan
   end
 
   keg_only :provided_by_osx

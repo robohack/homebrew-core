@@ -7,19 +7,20 @@ class Mediatomb < Formula
 
   bottle do
     rebuild 1
+    sha256 "d4dee77311dda28a732947640b2adf9387f477ed9b66bc0640c30feba34b6a1d" => :high_sierra
     sha256 "8eb40e0276320c6765b7dbc208afe1c53a06ed13ff5e410e16aee57c366bede7" => :sierra
     sha256 "06cb4aaff088fc91d9500b10640d2b1632f8c88c95277f9cface991a06801ad6" => :el_capitan
     sha256 "089217abe05ea91a8dc1df796974495f87b8bcde7b4d80a93b1129e12cfc344d" => :yosemite
     sha256 "7022f700071652e20eb3d93b3d0b0a9d5f4cf1485cd350d85116fcbdea1ac104" => :mavericks
   end
 
-  depends_on "libexif" => :recommended
-  depends_on "libmagic" => :recommended
-  depends_on "lzlib" => :recommended
-  depends_on "mp4v2" => :recommended
-  depends_on "spidermonkey" => :recommended
-  depends_on "sqlite" => :recommended
-  depends_on "taglib" => :recommended
+  depends_on "libexif"
+  depends_on "libmagic"
+  depends_on "lzlib"
+  depends_on "mp4v2"
+  depends_on "spidermonkey"
+  depends_on "sqlite"
+  depends_on "taglib"
   depends_on "ffmpeg" => :optional
   depends_on "ffmpegthumbnailer" => :optional
   depends_on "id3lib" => :optional
@@ -74,14 +75,7 @@ class Mediatomb < Formula
   end
 
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
-
-    args << "--disable-libmp4v2" if build.without? "mp4v2"
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make", "install"
   end
 

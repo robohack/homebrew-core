@@ -1,15 +1,14 @@
 class Protobuf < Formula
   desc "Protocol buffers (Google's data interchange format)"
   homepage "https://github.com/google/protobuf/"
-  url "https://github.com/google/protobuf/archive/v3.2.0.tar.gz"
-  sha256 "2a25c2b71c707c5552ec9afdfb22532a93a339e1ca5d38f163fe4107af08c54c"
-  revision 1
+  url "https://github.com/google/protobuf/archive/v3.4.1.tar.gz"
+  sha256 "8e0236242106e680b4f9f576cc44b8cd711e948b20a9fc07769b0a20ceab9cc4"
   head "https://github.com/google/protobuf.git"
 
   bottle do
-    sha256 "6534deb026f410c45202e91bd51aca49b2a7b0aa79c42d1ee41b9b1691583eb0" => :sierra
-    sha256 "5175646b484104f094eacb4db99eb0b1d66f03d5120e1c8de38be43f921e786e" => :el_capitan
-    sha256 "34fd57a99d1cfdc6f85eb2cd503c406e336c05636987d6a69633a588215d94a8" => :yosemite
+    sha256 "ad75ea442cf35e959032098b4bdf2bf7a9f542b43ac763d174ad899cab92ae4d" => :high_sierra
+    sha256 "e9a2bb7ff55416a55409ac2874bb74129d523f051e08118f685f45991d537097" => :sierra
+    sha256 "9f9a737458bed9b451b669b4070f90e8ef78bdcffb2e288a34b46e0a007fc0ff" => :el_capitan
   end
 
   # this will double the build time approximately if enabled
@@ -25,7 +24,7 @@ class Protobuf < Formula
   depends_on :python3 => :optional
 
   resource "appdirs" do
-    url "https://pypi.python.org/packages/48/69/d87c60746b393309ca30761f8e2b49473d43450b150cb08f3c6df5c11be5/appdirs-1.4.3.tar.gz"
+    url "https://files.pythonhosted.org/packages/48/69/d87c60746b393309ca30761f8e2b49473d43450b150cb08f3c6df5c11be5/appdirs-1.4.3.tar.gz"
     sha256 "9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92"
   end
 
@@ -35,7 +34,7 @@ class Protobuf < Formula
   end
 
   resource "pyparsing" do
-    url "https://pypi.python.org/packages/3c/ec/a94f8cf7274ea60b5413df054f82a8980523efd712ec55a59e7c3357cf7c/pyparsing-2.2.0.tar.gz"
+    url "https://files.pythonhosted.org/packages/3c/ec/a94f8cf7274ea60b5413df054f82a8980523efd712ec55a59e7c3357cf7c/pyparsing-2.2.0.tar.gz"
     sha256 "0832bcf47acd283788593e7a0f542407bd9550a55a8a8435214a1960e04bcb04"
   end
 
@@ -45,7 +44,7 @@ class Protobuf < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/d5/b7/e52b7dccd3f91eec858309dcd931c1387bf70b6d458c86a9bfcb50134fbd/setuptools-34.3.3.zip"
+    url "https://files.pythonhosted.org/packages/d5/b7/e52b7dccd3f91eec858309dcd931c1387bf70b6d458c86a9bfcb50134fbd/setuptools-34.3.3.zip"
     sha256 "2cd244d3fca6ff7d0794a9186d1d19a48453e9813ae1d783edbfb8c348cde905"
   end
 

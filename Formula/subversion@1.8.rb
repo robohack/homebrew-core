@@ -6,6 +6,7 @@ class SubversionAT18 < Formula
   sha256 "f18f6e8309270982135aae54d96958f9ca6b93f8a4e746dd634b1b5b84edb346"
 
   bottle do
+    sha256 "96dc628a9f5b2b12e81b690c6278be70e1d386f86376e2b0f6e5c085113e5e2e" => :high_sierra
     sha256 "3f6c2f5b14952261bd16b368026725411c6eb6aec91d3af340647a3f9aa92536" => :sierra
     sha256 "fff0c975bfaec2a116b2f4c9ac93d702ee8e06381f31810d582b01bda8610a3e" => :el_capitan
     sha256 "efa3eaee6fc8518354d09b80d2813c7b090495da8691703b31e1297ef0e750cd" => :yosemite
@@ -102,19 +103,8 @@ class SubversionAT18 < Formula
       EOS
     end
 
-    if build.with? "java"
-      # Java support doesn't build correctly in parallel:
-      # https://github.com/Homebrew/homebrew/issues/20415
-      ENV.deparallelize
-
-      unless build.universal?
-        opoo "A non-Universal Java build was requested."
-        puts <<-EOS.undent
-        To use Java bindings with various Java IDEs, you might need a universal build:
-          `brew install subversion --universal --java`
-        EOS
-      end
-    end
+    # Java support doesn't build correctly in parallel: https://github.com/Homebrew/homebrew/issues/20415
+    ENV.deparallelize if build.with? "java"
 
     # Use existing system zlib
     # Use dep-provided other libraries
@@ -147,13 +137,6 @@ class SubversionAT18 < Formula
       args << "RUBY=/usr/bin/ruby"
     end
 
-    # If Python is built universally, then extensions built with that Python
-    # are too. This default behaviour is not desired when building an extension
-    # for a single architecture.
-    if build.with?("python") && (which "python").universal? && !build.universal?
-      ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
-    end
-
     # The system Python is built with llvm-gcc, so we override this
     # variable to prevent failures due to incompatible CFLAGS
     ENV["ac_cv_python_compile"] = ENV.cc
@@ -179,16 +162,6 @@ class SubversionAT18 < Formula
     if build.with? "perl"
       # In theory SWIG can be built in parallel, in practice...
       ENV.deparallelize
-      # Remove hard-coded ppc target, add appropriate ones
-      arches = begin
-        if build.universal?
-          Hardware::CPU.universal_archs.as_arch_flags
-        elsif MacOS.version <= :leopard
-          "-arch #{Hardware::CPU.arch_32_bit}"
-        else
-          "-arch #{Hardware::CPU.arch_64_bit}"
-        end
-      end
       perl_core = Pathname.new(`perl -MConfig -e 'print $Config{archlib}'`)+"CORE"
       unless perl_core.exist?
         onoe "perl CORE directory does not exist in '#{perl_core}'"
@@ -196,7 +169,7 @@ class SubversionAT18 < Formula
 
       inreplace "Makefile" do |s|
         s.change_make_var! "SWIG_PL_INCLUDES",
-          "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I#{perl_core}"
+          "$(SWIG_INCLUDES) -arch #{MacOS.preferred_arch} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I#{perl_core}"
       end
       system "make", "swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"

@@ -1,5 +1,5 @@
 class Sslsplit < Formula
-  desc "man-in-the-middle attacks against SSL encrypted network connections"
+  desc "Man-in-the-middle attacks against SSL encrypted network connections"
   homepage "https://www.roe.ch/SSLsplit"
   url "https://mirror.roe.ch/rel/sslsplit/sslsplit-0.5.0.tar.bz2"
   sha256 "3eb13c1d0164bf04e7602d9fc45ef7460444b953efaee3ee7d52c357adb3a89a"
@@ -9,6 +9,7 @@ class Sslsplit < Formula
 
   bottle do
     cellar :any
+    sha256 "2cc3c67c865f3603c6bb07c5d2a07167c79b8ff86e5e106127b25e75b46483d1" => :high_sierra
     sha256 "16a00fe728b7f0d3d216448f7a96b17d2abd5def2d60d178f8b63d3fd868ad18" => :sierra
     sha256 "36985c068929da7ae9cf59f43f2735d2694fb6a6c9e0a231afa57b9b668b52e1" => :el_capitan
     sha256 "f309aaeb4016c79b4b6b59833117336784d715a0694959c2731be9c9163b5ae2" => :yosemite

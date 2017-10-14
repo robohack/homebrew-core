@@ -1,13 +1,13 @@
 class Nghttp2 < Formula
   desc "HTTP/2 C Library"
   homepage "https://nghttp2.org/"
-  url "https://github.com/nghttp2/nghttp2/releases/download/v1.21.1/nghttp2-1.21.1.tar.xz"
-  sha256 "9ce4aff2308f09975236c2d7c1e6151ffef07b08995271e708085cef8d3804fe"
+  url "https://github.com/nghttp2/nghttp2/releases/download/v1.26.0/nghttp2-1.26.0.tar.xz"
+  sha256 "7ac7ef5c83449303bf38d16eb45caa9e1bd0bb3abb2afc0ab1e6b3aadbded6dd"
 
   bottle do
-    sha256 "f668e201602eb9e9bc6f35df6b33cbbb7d23e5eb9b7f1f5e981f258625099eeb" => :sierra
-    sha256 "30c3bb750f1e830bacef09dcc252f65a69212361062719df9e72e1ca5878f919" => :el_capitan
-    sha256 "12e6f4baa7964d04a47d9750e6df314c711190d33374a02f0af5ecdbfcd2de7e" => :yosemite
+    sha256 "5adc3e0c9b9aba9792e6b859dafa95b7d903afa2b90abba19dcc00657d2f8ba3" => :high_sierra
+    sha256 "479448bb0461f6a08fb88b548e06094c1acad9dc62acf86e57f273180719d08c" => :sierra
+    sha256 "6d56d799255e3e3a1ace71a3da12f20dbfeab3651ccf842c56239939d244c912" => :el_capitan
   end
 
   head do
@@ -19,11 +19,10 @@ class Nghttp2 < Formula
   end
 
   option "with-examples", "Compile and install example programs"
-  option "without-docs", "Don't build man pages"
   option "with-python3", "Build python3 bindings"
 
   depends_on :python3 => :optional
-  depends_on "sphinx-doc" => :build if build.with? "docs"
+  depends_on "sphinx-doc" => :build
   depends_on "libxml2" if MacOS.version <= :lion
   depends_on "pkg-config" => :build
   depends_on "cunit" => :build
@@ -37,8 +36,8 @@ class Nghttp2 < Formula
   depends_on "jemalloc" => :recommended
 
   resource "Cython" do
-    url "https://files.pythonhosted.org/packages/b7/67/7e2a817f9e9c773ee3995c1e15204f5d01c8da71882016cac10342ef031b/Cython-0.25.2.tar.gz"
-    sha256 "f141d1f9c27a07b5a93f7dc5339472067e2d7140d1c5a9e20112a5665ca60306"
+    url "https://files.pythonhosted.org/packages/68/41/2f259b62306268d9cf0d6434b4e83a2fb1785b34cfce27fdeeca3adffd0e/Cython-0.26.1.tar.gz"
+    sha256 "c2e63c4794161135adafa8aa4a855d6068073f421c83ffacc39369497a189dd5"
   end
 
   # https://github.com/tatsuhiro-t/nghttp2/issues/125

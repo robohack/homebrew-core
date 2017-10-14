@@ -3,37 +3,38 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-      :tag => "2.4.0",
-      :revision => "76fe5d748cbcf41a4c3f40193bde05739cf7d83f"
-  revision 1
+      :tag => "2.9.0",
+      :revision => "fc4ee471ff660632671ce537bd9a3336578afa24"
 
   bottle do
     cellar :any
-    sha256 "f9a702fbb57530871eb3d601a0d88666d2f094ff56babd39da3cd38f444deeed" => :sierra
-    sha256 "18fd06609dd094cc99c4ceedab9d3c12429f34034cd107e74b73913b5973aa63" => :el_capitan
+    sha256 "e22d2766a80bec328332f8cb5692ea574e4b5dec9bad363b22a0a81e30a97b17" => :high_sierra
+    sha256 "a271b533137cd9f0b033b97ecc3b9b9fb55e2c30f6545c0ff010a964b24e8d85" => :sierra
   end
 
   fails_with :gcc => "6"
 
-  # osquery only supports OS X 10.11 and above. Do not remove this.
-  depends_on :macos => :el_capitan
+  # osquery only supports macOS 10.12 and above. Do not remove this.
+  depends_on :macos => :sierra
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "asio"
   depends_on "augeas"
   depends_on "boost"
-  depends_on "snappy"
   depends_on "gflags"
   depends_on "glog"
+  depends_on "libarchive"
   depends_on "libmagic"
   depends_on "lldpd"
-  depends_on "lz4"
+  depends_on "librdkafka"
   depends_on "openssl"
+  depends_on "rapidjson"
   depends_on "rocksdb"
   depends_on "sleuthkit"
   depends_on "yara"
   depends_on "xz"
+  depends_on "zstd"
 
   resource "MarkupSafe" do
     url "https://files.pythonhosted.org/packages/c0/41/bae1254e0396c0cc8cf1751cb7d9afc90a602353695af5952530482c963f/MarkupSafe-0.23.tar.gz"
@@ -51,13 +52,12 @@ class Osquery < Formula
   end
 
   resource "aws-sdk-cpp" do
-    url "https://github.com/aws/aws-sdk-cpp/archive/0.14.4.tar.gz"
-    sha256 "2e935275c6f7eb25e7d850b354344c92cacb7c193b708ec64ffce10ec6afa7f4"
+    url "https://github.com/aws/aws-sdk-cpp/archive/1.2.7.tar.gz"
+    sha256 "1f65e63dbbceb1e8ffb19851a8e0ee153e05bf63bfa12b0e259d50021ac3ab6e"
   end
 
   resource "cpp-netlib" do
     url "https://github.com/cpp-netlib/cpp-netlib/archive/cpp-netlib-0.12.0-final.tar.gz"
-    version "0.12.0"
     sha256 "d66e264240bf607d51b8d0e743a1fa9d592d96183d27e2abdaf68b0a87e64560"
   end
 
@@ -82,15 +82,12 @@ class Osquery < Formula
     vendor = buildpath/"brew_vendor"
 
     resource("aws-sdk-cpp").stage do
-      inreplace "CMakeLists.txt", "${CMAKE_CXX_FLAGS_RELEASE} -s",
-                                  "${CMAKE_CXX_FLAGS_RELEASE}"
-
       args = std_cmake_args + %W[
         -DSTATIC_LINKING=1
         -DNO_HTTP_CLIENT=1
         -DMINIMIZE_SIZE=ON
         -DBUILD_SHARED_LIBS=OFF
-        -DBUILD_ONLY=firehose;kinesis;sts
+        -DBUILD_ONLY=ec2;firehose;kinesis;sts
         -DCMAKE_INSTALL_PREFIX=#{vendor}/aws-sdk-cpp
       ]
 

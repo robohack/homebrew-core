@@ -1,18 +1,17 @@
 class Libuv < Formula
   desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.11.0.tar.gz"
-  sha256 "6ec7eec6ecc24b1a8ffedebedb2fe9313fffb5410de89aaf784dd01080411c7a"
+  url "https://github.com/libuv/libuv/archive/v1.15.0.tar.gz"
+  sha256 "17afc94ec307be28fe8d4316679171219770df4f993905a79643c7583e106489"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
     cellar :any
-    sha256 "aa4195b32133c3bb4cbbb564f4742112ddffb7a2e894f4db19da740d33faff36" => :sierra
-    sha256 "4cbae976a0154925d89e72fed2773c4a68b36500890de385d8b2029cfe8c2a31" => :el_capitan
-    sha256 "767141dbd4cdbbe390ec292f0119135af5c9c6b5dc4804544f9dc3b9c2f2c65a" => :yosemite
+    sha256 "c14c938e98be4ee894b67b5a138a60120d386e630404ee33e4a21dadd2702118" => :high_sierra
+    sha256 "888486e403aaaf122ee0643575824107478c07f0014e474857ad6d6bc8aada44" => :sierra
+    sha256 "2114a5273196755e1a19f10f1f48f82b44977725b6451ead34baf2020d27d919" => :el_capitan
   end
 
-  option "without-docs", "Don't build and install documentation"
   option "with-test", "Execute compile time checks (Requires Internet connection)"
 
   deprecated_option "with-check" => "with-test"
@@ -21,17 +20,15 @@ class Libuv < Formula
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
-  depends_on "sphinx-doc" => :build if build.with? "docs"
+  depends_on "sphinx-doc" => :build
 
   def install
-    if build.with? "docs"
-      # This isn't yet handled by the make install process sadly.
-      cd "docs" do
-        system "make", "man"
-        system "make", "singlehtml"
-        man1.install "build/man/libuv.1"
-        doc.install Dir["build/singlehtml/*"]
-      end
+    # This isn't yet handled by the make install process sadly.
+    cd "docs" do
+      system "make", "man"
+      system "make", "singlehtml"
+      man1.install "build/man/libuv.1"
+      doc.install Dir["build/singlehtml/*"]
     end
 
     system "./autogen.sh"
@@ -57,7 +54,7 @@ class Libuv < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-luv", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-luv", "-o", "test"
     system "./test"
   end
 end

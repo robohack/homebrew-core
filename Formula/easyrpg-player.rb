@@ -1,20 +1,17 @@
 class EasyrpgPlayer < Formula
   desc "RPG Maker 2000/2003 games interpreter"
   homepage "https://easyrpg.org/"
-  url "https://github.com/EasyRPG/Player/archive/0.5.1.tar.gz"
-  sha256 "d93c092c38a8af81099b99645e15f0189ff2ffc0552cb2094ecb6c337f219b7c"
-  head "https://github.com/EasyRPG/Player.git"
+  url "https://easyrpg.org/downloads/player/easyrpg-player-0.5.2.tar.gz"
+  sha256 "3ede43b0bbcd72103507d1f076810506b03d374b481dfe41c9f733bb21cddd24"
 
   bottle do
     cellar :any
-    sha256 "4faa5ec91fd1bc21e827b8551a560186a440f47eff9fbeaf59ea51544068e41f" => :sierra
-    sha256 "7935f6766acc63d0da50243d4a83f91d3b6ed16f22e36162b8ed252839850217" => :el_capitan
-    sha256 "24667d520ace7c0953a06fab122c46ae64223122c5135a4b5a334c8670cbaff5" => :yosemite
+    sha256 "78fe4b10be3cb8c0f8183f4335a1a860bd0ce23e3c8337603a66ba4ba8d1f914" => :high_sierra
+    sha256 "7c47cb423692e6f4ecf81e99396052e29d504cebb862044f10376a4ffeae5f15" => :sierra
+    sha256 "d4940a4c8cd7e3b16a8598daf90085d382b05cff86cf4e9c4882dec5b38c97fa" => :el_capitan
+    sha256 "cc9a7616f69ca42722b9a169cf20be92368c47033948951aa6422637d2824541" => :yosemite
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "harfbuzz"
@@ -26,11 +23,10 @@ class EasyrpgPlayer < Formula
   depends_on "mpg123"
   depends_on "pixman"
   depends_on "sdl2"
-  depends_on "sdl2_mixer" => "with-libvorbis"
+  depends_on "sdl2_mixer"
   depends_on "speex"
 
   def install
-    system "autoreconf", "-i"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"

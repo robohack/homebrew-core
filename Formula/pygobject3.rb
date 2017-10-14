@@ -1,14 +1,15 @@
 class Pygobject3 < Formula
   desc "GNOME Python bindings (based on GObject Introspection)"
   homepage "https://live.gnome.org/PyGObject"
-  url "https://download.gnome.org/sources/pygobject/3.24/pygobject-3.24.1.tar.xz"
-  sha256 "a628a95aa0909e13fb08230b1b98fc48adef10b220932f76d62f6821b3fdbffd"
+  url "https://download.gnome.org/sources/pygobject/3.26/pygobject-3.26.0.tar.xz"
+  sha256 "7411acd600c8cb6f00d2125afa23303f2104e59b83e0a4963288dbecc3b029fa"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "d0767e8408bc2575f0205e8944fc1b3b29ede42cb11cdfc4c938136908a18f30" => :sierra
-    sha256 "ac6f1745ef2e9c3fe91c73d20dc9f2e988e3a5f0809efa873c4fcc053bc0dfda" => :el_capitan
-    sha256 "74c2468d44d6b9c70aa0c4e922ef5a8357ddc89d5559322b39485b141c5512df" => :yosemite
+    sha256 "aa5fc33566d802e184d513a0d4b9aadfe1e7c4ed821dd2e4462ab5e574d3b143" => :high_sierra
+    sha256 "a632f5db3252c8bfa6b442c1f0a8787dc602db381996fe5522ba1ed247956b6b" => :sierra
+    sha256 "33a1324524afd58eee1f8aaa700100f99a81f98b894fb27edfaa58faa020961e" => :el_capitan
   end
 
   option "without-python", "Build without python2 support"
@@ -23,7 +24,9 @@ class Pygobject3 < Formula
 
   def install
     Language::Python.each_python(build) do |python, _version|
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "PYTHON=#{python}"
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}",
+                            "PYTHON=#{python}"
       system "make", "install"
       system "make", "clean"
     end
@@ -34,7 +37,8 @@ class Pygobject3 < Formula
     import gi
     assert("__init__" in gi.__file__)
     EOS
-    Language::Python.each_python(build) do |python, _version|
+    Language::Python.each_python(build) do |python, pyversion|
+      ENV.prepend_path "PYTHONPATH", lib/"python#{pyversion}/site-packages"
       system python, "test.py"
     end
   end

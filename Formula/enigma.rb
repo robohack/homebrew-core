@@ -3,10 +3,12 @@ class Enigma < Formula
   homepage "http://www.nongnu.org/enigma/"
   url "https://downloads.sourceforge.net/project/enigma-game/Release%201.21/enigma-1.21.tar.gz"
   sha256 "d872cf067d8eb560d3bb1cb17245814bc56ac3953ae1f12e2229c8eb6f82ce01"
+  revision 2
+
   bottle do
-    sha256 "dc9fe571d7f6f73e11aa0032359e87ae627b3204e6b7bbeaa2a6d76533467c98" => :sierra
-    sha256 "5b18efbeb88722813ee28b0e9936edaec5b176d24184e0d0fb76ba31c5c0aae2" => :el_capitan
-    sha256 "49fcfb95078058b520d5de211301a693b7f04375ab8f576919a7f4218fd80e90" => :yosemite
+    sha256 "fe7c8716e916535682f46b41905aa139da60a5505302b9001a02f14e804264d1" => :high_sierra
+    sha256 "81fc41187a6160df18f1b73c0ddaea5f263723764cf16821fffc83c3163e105a" => :sierra
+    sha256 "75cdd9b0325226c732ce8d6989234abb05d8af4591e2369f78b48df0802f67d5" => :el_capitan
   end
 
   head do
@@ -20,7 +22,7 @@ class Enigma < Formula
   depends_on "imagemagick" => :build
   depends_on "sdl"
   depends_on "sdl_image"
-  depends_on "sdl_mixer" => ["with-libvorbis", "with-libmikmod"]
+  depends_on "sdl_mixer" => "with-libmikmod"
   depends_on "sdl_ttf"
   depends_on "freetype"
   depends_on "libpng"
@@ -28,7 +30,17 @@ class Enigma < Formula
   depends_on "gettext"
   depends_on "enet"
 
+  needs :cxx11
+
+  # See https://github.com/Enigma-Game/Enigma/pull/8
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/master/enigma/c%2B%2B11.patch"
+    sha256 "5870bb761dbba508e998fc653b7b05a130f9afe84180fa21667e7c2271ccb677"
+  end
+
   def install
+    ENV.cxx11
+
     system "./autogen.sh" if build.head?
 
     inreplace "configure" do |s|

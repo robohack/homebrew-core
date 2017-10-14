@@ -8,14 +8,19 @@ class Brogue < Formula
   sha256 "eba5f35fe317efad9c97876f117eaf7a26956c435fdd2bc1a5989f0a4f70cfd3"
 
   bottle do
-    sha256 "cf93101e6920d496966fb6ecc9e2bdfbb48e4de57259a64e31c2e82f732d2ca4" => :sierra
-    sha256 "7470afc3d1235a9c1dd6ef89ba6a7e72d5e3e0e3e18b19ffe62064813834ae90" => :el_capitan
-    sha256 "b860adf0b0d376f61c478d7c936e4f3078dc5203054093fe129555aa5e2fc431" => :yosemite
+    cellar :any_skip_relocation
+    rebuild 1
+    sha256 "15ae767cca7777781ec2a6d89e63ffc1822b1ab982ea966e1082d625ed5172ca" => :high_sierra
+    sha256 "7843893c8f71ec2824a571324ada4818a24b9d0cdf3ee896a2fe986c2eb3d96e" => :sierra
+    sha256 "29b76f520e06b81094b7036d6c8bc1d9e259d2df18dc82514ed1156027dbfa87" => :el_capitan
   end
 
   # put the highscores file in HOMEBREW_PREFIX/var/brogue/ instead of a
   # version-dependent location.
-  patch :DATA
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/c999df7dff/brogue/1.7.4.patch"
+    sha256 "ac5f86930a0190146ca35856266e8e8af06ac925bc8ae4c73c202352f258669c"
+  end
 
   def install
     (var/"brogue").mkpath
@@ -44,39 +49,3 @@ class Brogue < Formula
     system "#{bin}/brogue", "--version"
   end
 end
-
-__END__
---- a/src/platform/platformdependent.c	2013-10-08 21:53:15.000000000 +0200
-+++ b/src/platform/platformdependent.c	2013-10-08 21:55:22.000000000 +0200
-@@ -75,7 +75,7 @@
-	short i;
-	FILE *scoresFile;
-
--	scoresFile = fopen("BrogueHighScores.txt", "w");
-+	scoresFile = fopen("HOMEBREW_PREFIX/var/brogue/BrogueHighScores.txt", "w");
-	for (i=0; i<HIGH_SCORES_COUNT; i++) {
-		fprintf(scoresFile, "%li\t%li\t%s", (long) 0, (long) 0, "(empty entry)\n");
-	}
-@@ -128,11 +128,11 @@
-	time_t rawtime;
-	struct tm * timeinfo;
-
--	scoresFile = fopen("BrogueHighScores.txt", "r");
-+	scoresFile = fopen("HOMEBREW_PREFIX/var/brogue/BrogueHighScores.txt", "r");
-
-	if (scoresFile == NULL) {
-		initScores();
--		scoresFile = fopen("BrogueHighScores.txt", "r");
-+		scoresFile = fopen("HOMEBREW_PREFIX/var/brogue/BrogueHighScores.txt", "r");
-	}
-
-	for (i=0; i<HIGH_SCORES_COUNT; i++) {
-@@ -197,7 +197,7 @@
-	short i;
-	FILE *scoresFile;
-
--	scoresFile = fopen("BrogueHighScores.txt", "w");
-+	scoresFile = fopen("HOMEBREW_PREFIX/var/brogue/BrogueHighScores.txt", "w");
-
-	for (i=0; i<HIGH_SCORES_COUNT; i++) {
-		// save the entry

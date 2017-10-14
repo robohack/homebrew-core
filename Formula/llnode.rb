@@ -1,14 +1,14 @@
 class Llnode < Formula
   desc "LLDB plugin for live/post-mortem debugging of node.js apps"
   homepage "https://github.com/nodejs/llnode"
-  url "https://github.com/nodejs/llnode/archive/v1.4.3.tar.gz"
-  sha256 "9ed5ea1a4080e96321e6f82fcb025b3e070bad96756a9410392a4e16b45d9352"
+  url "https://github.com/nodejs/llnode/archive/v1.6.2.tar.gz"
+  sha256 "d5e979812f7e4ec62b451beb30770dcb8c7f7184fe8816fc6a13ba2b35c1b919"
 
   bottle do
     cellar :any
-    sha256 "f034907bd92fbc2bc3d7a3aba49e0fa0faf9958433b92974d818c8c85f6368c8" => :sierra
-    sha256 "43b8c4c9f5f468679847a5170a3c47ded9c00609184e91d72fe9c70c50d119dc" => :el_capitan
-    sha256 "db24c0aef38751fc5ddd9f9835b69b70ddcd1fbb45e262f155e12b3c4451a9b9" => :yosemite
+    sha256 "cb965fb47971316eb8928157eefd03c9bcdb13387fa9984291e3dd36809845c6" => :high_sierra
+    sha256 "cba54eddd2cbc47a628a1163f5d02bea21bd7759e95f7c3c905142d4a8fb757a" => :sierra
+    sha256 "83c34005044ba77217d0c9415268a9fa72392213191fe474d8cca0b8f68957a8" => :el_capitan
   end
 
   depends_on :macos => :yosemite
@@ -16,7 +16,7 @@ class Llnode < Formula
 
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "db72e9fcf55ba9d8089f0bc7e447180f8972b5c0"
+        :revision => "324dd166b7c0b39d513026fa52d6280ac6d56770"
   end
 
   resource "lldb" do

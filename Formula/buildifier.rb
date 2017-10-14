@@ -1,21 +1,31 @@
 class Buildifier < Formula
   desc "Format bazel BUILD files with a standard convention"
-  homepage "https://github.com/bazelbuild/buildifier"
-  url "https://github.com/bazelbuild/buildifier/archive/0.4.5.tar.gz"
-  sha256 "7a732ea12d88ddbf9adc99ff5b5c39bfda53b6286ecc79c3bc082d5f53f46f44"
+  homepage "https://github.com/bazelbuild/buildtools"
+  url "https://github.com/bazelbuild/buildtools.git",
+      :tag => "0.6.0",
+      :revision => "a05406a1a855c6d8ebfc368555ace7638d83c0d9"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1dc5ed7aa5c8f53a0dd8717f7e9fb9eae44f9932a64b59631f15aa8d6af388a7" => :sierra
-    sha256 "ab1074f05bcb7e8ac3c1ae3bc4c05c809ff4f8970f40cf500b3a81a99dc0e916" => :el_capitan
-    sha256 "808bef097151f35b4e0400209fe4e465dadc373092ed5f05216523f9b34571ee" => :yosemite
+    sha256 "a486db453f4b9901d00b57395c3b0a8212e95abc9af08b4e53b2b54c115a4447" => :high_sierra
+    sha256 "41977ab25b828d6a155f815eb04b06a705ef35cbe41f430f9b145c4aa1c48c41" => :sierra
+    sha256 "af36ea0545473e8811915386c19d278a2be4fcdbdd9f74eaaaf9e87dac2c5821" => :el_capitan
   end
 
-  depends_on "bazel" => :build
+  depends_on "go" => :build
 
   def install
-    system "bazel", "build", "//buildifier"
-    bin.install "bazel-bin/buildifier/buildifier" => "buildifier"
+    ENV["GOPATH"] = buildpath
+    (buildpath/"src/github.com/bazelbuild").mkpath
+    ln_sf buildpath, buildpath/"src/github.com/bazelbuild/buildtools"
+
+    commit = Utils.popen_read("git", "rev-parse", "HEAD").chomp
+    inreplace "buildifier/buildifier.go" do |s|
+      s.gsub! /^(var buildifierVersion = ")redacted/, "\\1#{version}"
+      s.gsub! /^(var buildScmRevision = ")redacted/, "\\1#{commit}"
+    end
+
+    system "go", "build", "-o", bin/"buildifier", "buildifier/buildifier.go"
   end
 
   test do

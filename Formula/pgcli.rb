@@ -1,19 +1,29 @@
 class Pgcli < Formula
   desc "CLI for Postgres with auto-completion and syntax highlighting"
   homepage "https://pgcli.com/"
-  url "https://files.pythonhosted.org/packages/44/c7/a3a1df56b7eefdbf2aaf833d2856262f075ece87530d98936d4147d3e32e/pgcli-1.5.1.tar.gz"
-  sha256 "10d7334a9a90c8eec107dca89f8bde0a5dbfa10bfc5f187402c3f1adffee36d7"
+  url "https://files.pythonhosted.org/packages/d6/22/b31b930ab33ed23db9443f082f4aced2c81be97bcf3a2e1b2ec2e091cb09/pgcli-1.8.1.tar.gz"
+  sha256 "9a29b4082987760ea336697d3d4a4ecf9c126d7d6b56001d6d897d438bd91ce7"
 
   bottle do
     cellar :any
-    sha256 "35a4ff3b9518553243f79ed230e0da38a1318fc0cab59003da3e347741499183" => :sierra
-    sha256 "12eabe80aafb6a9be527cee2d39295c706539f2ed0f8c59293398dc2eabe7e11" => :el_capitan
-    sha256 "0173793349867ee9fcefe023862f9b8cb1dff2f99858bddf8f2b26ee454661d2" => :yosemite
+    sha256 "ca4796a22b658f8e7a46797eb937d452b25f906ef4774c5fc785d0e13d6fc9b0" => :high_sierra
+    sha256 "0be32aadcb4d4de65908ddaf071f276ced76de0dd612a17bd994b530bffa8ad8" => :sierra
+    sha256 "2f9dd812d687aaf7b4250f1ccefd834b61046fa84209b7876abb92e1ab534057" => :el_capitan
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
+  depends_on "libpq"
   depends_on "openssl"
-  depends_on :postgresql
+
+  resource "backports.csv" do
+    url "https://files.pythonhosted.org/packages/6a/0b/2071ad285e87dd26f5c02147ba13abf7ec777ff20416a60eb15ea204ca76/backports.csv-1.0.5.tar.gz"
+    sha256 "8c421385cbc6042ba90c68c871c5afc13672acaf91e1508546d6cda6725ebfc6"
+  end
+
+  resource "cli-helpers" do
+    url "https://files.pythonhosted.org/packages/03/65/9a5b81f879131076e47fa7f0e633a2e6524cdae7d14ef66a58bb810c100e/cli_helpers-0.2.3.tar.gz"
+    sha256 "eaa887b46ef448c8864ba460cce4fa26866e45e337dc32a2b4741ccb033c42f1"
+  end
 
   resource "click" do
     url "https://files.pythonhosted.org/packages/95/d9/c3336b6b5711c3ab9d1d3a80f1a3e2afeb9d8c02a7166462f6cc96570897/click-6.7.tar.gz"
@@ -31,18 +41,18 @@ class Pgcli < Formula
   end
 
   resource "pgspecial" do
-    url "https://files.pythonhosted.org/packages/71/cc/93ee525a00e5ad6306945529d6f9c7ea0058d2f7a72ad25759c21e558780/pgspecial-1.7.0.tar.gz"
-    sha256 "297e231caf77e129c4d0b71f97ca022be8d32684928af5959050de727245db4a"
+    url "https://files.pythonhosted.org/packages/bd/61/b35b4622813d6659653290bf6c001b22dc0c5d0b88c0948db47d15d1c42d/pgspecial-1.8.0.tar.gz"
+    sha256 "89f524909e97554bb3eeceb186a834e86cb71e34afef3a95fe645049ead894b7"
   end
 
   resource "prompt_toolkit" do
-    url "https://files.pythonhosted.org/packages/23/be/4876b52d5cc159cbd4b0ff6e7aa419a26470849a43a8f647857a4a24467b/prompt_toolkit-1.0.13.tar.gz"
-    sha256 "33d68ca09f76cd73287fde7df5748ffacf26a8238dd61ee81ac50860ea7c6776"
+    url "https://files.pythonhosted.org/packages/8a/ad/cf6b128866e78ad6d7f1dc5b7f99885fb813393d9860778b2984582e81b5/prompt_toolkit-1.0.15.tar.gz"
+    sha256 "858588f1983ca497f1cf4ffde01d978a3ea02b01c8a26a8bbc5cd2e66d816917"
   end
 
   resource "psycopg2" do
-    url "https://files.pythonhosted.org/packages/f8/e9/5793369ce8a41bf5467623ded8d59a434dfef9c136351aca4e70c2657ba0/psycopg2-2.7.1.tar.gz"
-    sha256 "86c9355f5374b008c8479bc00023b295c07d508f7c3b91dbd2e74f8925b1d9c6"
+    url "https://files.pythonhosted.org/packages/6b/fb/15c687eda2f925f0ff59373063fdb408471b4284714a7761daaa65c01f15/psycopg2-2.7.3.1.tar.gz"
+    sha256 "9b7b16e26448b43cf167f785d8b5345007731ebf153a510e12dae826800caa65"
   end
 
   resource "Pygments" do
@@ -56,13 +66,18 @@ class Pgcli < Formula
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/b3/b2/238e2590826bfdd113244a40d9d3eb26918bd798fc187e2360a8367068db/six-1.10.0.tar.gz"
-    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+    url "https://files.pythonhosted.org/packages/16/d8/bc6316cf98419719bd59c91742194c111b6f2e85abac88e496adefaf7afe/six-1.11.0.tar.gz"
+    sha256 "70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
   end
 
   resource "sqlparse" do
     url "https://files.pythonhosted.org/packages/45/67/14bdaeff492e6d03a055fe80502bae10b679891c25a0dc59be2fe51002f8/sqlparse-0.2.3.tar.gz"
     sha256 "becd7cc7cebbdf311de8ceedfcf2bd2403297024418801947f8c953025beeff8"
+  end
+
+  resource "terminaltables" do
+    url "https://files.pythonhosted.org/packages/9b/c4/4a21174f32f8a7e1104798c445dacdc1d4df86f2f26722767034e4de4bff/terminaltables-3.1.0.tar.gz"
+    sha256 "f3eb0eb92e3833972ac36796293ca0906e998dc3be91fbe1f8615b331b853b81"
   end
 
   resource "wcwidth" do
@@ -77,6 +92,9 @@ class Pgcli < Formula
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
+
+    # backports is a namespace package
+    touch libexec/"vendor/lib/python2.7/site-packages/backports/__init__.py"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)

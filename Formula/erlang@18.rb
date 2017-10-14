@@ -2,13 +2,16 @@ class ErlangAT18 < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   url "https://github.com/erlang/otp/archive/OTP-18.3.4.tar.gz"
-  sha256 "d9e68a8cdef4db0935b02d4b163cf3af403405f756488874736298cf48b90ae9"
+  sha256 "7ab381d64a2943a35782f173792e4c2678ae9fd9bffba1f2814ffe701070c1bc"
+  head "https://github.com/erlang/otp.git", :branch => "maint-18"
 
   bottle do
     cellar :any
-    sha256 "44d49f4e02a162114a8e4760315278490482f2fabe61cce2e56e6606abec72c6" => :sierra
-    sha256 "e01b1d83bfb10b62ae1f4aa78e096ce29eebcac0a3630256b70a5613ed00a389" => :el_capitan
-    sha256 "8321028e343f226c150e01e9a0890918b66bd68542533a77b29c024feef9a808" => :yosemite
+    rebuild 1
+    sha256 "c9e0f48a2db7b2c4a3aa58d2b7707128a9a7a7739c8ef4aaf8a79395d3fbdece" => :high_sierra
+    sha256 "0ca10369f89c7a561bd54a884e0cd9dc1ac67ab53a652a19e1dcc3007374a77a" => :sierra
+    sha256 "68419c51401c6c144ea0b5a9c7a327c397a4bd92ff0c6b5d083a73c7d81caf05" => :el_capitan
+    sha256 "8a1880af3b22343f01e0b2ceb716bda49cd324fb55027179210f2469bd6cda94" => :yosemite
   end
 
   keg_only :versioned_formula
@@ -26,6 +29,22 @@ class ErlangAT18 < Formula
   depends_on "fop" => :optional # enables building PDF docs
   depends_on :java => :optional
   depends_on "wxmac" => :recommended # for GUI apps like observer
+
+  # Check if this patch can be removed when OTP 18.3.5 is released.
+  # Erlang will crash on macOS 10.13 any time the crypto lib is used.
+  # The Erlang team has an open PR for the patch but it needs to be applied to
+  # older releases. See https://github.com/erlang/otp/pull/1501 and
+  # https://bugs.erlang.org/browse/ERL-439 for additional information.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/774ad1f/erlang%4018/boring-ssl-high-sierra.patch"
+    sha256 "7cc1069a2d9418a545e12981c6d5c475e536f58207a1faf4b721cc33692657ac"
+  end
+
+  # Pointer comparison triggers error with Xcode 9
+  patch do
+    url "https://github.com/erlang/otp/commit/a64c4d806fa54848c35632114585ad82b98712e8.diff?full_index=1"
+    sha256 "3261400f8d7f0dcff3a52821daea3391ebfa01fd859f9f2d9cc5142138e26e15"
+  end
 
   resource "man" do
     url "https://www.erlang.org/download/otp_doc_man_18.3.tar.gz"
@@ -72,10 +91,7 @@ class ErlangAT18 < Formula
     args << "--enable-native-libs" if build.with? "native-libs"
     args << "--enable-dirty-schedulers" if build.with? "dirty-schedulers"
     args << "--enable-wx" if build.with? "wxmac"
-
-    if MacOS.version >= :snow_leopard && MacOS::CLT.installed?
-      args << "--with-dynamic-trace=dtrace"
-    end
+    args << "--with-dynamic-trace=dtrace" if MacOS::CLT.installed?
 
     if build.without? "hipe"
       # HIPE doesn't strike me as that reliable on macOS

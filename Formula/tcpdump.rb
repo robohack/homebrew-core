@@ -1,16 +1,17 @@
 class Tcpdump < Formula
   desc "Command-line packet analyzer"
   homepage "http://www.tcpdump.org/"
-  url "http://www.tcpdump.org/release/tcpdump-4.9.0.tar.gz"
-  sha256 "eae98121cbb1c9adbedd9a777bf2eae9fa1c1c676424a54740311c8abcee5a5e"
+  url "http://www.tcpdump.org/release/tcpdump-4.9.2.tar.gz"
+  sha256 "798b3536a29832ce0cbb07fafb1ce5097c95e308a6f592d14052e1ef1505fe79"
 
   head "https://github.com/the-tcpdump-group/tcpdump.git"
 
   bottle do
     cellar :any
-    sha256 "18012541c4b00cd8438ee1c2c5a4b465821da228ba8239f28bfbeddbd64d0b30" => :sierra
-    sha256 "097e031e8e81fa045a0e30e4566051fb689f6766ab39eb1c39ae124dacebc06b" => :el_capitan
-    sha256 "b21c9593fe39fff0e7dd9e057a16eaa9686c13fa8a806ac4e0e5f118aa14881b" => :yosemite
+    sha256 "321254c4ef9c9d005b59bd6ecc2511a6c8444eda92c93f836db4ffecaf4c36c9" => :high_sierra
+    sha256 "f383f086f232e06e01c9d206c98f65d9df5109366f13ba684910b8e249e35a6e" => :sierra
+    sha256 "10486fd04e4b4df5f7fbd2b9aba3d48c903730c53df3ee9b7f57887db0347df8" => :el_capitan
+    sha256 "97fc8337c3808fa208b72f1eea5eea6d53bf67c083ca6b1b3ddf751b8342c574" => :yosemite
   end
 
   depends_on "openssl"

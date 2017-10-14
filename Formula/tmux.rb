@@ -1,13 +1,13 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/releases/download/2.4/tmux-2.4.tar.gz"
-  sha256 "757d6b13231d0d9dd48404968fc114ac09e005d475705ad0cd4b7166f799b349"
+  url "https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz"
+  sha256 "b17cd170a94d7b58c0698752e1f4f263ab6dc47425230df7e53a6435cc7cd7e8"
 
   bottle do
-    sha256 "d55216b5c284afa3916606af62d7751e87aa091fea87096e4bc8b66d8d0060e1" => :sierra
-    sha256 "b33e9ad74318bbe2966d439f10613a48257cd4a206d18a18a640d41fd45f4c10" => :el_capitan
-    sha256 "0c73eaa301b97cb422a312beeb2964b1490e3a132ff4e2a56609845393b74c51" => :yosemite
+    sha256 "0ca2e76822980dcc009fde38379f7546b6568975d9dc4f2a6a312e32fce186f8" => :high_sierra
+    sha256 "d2b71640c44c4fc1e953a6eb1ca14b8c91ee4a19a91f2f699546c5cd6ed5b302" => :sierra
+    sha256 "cda9003fa113251c024210750d529be80379288436cf66a67a3896d2d14b6766" => :el_capitan
   end
 
   head do

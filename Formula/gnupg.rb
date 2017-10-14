@@ -1,18 +1,19 @@
 class Gnupg < Formula
   desc "GNU Pretty Good Privacy (PGP) package"
-  homepage "https://www.gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.1.20.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.1.20.tar.bz2"
-  sha256 "24cf9a69369be64a9f6f8cc11a1be33ab7780ad77a6a1b93719438f49f69960d"
+  homepage "https://gnupg.org/"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.1.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.2.1.tar.bz2"
+  sha256 "34d70cd65b9c95f3f2f90a9f5c1e0b6a0fe039a8d685e2d66d69c33d1cbf62fb"
 
   bottle do
-    sha256 "da72dd30eff4131ff8177528b5bf03f6e0273e553bdf34e8daa490696e24a92c" => :sierra
-    sha256 "fa918f6b7d0693dbaee150f2e35be7a3836465ec70b4f21d0a6d7b328c71d53b" => :el_capitan
-    sha256 "1bffe1390ca8c2de5d4eca6e6fd3af90ff16ebd8f9a715ff0c91d43f30e0b0fe" => :yosemite
+    sha256 "20e4f082250dc48713d3b606f9d5917a12df70b7c31e172d7041a0680ecea8ff" => :high_sierra
+    sha256 "3290c44b7cbfdbec3ecc1c070c6eac8941e5e2a6437bf16ce918efe714da7b22" => :sierra
+    sha256 "4c39daa407f96cfe415897de8b8d577d7dd4eff87433c2a5cdf7e22a66aca270" => :el_capitan
   end
 
   option "with-gpgsplit", "Additionally install the gpgsplit utility"
   option "with-gpg-zip", "Additionally install the gpg-zip utility"
+  option "with-large-secmem", "Additionally allocate extra secure memory"
   option "without-libusb", "Disable the internal CCID driver"
 
   deprecated_option "without-libusb-compat" => "without-libusb"
@@ -41,21 +42,17 @@ class Gnupg < Formula
       --sysconfdir=#{etc}
       --enable-symcryptrun
       --with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry
+      --enable-all-tests
     ]
 
     args << "--disable-ccid-driver" if build.without? "libusb"
     args << "--with-readline=#{Formula["readline"].opt_prefix}" if build.with? "readline"
+    args << "--enable-large-secmem" if build.with? "large-secmem"
 
     system "./configure", *args
     system "make"
-    system "make", "install"
     system "make", "check"
-
-    # Add symlinks from gpg2 to unversioned executables, replacing gpg 1.x.
-    bin.install_symlink "gpg2" => "gpg"
-    bin.install_symlink "gpgv2" => "gpgv"
-    man1.install_symlink "gpg2.1" => "gpg.1"
-    man1.install_symlink "gpgv2.1" => "gpgv.1"
+    system "make", "install"
 
     bin.install "tools/gpgsplit" if build.with? "gpgsplit"
     bin.install "tools/gpg-zip" if build.with? "gpg-zip"

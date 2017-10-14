@@ -7,6 +7,7 @@ class Avra < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "0c4ac95218144b45bfed147a584707c8f2b8f0ec7c75b2ac4fdfae5592029b92" => :high_sierra
     sha256 "2fd31c2a27b2ef237a6c9e33d7b378682dcba6b79131717f6c97264999b85658" => :sierra
     sha256 "a53990c229653465948d9d66fc972e695591cddf6529c25ad834fed7fbd7267d" => :el_capitan
     sha256 "1fd6d746309dbdf2811ba8d461188ec63e93363a34546a3af7ad9b4f47c75ffc" => :yosemite
@@ -38,7 +39,7 @@ class Avra < Formula
     (testpath/"test.asm").write " .device attiny10\n ldi r16,0x42\n"
     output = shell_output("#{bin}/avra -l test.lst test.asm")
     assert_match "Assembly complete with no errors.", output
-    assert File.exist?("test.hex")
+    assert_predicate testpath/"test.hex", :exist?
     assert_match "ldi r16,0x42", File.read("test.lst")
   end
 end

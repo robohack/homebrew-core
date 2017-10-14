@@ -4,54 +4,64 @@ class Goofys < Formula
   desc "Filey-System interface to Amazon S3"
   homepage "https://github.com/kahing/goofys"
   url "https://github.com/kahing/goofys.git",
-      :tag => "v0.0.9",
-      :revision => "f8d668c29bbf43aa36acea68e05b493f16f5e990"
-
+      :tag => "v0.0.17",
+      :revision => "3d40e98b163a797e800550a30e950dc06f7229b1"
   head "https://github.com/kahing/goofys.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "214c728ceb4cac8d251dbc45630093d00db03a2bf43d9d6cab5d5ed0bd880d64" => :sierra
-    sha256 "f2a85e78185766488a036cb6fd2bf1a5523ad5d9acb3f5e6b1b6c9d78a8ead80" => :el_capitan
-    sha256 "198a37cf47fe63c25f72ce0aa490fbc2efa4ffc0d9f0195d5334524ce2a26ff6" => :yosemite
+    sha256 "5c404ec2ec1fb719bf9ccddd33e870710c95c7d137fd150624ed9c4487e4e65a" => :high_sierra
+    sha256 "0aadab7b39adbda711676f4f3da0fea7cf6d64e3d95e8386166df760904690c3" => :sierra
+    sha256 "0d507abec9d46417d3f28ef78c7d8879b26e728026ae3ab7a39989d514a5dae0" => :el_capitan
+    sha256 "786d318dba4292b4dbb3ebda22fbf96fab1dace9c71ed430a3e6939816088f74" => :yosemite
   end
 
   depends_on "go" => :build
   depends_on :osxfuse
 
-  go_resource "github.com/Sirupsen/logrus" do
-    url "https://github.com/Sirupsen/logrus.git",
-        :revision => "881bee4e20a5d11a6a88a5667c6f292072ac1963"
-  end
-
   go_resource "github.com/codegangsta/cli" do
     url "https://github.com/codegangsta/cli.git",
-        :revision => "0bdeddeeb0f650497d603c4ad7b20cfe685682f6"
+        :revision => "f017f86fccc5a039a98f23311f34fdf78b014f78"
   end
 
   go_resource "github.com/jacobsa/fuse" do
     url "https://github.com/jacobsa/fuse.git",
-        :revision => "2642d571aa800c9ddca51e63800a57046970ce96"
+        :revision => "fe7f3a55dcaa3a8f3d5ff6a85b16b62b7a2c446c"
   end
 
   go_resource "github.com/kardianos/osext" do
     url "https://github.com/kardianos/osext.git",
-        :revision => "c2c54e542fb797ad986b31721e1baedf214ca413"
+        :revision => "ae77be60afb1dcacde03767a8c37337fad28ac14"
   end
 
   go_resource "github.com/sevlyar/go-daemon" do
     url "https://github.com/sevlyar/go-daemon.git",
-        :revision => "8577c7ddef908e104dae56c9e46f0956cb33c844"
+        :revision => "298c54b0e0ae32ec2c6674fee8b60d2fefa4ae7e"
   end
 
   go_resource "github.com/shirou/gopsutil" do
     url "https://github.com/shirou/gopsutil.git",
-        :revision => "93564b314264efac01934715fad4c355ed6af1c5"
+        :revision => "a452de7c734a0fa0f16d2e5725b0fa5934d9fbec"
+  end
+
+  go_resource "github.com/sirupsen/logrus" do
+    url "https://github.com/sirupsen/logrus.git",
+        :revision => "89742aefa4b206dcf400792f3bd35b542998eb3b"
+  end
+
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git",
+        :revision => "81e90905daefcd6fd217b62423c0908922eadb30"
   end
 
   go_resource "golang.org/x/net" do
-    url "https://github.com/golang/net.git",
-        :revision => "8fd7f25955530b92e73e9e1932a41b522b22ccd9"
+    url "https://go.googlesource.com/net.git",
+        :revision => "66aacef3dd8a676686c7ae3716979581e8b03c47"
+  end
+
+  go_resource "golang.org/x/sys" do
+    url "https://go.googlesource.com/sys.git",
+        :revision => "7ddbeae9ae08c6a06a59597f0c9edbc5ff2444ce"
   end
 
   def install
@@ -64,8 +74,11 @@ class Goofys < Formula
     Language::Go.stage_deps resources, gopath/"src"
 
     cd gopath/"src/github.com/kahing/goofys" do
-      system "go", "build", "-o", "goofys"
+      commit = Utils.popen_read("git rev-parse HEAD").chomp
+      system "go", "build", "-o", "goofys", "-ldflags",
+             "-X main.Version=#{commit}"
       bin.install "goofys"
+      prefix.install_metafiles
     end
   end
 

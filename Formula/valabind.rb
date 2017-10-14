@@ -1,31 +1,42 @@
 class Valabind < Formula
   desc "Vala bindings for radare, reverse engineering framework"
   homepage "https://radare.org/"
-  url "https://www.radare.org/get/valabind-0.10.0.tar.gz"
-  sha256 "35517455b4869138328513aa24518b46debca67cf969f227336af264b8811c19"
-  revision 3
-
+  url "https://github.com/radare/valabind/archive/1.4.0.tar.gz"
+  sha256 "b2e4939912feada6138b8269d228ea82fb0f1391fd2e2e7003f404677b0cdbc9"
   head "https://github.com/radare/valabind.git"
 
   bottle do
-    cellar :any
-    sha256 "5c45091f83a60a801f1437d4823b9fc3c06b0c76c509298fb894bc9648b7ff92" => :sierra
-    sha256 "c3d5d2a3b4a9feaed8ad93bea0a2588d4beffcd21f508ee473af320f3ce75759" => :el_capitan
-    sha256 "344ffcc0ca468c9a9590277dbd3a7ce8192f120fb24a696d740da3c5a0216a84" => :yosemite
+    sha256 "09ecd58afe5c101c661d20c18a229ca4d8204adfd65d508e6e46387faf8a5980" => :high_sierra
+    sha256 "05e13594c23aca12a1ea9c7ff4a5e3a17bbe1a68a65dea80d5a8aa89892d26cf" => :sierra
+    sha256 "bf466be7a14313608f3d68a86135b2b25094457c0fb89b7dd389f57fc4cd173c" => :el_capitan
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run # :run, not :build, for vala
   depends_on "swig" => :run
-  depends_on "vala"
 
-  # patch necessary to support vala 0.36.0
-  # remove upon next release
-  patch do
-    url "https://github.com/radare/valabind/commit/f23ff9421c1875d18b1e558596557009b45faa19.patch"
-    sha256 "9fe8f9485e1a4f52c68831670b880efcbbae33c6bc70e67297a00cc1d2fe0d4f"
+  # vala dependencies
+  depends_on "gettext"
+  depends_on "glib"
+
+  # Upstream issue "Build failure with vala 0.38.0"
+  # Reported 6 Sep 2017 https://github.com/radare/valabind/issues/43
+  resource "vala" do
+    url "https://download.gnome.org/sources/vala/0.36/vala-0.36.5.tar.xz"
+    sha256 "7ae7eb8a976005afecf4f647b9043f2bb11e8b263c7fe9e905ab740b3d8a9f40"
   end
 
   def install
+    resource("vala").stage do
+      system "./configure", "--disable-dependency-tracking",
+                            "--disable-silent-rules",
+                            "--prefix=#{libexec}"
+      system "make"
+      system "make", "install"
+    end
+
+    ENV.prepend_path "PATH", libexec/"bin"
+    ENV.prepend_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
+
     system "make"
     system "make", "install", "PREFIX=#{prefix}"
   end

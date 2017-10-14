@@ -1,18 +1,19 @@
 class Tarantool < Formula
   desc "In-memory database and Lua application server."
   homepage "https://tarantool.org/"
-  url "https://download.tarantool.org/tarantool/1.7/src/tarantool-1.7.3.99.tar.gz"
-  sha256 "e6fbe05f491cde472f30c3e978d8b6533245852bd353824e2e33164aa6bba903"
+  url "https://download.tarantool.org/tarantool/1.7/src/tarantool-1.7.5.184.tar.gz"
+  sha256 "3c95948b90ef17ec772b09532aaaef7a71c75d2b13cbe192e6dd1796069afd01"
 
-  head "https://github.com/tarantool/tarantool.git", :branch => "1.7", :shallow => false
+  head "https://github.com/tarantool/tarantool.git", :branch => "1.8", :shallow => false
 
   bottle do
-    sha256 "872054634b828db330728218df90b0bb3ecb98c7a4d40132e092d1cbc85bc4fd" => :sierra
-    sha256 "f4bfdecb75a6ddc4e680ea5d4f6b9dca62e40fa8ac2e3c4fea0c36250aaeb584" => :el_capitan
-    sha256 "eff95199b02b2de5a93173738d42e0cb22aa27f71712db92428dbcf427c050bb" => :yosemite
+    sha256 "09462a735f9f8e1ca8f4a121e5d226d72832f05fd64b8cc55e99235ce7e70f08" => :high_sierra
+    sha256 "b8de6b1d4ad7acaef9c80c6ae68cab15eaad984e2905e3d8f3045c0b7510687e" => :sierra
+    sha256 "aaa307ec10e11975e8d473e5488623f7c0871e75922d5e7ff2c8eb8b5603220b" => :el_capitan
   end
 
   depends_on "cmake" => :build
+  depends_on "icu4c"
   depends_on "openssl"
   depends_on "readline"
 
@@ -25,6 +26,8 @@ class Tarantool < Formula
     args << "-DENABLE_DIST=ON"
     args << "-DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}"
     args << "-DREADLINE_ROOT=#{Formula["readline"].opt_prefix}"
+    args << "-DCURL_INCLUDE_DIR=#{MacOS.sdk_path}/usr/include"
+    args << "-DCURL_LIBRARY=/usr/lib/libcurl.dylib"
 
     system "cmake", ".", *args
     system "make"

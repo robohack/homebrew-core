@@ -1,8 +1,8 @@
 class Jsonschema2pojo < Formula
   desc "Generates Java types from JSON Schema (or example JSON)"
   homepage "http://www.jsonschema2pojo.org/"
-  url "https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-0.4.33/jsonschema2pojo-0.4.33.tar.gz"
-  sha256 "4716531fc86d8e8ff59032c22c542854c0052e9b4956c30a92208c1dad9cc243"
+  url "https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-0.5.1/jsonschema2pojo-0.5.1.tar.gz"
+  sha256 "a3d3c883e0a9d847d0c95e0a10c086db8f20962cb995f01766d43749e3d72ea8"
 
   bottle :unneeded
 
@@ -31,6 +31,6 @@ class Jsonschema2pojo < Formula
     }
     EOS
     system bin/"jsonschema2pojo", "-s", "src", "-t", testpath
-    assert File.exist?("Jsonschema.java"), "Failed to generate Jsonschema.java"
+    assert_predicate testpath/"Jsonschema.java", :exist?, "Failed to generate Jsonschema.java"
   end
 end

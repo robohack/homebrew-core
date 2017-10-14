@@ -1,14 +1,15 @@
 class Memcached < Formula
   desc "High performance, distributed memory object caching system"
   homepage "https://memcached.org/"
-  url "https://www.memcached.org/files/memcached-1.4.36.tar.gz"
-  sha256 "773b6bb20bf80223ca6a15d75f570fbab346ad11ec98595e5af5e33f54bd82d8"
+  url "https://www.memcached.org/files/memcached-1.5.0.tar.gz"
+  sha256 "c001f812024bb461b5e4d7d0506daab63dff9614eea26f46536c3b7e1e601c32"
 
   bottle do
     cellar :any
-    sha256 "bdd0aa093595f71eb60f5d80d2db4cf1c648695f5ba5244671a77450cd69f20c" => :sierra
-    sha256 "1cfff2115f1a6c8336e5575d0512d6ea03178720a3e57967cc02ba07675b0b5e" => :el_capitan
-    sha256 "12d6c28f78cae0b7ca22dfabe35d631489430b48560cb3bd71c123b2842b3928" => :yosemite
+    sha256 "759b17a031bb0f2a1166b6f0708517f4f2d3f093a30522a95fc981c176e07eb7" => :high_sierra
+    sha256 "fb390a87a44bd89f281e51c0c7b97c0ecd96563cbf1bbf5e74dd322c97c2cf94" => :sierra
+    sha256 "df17c1f2e4dba8c70e1ba7b0e5f47c6dfe2e5edf240ff036756226089062292a" => :el_capitan
+    sha256 "4f74ff764fa09d840fd2826d4d65521a2168a8f69d4f9150371781f7ba20351f" => :yosemite
   end
 
   option "with-sasl", "Enable SASL support -- disables ASCII protocol!"
@@ -57,6 +58,12 @@ class Memcached < Formula
   end
 
   test do
-    system "#{bin}/memcached", "-h"
+    pidfile = testpath/"memcached.pid"
+    # Assumes port 11211 is not already taken
+    system bin/"memcached", "--listen=localhost:11211", "--daemon", "--pidfile=#{pidfile}"
+    sleep 1
+    assert_predicate pidfile, :exist?, "Failed to start memcached daemon"
+    pid = (testpath/"memcached.pid").read.chomp.to_i
+    Process.kill "TERM", pid
   end
 end

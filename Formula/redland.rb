@@ -6,6 +6,7 @@ class Redland < Formula
   revision 1
 
   bottle do
+    sha256 "407f9f1bd2a8682684660826fce445077c33fe3e7f1bfb05e7c0e265e2edacfe" => :high_sierra
     sha256 "0ed03c897836946cbadf2e390bd25c79eeb6ad34ea1144ef69d8bf1dfbfaf2eb" => :sierra
     sha256 "38eac3bae25aa65cbb7b688ecfaae91ab79c0c292e7505596ffc3b409bc8ca3b" => :el_capitan
     sha256 "6047842b51137c968df4787bbfcf2080b4f32b73bb9d3412fa117ee9c1ff22d2" => :yosemite
@@ -67,8 +68,8 @@ class Redland < Formula
 
         if build.with? "ruby"
           `ruby --version` =~ /ruby (\d\.\d).\d \(.*\) \[(.*)\]/
-          ruby_install_dir = lib + "ruby/site_ruby/" + $1
-          ruby_arch_install_dir = ruby_install_dir + $2
+          ruby_install_dir = lib + "ruby/site_ruby/" + Regexp.last_match(1)
+          ruby_arch_install_dir = ruby_install_dir + Regexp.last_match(2)
           ruby_install_dir.mkpath
           ruby_arch_install_dir.mkpath
           args << "--with-ruby"

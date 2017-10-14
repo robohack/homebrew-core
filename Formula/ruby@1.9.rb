@@ -6,6 +6,7 @@ class RubyAT19 < Formula
   revision 4
 
   bottle do
+    sha256 "b15f9640744ec0136fe120e736f731c7427c62fff5a7a0b6f9899a1981fb10d4" => :high_sierra
     sha256 "3db7c4d297998e6f53b10e35626bdf94f8db0836778ce8ef943846e1d5b35fbc" => :sierra
     sha256 "9c5dd40c620a597405e3c2d458bc9772ad1c661acf501b65f9e9d8871c300f7f" => :el_capitan
     sha256 "9334e46da0b55e3ea20bba27c49352b8b9f95674a5dea1691b5fd04625f23eed" => :yosemite
@@ -31,11 +32,6 @@ class RubyAT19 < Formula
       --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
       --with-vendordir=#{HOMEBREW_PREFIX}/lib/ruby/vendor_ruby
     ]
-
-    if build.universal?
-      ENV.universal_binary
-      args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
-    end
 
     args << "--program-suffix=#{program_suffix}" if build.with? "suffix"
     args << "--with-out-ext=tk" if build.without? "tcltk"

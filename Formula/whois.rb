@@ -1,21 +1,20 @@
 class Whois < Formula
   desc "Lookup tool for domain names and other internet resources"
   homepage "https://packages.debian.org/sid/whois"
-  url "https://mirrors.kernel.org/debian/pool/main/w/whois/whois_5.2.15.tar.xz"
-  sha256 "7a5a6b690bfc6360d92d9328adbe5c1f096a41f0d6548ce0df4aa664dcb37188"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/w/whois/whois_5.2.18.tar.xz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/w/whois/whois_5.2.18.tar.xz"
+  sha256 "c35d0d26aff37107c244a8ad54fd42e497ec0b90f76309e9beb7078b827c97d5"
   head "https://github.com/rfc1036/whois.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2f76c5338e4a2a6d4fa2a20937e410a634b7c4d7eb11a1ddab6a539c66b19440" => :sierra
-    sha256 "ac5d8ca304855154b1f6bc8b068431bb0cb2d96c114c73153d63145ac747d608" => :el_capitan
-    sha256 "6a364e35b236f85c81a5338fc27e89af7c90798ec0c8437654bfb57daf92417e" => :yosemite
+    sha256 "efbf2c5eae16825f831095a2589b59e7a485aa8a2e786052c4b94bbffb0e1356" => :high_sierra
+    sha256 "532e5b0a21d134aa714abbf1f80835e1256e037901540026579c395e0c515c72" => :sierra
+    sha256 "cf7bca8cc4c6275a3753794c42b5fe916535d25e9a4465c81616984636a3cb37" => :el_capitan
+    sha256 "73b75963251f3c420d2d24972447d015028dc3d1f872a2b335f5aea8f4b0977c" => :yosemite
   end
 
   def install
-    # autodie was not shipped with the system perl 5.8
-    inreplace "make_version_h.pl", "use autodie;", "" if MacOS.version < :snow_leopard
-
     system "make", "whois", "HAVE_ICONV=1", "whois_LDADD+=-liconv"
     bin.install "whois"
     man1.install "whois.1"

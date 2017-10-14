@@ -1,20 +1,23 @@
 class Vice < Formula
   desc "Versatile Commodore Emulator"
   homepage "https://vice-emu.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/vice-emu/releases/vice-3.0.tar.gz"
-  sha256 "bc56811381920d43ab5f2f85a5e08f21ab5bdf6190dd5dfe9f500a745d14972b"
+  url "https://downloads.sourceforge.net/project/vice-emu/releases/vice-3.1.tar.gz"
+  sha256 "3eb8159633816095006dec36c5c3edd055a87fd8bda193a1194a6801685d1240"
   revision 1
 
   bottle do
     cellar :any
-    sha256 "c255b84b7f49014481ba0a1b43a921d65c43040a84c1d5d9a89d0ff19a0709bf" => :sierra
-    sha256 "97a15bc32da4619365dfe21063686c628117753354a718fe04d19953273a60a1" => :el_capitan
-    sha256 "59033f7b07d827fe31adf64eb85d88594d7b49bd89c47b00a6762fb4171f84ad" => :yosemite
+    rebuild 1
+    sha256 "cfc6a84e02744b85867aeeef591fb185de4a8560a1fbbc7dc50a53a8d0393b59" => :high_sierra
+    sha256 "39bfe0b566c65cb01ce976dbb5be3fbf46b4486bc9678f8c5b288fd2d8bb265d" => :sierra
+    sha256 "34ff96ca0fdc51f4a873970d00bcab347c3483fad7ee1a670e1c49182690cd2e" => :el_capitan
+    sha256 "ab4044f958907bd7d756575fc97e0e42ffc24307c621176da0d0522feadb22f4" => :yosemite
   end
 
   depends_on "pkg-config" => :build
   depends_on "texinfo" => :build
   depends_on "yasm" => :build
+  depends_on "ffmpeg"
   depends_on "flac"
   depends_on "giflib"
   depends_on "jpeg"
@@ -23,6 +26,7 @@ class Vice < Formula
   depends_on "libpng"
   depends_on "libvorbis"
   depends_on "portaudio"
+  depends_on "sdl2"
   depends_on "xz"
 
   # needed to avoid Makefile errors with the vendored ffmpeg 2.4.2
@@ -45,14 +49,15 @@ class Vice < Formula
     # among others.
     ENV["LIBS"] = "-framework CoreServices -framework VideoDecodeAcceleration -liconv"
 
-    # Use Cocoa instead of X
+    # Upstream recommends using SDL/SDL2 as Cocoa is essentially unsupported.
     # Use a static lame, otherwise Vice is hard-coded to look in
     # /opt for the library.
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-cocoa",
+                          "--enable-sdlui2",
                           "--without-x",
-                          "--enable-static-ffmpeg",
+                          "--enable-external-ffmpeg",
                           "--enable-static-lame"
     system "make"
     system "make", "bindist"
@@ -61,7 +66,7 @@ class Vice < Formula
   end
 
   def caveats; <<-EOS.undent
-    Cocoa apps for these emulators have been installed to #{prefix}.
+    Apps for these emulators have been installed to #{opt_prefix}.
   EOS
   end
 

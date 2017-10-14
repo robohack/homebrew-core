@@ -3,11 +3,12 @@ class Exim < Formula
   homepage "https://exim.org"
   url "https://ftp.exim.org/pub/exim/exim4/exim-4.89.tar.bz2"
   sha256 "912f2ee03c8dba06a3a4c0ee40522d367e1b65dc59e38dfcc1f5d9eecff51ab0"
+  revision 2
 
   bottle do
-    sha256 "b76c1dc01d5ff622c16ddbaee4405b6738bd0a4443fa162714994bc055224014" => :sierra
-    sha256 "d65075ea2095eeb918d4314493a634b35f330813425ee1a84b2bfdeadc346404" => :el_capitan
-    sha256 "eaaca1b7231700c5d7dd558c1a754c94c3643a3132ddedc415bd50382bbcb598" => :yosemite
+    sha256 "e034ee4ff0a3a7c4ba72be9c9dd971dc0e3d26c4559dc30e5c6a67608e54d216" => :high_sierra
+    sha256 "cfacabfcec0746abc0b8c285216bec3604de3f5974cba9d70efed4564cfb9972" => :sierra
+    sha256 "76f0bff4cbc20acbfc51728c5110ebfb2aa201a14f543fe05f70bd1a77c1e613" => :el_capitan
   end
 
   deprecated_option "support-maildir" => "with-maildir"
@@ -16,6 +17,25 @@ class Exim < Formula
   depends_on "pcre"
   depends_on "berkeley-db@4"
   depends_on "openssl"
+
+  # Patch applied upstream but doesn't apply cleanly from git.
+  # https://github.com/Exim/exim/commit/65e061b76867a9ea7aeeb535341b790b90ae6c21
+  patch do
+    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/e/exim4/exim4_4.89-7.debian.tar.xz"
+    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/e/exim4/exim4_4.89-7.debian.tar.xz"
+    sha256 "e24464a5a803e4063b32e42543f9a9352ed2fa6bfde7b0f608e59582a23a853f"
+    apply "patches/75_fixes_01-Start-exim-4_89-fixes-to-cherry-pick-some-commits-fr.patch"
+    apply "patches/75_fixes_02-Cleanup-prevent-repeated-use-of-p-oMr-to-avoid-mem-l.patch"
+    apply "patches/75_fixes_03-Fix-log-line-corruption-for-DKIM-status.patch"
+    apply "patches/75_fixes_04-Openssl-disable-session-tickets-by-default-and-sessi.patch"
+    apply "patches/75_fixes_05-Transport-fix-smtp-under-combo-of-mua_wrapper-and-li.patch"
+    apply "patches/75_fixes_07-Openssl-disable-session-tickets-by-default-and-sessi.patch"
+    apply "patches/75_fixes_08-Transport-fix-smtp-under-combo-of-mua_wrapper-and-li.patch"
+    apply "patches/75_fixes_09-Use-the-BDB-environment-so-that-a-database-config-fi.patch"
+    apply "patches/75_fixes_10-Fix-cache-cold-random-callout-verify.-Bug-2147.patch"
+    apply "patches/75_fixes_11-On-callout-avoid-SIZE-every-time-but-noncacheable-rc.patch"
+    apply "patches/75_fixes_12-Fix-build-for-earlier-version-Berkeley-DB.patch"
+  end
 
   def install
     cp "src/EDITME", "Local/Makefile"

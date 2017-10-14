@@ -1,11 +1,12 @@
 class FcitxRemoteForOsx < Formula
-  desc "handle input method in command-line"
+  desc "Handle input method in command-line"
   homepage "https://github.com/CodeFalling/fcitx-remote-for-osx"
   url "https://github.com/CodeFalling/fcitx-remote-for-osx/archive/0.2.0.tar.gz"
   sha256 "6b641f692e96d1da741780d46941e8ab1d59ca7ea8909458888f20dea628b481"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "23ca3b8325b509ccf9991009a7d34e3afff5a4a2f12d054d0034dc950ada1f05" => :high_sierra
     sha256 "138ca03de1639465bb99bdac40a33fc57d21a53c53b25791493c8cbbd6675eab" => :sierra
     sha256 "5dd74e46ad011a623dedf189e7e63c7ae5b037e60f728b5aac9389bf20628d63" => :el_capitan
     sha256 "1a400d131adec21aea258c11c83038ac72ee6fe6cd0bc237af0f3238d5459984" => :yosemite

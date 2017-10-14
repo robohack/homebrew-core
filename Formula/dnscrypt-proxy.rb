@@ -1,16 +1,16 @@
 class DnscryptProxy < Formula
   desc "Secure communications between a client and a DNS resolver"
   homepage "https://dnscrypt.org"
-  url "https://github.com/jedisct1/dnscrypt-proxy/archive/1.9.4.tar.gz"
-  sha256 "a79d5da0133344d38f8b3d3355c16269f11c15fbeedd0521e1a657b00ac503bb"
-  revision 2
+  url "https://github.com/jedisct1/dnscrypt-proxy/archive/1.9.5.tar.gz"
+  sha256 "947000568f79ab4d036b259d9cf3fe6fdf8419860d9ad18004ac767db0dbd5ac"
+  revision 1
 
   head "https://github.com/jedisct1/dnscrypt-proxy.git"
 
   bottle do
-    sha256 "4a9f3e632853614258a8a598114e54ef6acfe2eb828e221ffba4bb76175db0f3" => :sierra
-    sha256 "979e46b37d32bd0a5474b375ffe37a1f6d7b41ca2eb64e7f4998fa6203a20adc" => :el_capitan
-    sha256 "1f0a121039a9f251daf659f2b90e9bc67b22cfa049f2f6dbd70626c6ddf36639" => :yosemite
+    sha256 "2fd6cc2b0ec7730290eafb55560b95c8bbc42df874ef03fe4c7b1faab49619fc" => :high_sierra
+    sha256 "ef7459f7e9ba0e1d0f88e91d51309d93faaf5c4778d87098dea0509536467158" => :sierra
+    sha256 "6a278225af005fbf91a401c7b8f4f277b2d714a83c7621c51937825af4991f0e" => :el_capitan
   end
 
   option "without-plugins", "Disable support for plugins"
@@ -33,7 +33,11 @@ class DnscryptProxy < Formula
 
     system "./autogen.sh"
 
-    args = %W[--disable-dependency-tracking --prefix=#{prefix} --sysconfdir=#{etc}]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+    ]
 
     if build.with? "plugins"
       args << "--enable-plugins"

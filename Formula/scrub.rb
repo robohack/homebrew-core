@@ -8,6 +8,7 @@ class Scrub < Formula
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "c9e96dce0a6f2d7c3b32d481aae3a3aa2c0f42cd3c53b10e2fd60c6479ebf128" => :high_sierra
     sha256 "703ee9b222437bf008ceaa25ab802ace51f207bcba8503f88037896aee2fde40" => :sierra
     sha256 "82343d8c3b64b876f8afb208059c3a916590b45fe7998ee412d91d3df161fc92" => :el_capitan
     sha256 "40363789d6def7a867c3268832449f4f2ae5b3394f84c9063af2417c024f0eca" => :yosemite
@@ -34,6 +35,6 @@ class Scrub < Formula
 
     output = shell_output("#{bin}/scrub -r -p dod #{path}")
     assert_match "scrubbing #{path}", output
-    assert !File.exist?(path)
+    refute_predicate path, :exist?
   end
 end

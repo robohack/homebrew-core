@@ -1,16 +1,15 @@
 class Putty < Formula
   desc "Implementation of Telnet and SSH"
-  homepage "http://www.chiark.greenend.org.uk/~sgtatham/putty/"
-  url "https://the.earth.li/~sgtatham/putty/0.68/putty-0.68.tar.gz"
-  mirror "https://fossies.org/linux/misc/putty-0.68.tar.gz"
-  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.68.tar.gz"
-  sha256 "7ba256f46e5a353cafe811ce7914d0e22a52bdfc0e6e2d183ad28b5af44cd09c"
+  homepage "https://www.chiark.greenend.org.uk/~sgtatham/putty/"
+  url "https://the.earth.li/~sgtatham/putty/0.70/putty-0.70.tar.gz"
+  sha256 "bb8aa49d6e96c5a8e18a057f3150a1695ed99a24eef699e783651d1f24e7b0be"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "881517dacc0811e26559359839e950a518865949a6c1439230d69d0ed525a91c" => :sierra
-    sha256 "993674c05b05964831e82dbef97970190e538e0c70c3093643426f24147370e2" => :el_capitan
-    sha256 "684b2c926949cc5bf02db806514380cd27576d81d9f432b3873da6448bd07c9d" => :yosemite
+    sha256 "832bf75b4d9927e461c853e802a7951724522fd083a0774f0609141965c06c82" => :high_sierra
+    sha256 "b212b6d5db7478c43d0f6883c459373e257219f9bfc4aa24abe2992d82f9294e" => :sierra
+    sha256 "658a1736398dedd1dc5bc1c267c08b126a6bd9b2653fb2ef3b425f401a14f293" => :el_capitan
+    sha256 "ef3e944e9b322ce16da3264e68bce6a23f58a23f45f8d84d27954670a8d71379" => :yosemite
   end
 
   head do
@@ -75,6 +74,6 @@ class Putty < Formula
     chmod 0755, testpath/"command.sh"
 
     system "./command.sh"
-    assert File.exist?("test.key")
+    assert_predicate testpath/"test.key", :exist?
   end
 end

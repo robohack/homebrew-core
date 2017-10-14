@@ -1,13 +1,13 @@
 class Joe < Formula
   desc "Joe's Own Editor (JOE)"
   homepage "https://joe-editor.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/joe-editor/JOE%20sources/joe-4.3/joe-4.3.tar.gz"
-  sha256 "985d6a8f943a06e64165996c24d7fecaeae8c59efb52998a49b3fb4b8a3e26e1"
+  url "https://downloads.sourceforge.net/project/joe-editor/JOE%20sources/joe-4.5/joe-4.5.tar.gz"
+  sha256 "51104aa34d8650be3fa49f2204672a517688c9e6ec47e68f1ea85de88e36cadf"
 
   bottle do
-    sha256 "4c2981014abdb5b86da5427e2fc274d596e3b33539ea27c4fcae58562b1393c2" => :sierra
-    sha256 "7d645771891a181a0db72b11724827c7d7c25f10d2cae2730ac6fe7f190256db" => :el_capitan
-    sha256 "669e06a1ce0eda63a58daf56823b637984fc109af782dbd1035ea1d2ca19bf84" => :yosemite
+    sha256 "760c0a06be2796ab446f917d4bd806adb7433e2ae5d00d5429406f67aebece77" => :high_sierra
+    sha256 "bd6a3920d921b24b9e4c414e70512381849f64fcc4d93c2d2fcc60d4c79b7180" => :sierra
+    sha256 "73f46c197aa85834ea639d93ea02740deeb18c31bb0ddfc2f6400164c6dde566" => :el_capitan
   end
 
   def install

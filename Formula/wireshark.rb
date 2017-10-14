@@ -1,15 +1,15 @@
 class Wireshark < Formula
   desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.2.6.tar.bz2"
-  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.2.6.tar.bz2"
-  sha256 "f627d51eda85f5ae5f5c8c9fc1f6539ffc2a270dd7500dc7f67490a8534ca849"
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.4.2.tar.xz"
+  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.4.2.tar.xz"
+  sha256 "d1acb24735fd35e18e9b7a0555ec58277c2b87da45a19ebeb8087c3dda55f47d"
   head "https://code.wireshark.org/review/wireshark", :using => :git
 
   bottle do
-    sha256 "522111fc9df2a5f6e60f464ca67bd5a60387d7369c03e9d626d2732f8e66714b" => :sierra
-    sha256 "e610c5ecc9296423c2fbc66cb78e65c4c69a7159f8d8f36c727e1bd18fa81e5e" => :el_capitan
-    sha256 "50d9c288babdada6ee13d27eec4e9e365b8ca5a67149960199f9f6e86e05517d" => :yosemite
+    sha256 "0ffb4497002822256aa74a5cd4d737dfc1ae5ed6924b48e32b1d629264ccb2b0" => :high_sierra
+    sha256 "384706ef1d33cb673047ee69b624b3e054d502bd90ab24e114019023c475cd63" => :sierra
+    sha256 "abfeb3a9802f2556a075124e2fbdfd7e2b6fe770501748ddbad1726bf3af6063" => :el_capitan
   end
 
   deprecated_option "with-qt5" => "with-qt"
@@ -18,45 +18,31 @@ class Wireshark < Formula
   option "with-gtk+", "Build the wireshark command with gtk+"
   option "with-qt", "Build the wireshark command with Qt (can be used with or without either GTK option)"
   option "with-headers", "Install Wireshark library headers for plug-in development"
+  option "with-nghttp2", "Enable HTTP/2 header dissection"
 
-  depends_on "pkg-config" => :build
   depends_on "cmake" => :build
+  depends_on "c-ares"
+  depends_on "geoip"
   depends_on "glib"
   depends_on "gnutls"
   depends_on "libgcrypt"
-  depends_on "dbus"
-  depends_on "geoip" => :recommended
-  depends_on "c-ares" => :recommended
+  depends_on "lua"
   depends_on "libsmi" => :optional
-  depends_on "lua" => :optional
+  depends_on "libssh" => :optional
+  depends_on "nghttp2" => :optional
   depends_on "portaudio" => :optional
   depends_on "qt" => :optional
   depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
-  depends_on "gnome-icon-theme" if build.with? "gtk+3"
-
-  # 2017-04-14 set fossies as main url due to tcpdump connection issues
-  resource "libpcap" do
-    url "https://fossies.org/linux/misc/libpcap-1.8.1.tar.gz"
-    mirror "http://www.tcpdump.org/release/libpcap-1.8.1.tar.gz"
-    sha256 "673dbc69fdc3f5a86fb5759ab19899039a8e5e6c631749e48dcd9c6f0c83541e"
-  end
+  depends_on "adwaita-icon-theme" if build.with? "gtk+3"
 
   def install
-    if MacOS.version <= :mavericks
-      resource("libpcap").stage do
-        system "./configure", "--prefix=#{libexec}/vendor",
-                              "--enable-ipv6",
-                              "--disable-universal"
-        system "make", "install"
-      end
-      ENV.prepend_path "PATH", libexec/"vendor/bin"
-      ENV.prepend "CFLAGS", "-I#{libexec}/vendor/include"
-      ENV.prepend "LDFLAGS", "-L#{libexec}/vendor/lib"
-    end
-
-    args = std_cmake_args
-    args << "-DENABLE_GNUTLS=ON" << "-DENABLE_GCRYPT=ON"
+    args = std_cmake_args + %w[
+      -DENABLE_CARES=ON
+      -DENABLE_GEOIP=ON
+      -DENABLE_GNUTLS=ON
+      -DENABLE_LUA=ON
+    ]
 
     if build.with? "qt"
       args << "-DBUILD_wireshark=ON"
@@ -65,6 +51,7 @@ class Wireshark < Formula
     else
       args << "-DBUILD_wireshark=OFF"
       args << "-DENABLE_APPLICATION_BUNDLE=OFF"
+      args << "-DENABLE_QT5=OFF"
     end
 
     if build.with?("gtk+3") || build.with?("gtk+")
@@ -76,38 +63,30 @@ class Wireshark < Formula
       args << "-DENABLE_PORTAUDIO=OFF"
     end
 
-    if build.with? "geoip"
-      args << "-DENABLE_GEOIP=ON"
-    else
-      args << "-DENABLE_GEOIP=OFF"
-    end
-
-    if build.with? "c-ares"
-      args << "-DENABLE_CARES=ON"
-    else
-      args << "-DENABLE_CARES=OFF"
-    end
-
     if build.with? "libsmi"
       args << "-DENABLE_SMI=ON"
     else
       args << "-DENABLE_SMI=OFF"
     end
 
-    if build.with? "lua"
-      args << "-DENABLE_LUA=ON"
+    if build.with? "libssh"
+      args << "-DBUILD_sshdump=ON" << "-DBUILD_ciscodump=ON"
     else
-      args << "-DENABLE_LUA=OFF"
+      args << "-DBUILD_sshdump=OFF" << "-DBUILD_ciscodump=OFF"
+    end
+
+    if build.with? "nghttp2"
+      args << "-DENABLE_NGHTTP2=ON"
+    else
+      args << "-DENABLE_NGHTTP2=OFF"
     end
 
     system "cmake", *args
-    system "make"
-    ENV.deparallelize # parallel install fails
     system "make", "install"
 
     if build.with? "qt"
       prefix.install bin/"Wireshark.app"
-      bin.install_symlink prefix/"Wireshark.app/Contents/MacOS/Wireshark"
+      bin.install_symlink prefix/"Wireshark.app/Contents/MacOS/Wireshark" => "wireshark"
     end
 
     if build.with? "headers"
@@ -124,17 +103,18 @@ class Wireshark < Formula
   end
 
   def caveats; <<-EOS.undent
+    This formula only installs the command-line utilities by default.
+
+    Wireshark.app can be downloaded directly from the website:
+      https://www.wireshark.org/
+
+    Alternatively, install with Homebrew-Cask:
+      brew cask install wireshark
+
     If your list of available capture interfaces is empty
-    (default macOS behavior), try installing ChmodBPF from homebrew cask:
+    (default macOS behavior), install ChmodBPF:
 
       brew cask install wireshark-chmodbpf
-
-    This creates an 'access_bpf' group and adds a launch daemon that changes the
-    permissions of your BPF devices so that all users in that group have both
-    read and write access to those devices.
-
-    See bug report:
-      https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
     EOS
   end
 

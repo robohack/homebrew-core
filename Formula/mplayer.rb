@@ -1,10 +1,11 @@
 class Mplayer < Formula
   desc "UNIX movie player"
-  homepage "https://www.mplayerhq.hu/"
-  url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.xz"
+  homepage "https://mplayerhq.hu/"
+  url "https://mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.xz"
   sha256 "3ad0846c92d89ab2e4e6fb83bf991ea677e7aa2ea775845814cbceb608b09843"
 
   bottle do
+    sha256 "26285311d46556224a46a14367dac8c813c3959712c267d591950ae9fb703f38" => :high_sierra
     sha256 "52b4e6e55808d69ff34210337e86359e766c6065da3e43117357d378970cffcf" => :sierra
     sha256 "6cee95b050e52a0f09e2807d6feda1f798d3f43166fbad1e3fb2ec5fe2c11f99" => :el_capitan
     sha256 "8bb05f0875afca69802634411d8e67af5f42e4461b66c640de3c152e049c7843" => :yosemite
@@ -13,7 +14,6 @@ class Mplayer < Formula
 
   head do
     url "svn://svn.mplayerhq.hu/mplayer/trunk"
-    depends_on "subversion" => :build if MacOS.version <= :leopard
 
     # When building SVN, configure prompts the user to pull FFmpeg from git.
     # Don't do that.
@@ -22,6 +22,9 @@ class Mplayer < Formula
 
   depends_on "yasm" => :build
   depends_on "libcaca" => :optional
+  depends_on "libdvdread" => :optional
+  depends_on "libdvdnav" => :optional
+  depends_on "pkg-config" => :build if build.with? "libdvdnav"
 
   unless MacOS.prefer_64_bit?
     fails_with :clang do
@@ -44,6 +47,12 @@ class Mplayer < Formula
     ]
 
     args << "--enable-caca" if build.with? "libcaca"
+    args << "--enable-dvdnav" if build.with? "libdvdnav"
+
+    if build.with? "libdvdread"
+      ENV["LDFLAGS"] = "-L#{Formula["libdvdread"].opt_lib} -ldvdread"
+      args << "--enable-dvdread"
+    end
 
     system "./configure", *args
     system "make"

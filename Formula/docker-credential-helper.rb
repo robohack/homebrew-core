@@ -1,15 +1,16 @@
 class DockerCredentialHelper < Formula
   desc "macOS Credential Helper for Docker"
   homepage "https://github.com/docker/docker-credential-helpers"
-  url "https://github.com/docker/docker-credential-helpers/archive/v0.5.0.tar.gz"
-  sha256 "3e1b9d270d48c730706277735efdf0ab704130fcfbee7eea8a0642f5cdba6b08"
+  url "https://github.com/docker/docker-credential-helpers/archive/v0.6.0.tar.gz"
+  sha256 "7d8cdb67c89dece68e96dce11eab9d03c1d798296d3f3601eec4589b24664e7a"
   head "https://github.com/docker/docker-credential-helpers.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "828f38190cb50e4c46231ec8702045ba043bd235e01e4394c927af5c107b340b" => :sierra
-    sha256 "1802d5eceea5272559401accfe011d9a6f11df89e2686a7b937bf1dbe6f1475d" => :el_capitan
-    sha256 "f0397eb7d5f5729c134c775fd8a6087ed470c17826a914e320644811d6bc9fca" => :yosemite
+    rebuild 1
+    sha256 "a55283cbd0afea4e7241c7df92917e87e5367fa9bd518bfadca186f3af8fb0dc" => :high_sierra
+    sha256 "4296ea20d1b107c874b6ef6cdf116812c2ffe0eee3546cce168ac5d6b1008557" => :sierra
+    sha256 "e004af49ee34fca476c7d9da5ce94fa2f551dbc71fd8fd04d54079703cfbfe15" => :el_capitan
   end
 
   depends_on "go" => :build
@@ -23,6 +24,7 @@ class DockerCredentialHelper < Formula
       system "make", "vet_osx"
       system "make", "osxkeychain"
       bin.install "bin/docker-credential-osxkeychain"
+      prefix.install_metafiles
     end
   end
 

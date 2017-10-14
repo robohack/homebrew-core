@@ -1,13 +1,13 @@
 class RubyAT22 < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.7.tar.bz2"
-  sha256 "80486c5991783185afeceeb315060a3dafc3889a2912e145b1a8457d7b005c5b"
+  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.8.tar.xz"
+  sha256 "37eafc15037396c26870f6a6c5bcd0658d14b46cd5e191a3b56d89dd22d561b0"
 
   bottle do
-    sha256 "16992fc572462b4377210411cecc78970f49ede5dc57f53441b7ca3dd0919434" => :sierra
-    sha256 "b89885d74d9c8e599d53dc5954825bd37295f36636c9335c71f7c027455ac72a" => :el_capitan
-    sha256 "11e7ec0193000bbd77f35837bbf2b2d4f706bf5c748dbdac3115433d857512bf" => :yosemite
+    sha256 "39af46430dae6262e5cff3d712de650ba4beec4f8f8947469dc9987e280f2dae" => :high_sierra
+    sha256 "c6743542f223aac05752a03e0f1d489885080cc7a175ae3c49afe2af0dcc0b8f" => :sierra
+    sha256 "4d70d40e00c7ac28adf03c68747c28665704dfab75f121da786528387f2894eb" => :el_capitan
   end
 
   keg_only :versioned_formula

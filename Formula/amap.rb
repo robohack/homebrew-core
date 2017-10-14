@@ -2,11 +2,13 @@ class Amap < Formula
   desc "Perform application protocol detection"
   homepage "https://www.thc.org/thc-amap/"
   url "https://www.thc.org/releases/amap-5.4.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/slackbuildsdirectlinks/amap/amap-5.4.tar.gz"
   sha256 "a75ea58de75034de6b10b0de0065ec88e32f9e9af11c7d69edbffc4da9a5b059"
   revision 2
 
   bottle do
     cellar :any
+    sha256 "e20c8c6cfa0221a47164565fd4b4484dd4c653d646a8bdbf7f2330ef99c5079e" => :high_sierra
     sha256 "81ff7d4c48a2bb6e0ba15ef0dbcbf31f98f1a1410d65bd53cd60ffc0e8d8c9d1" => :sierra
     sha256 "c90c8fb7641960727299f576812dd38d88f836f9d3b99a21fdf652d2032acb52" => :el_capitan
     sha256 "0ab42765f948fe016bc38c8d6005e66a86e93b4e93b073615baaf0fa0f0e95dc" => :yosemite

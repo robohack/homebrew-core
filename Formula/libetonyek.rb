@@ -6,6 +6,7 @@ class Libetonyek < Formula
   revision 1
 
   bottle do
+    sha256 "9ed870edea699de2a390959173f429ed9b50788de8d4f18dd36915bfa756e58e" => :high_sierra
     sha256 "bd8eebe1f6baa116b62e07120d2721e4b58b07afde240b1715fc7765ac8c9f97" => :sierra
     sha256 "24dcd3c072de267a0c37b56e09018dce03f2af49577072f27bca7fcb3637c13d" => :el_capitan
     sha256 "638cac17acdf356dd29a0e9e2d190978c1e92778287aa1f03e7daafdf7eeb83a" => :yosemite
@@ -28,8 +29,8 @@ class Libetonyek < Formula
   # Remove for > 0.1.6
   # upstream commit adding support for mdds 1.2 API in configure
   patch do
-    url "https://github.com/LibreOffice/libetonyek/commit/f6d14b3.patch"
-    sha256 "26022cb803763b83f4458517a63bfc7ad34e7f8cc0ad30175a3da7802263eeb5"
+    url "https://github.com/LibreOffice/libetonyek/commit/f6d14b3.patch?full_index=1"
+    sha256 "e2b04fb2ae25f3edfa0a9ac06096310d4e22004acf0ee36ccaa3cb9b6cc20317"
   end
 
   def install

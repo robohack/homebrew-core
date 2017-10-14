@@ -1,9 +1,9 @@
 class Kawa < Formula
   desc "Programming language for Java (implementation of Scheme)"
   homepage "https://www.gnu.org/software/kawa/"
-  url "https://ftp.gnu.org/gnu/kawa/kawa-2.3.zip"
-  mirror "https://ftpmirror.gnu.org/kawa/kawa-2.3.zip"
-  sha256 "76431f9acd758df8c1a7c16d8a4fde91b625bb14c730e5ea6540bca6b724ef5a"
+  url "https://ftp.gnu.org/gnu/kawa/kawa-3.0.zip"
+  mirror "https://ftpmirror.gnu.org/kawa/kawa-3.0.zip"
+  sha256 "63116eec4b2b2dd8fae0b30127639aa42ad7a7430c4970d3fd76b42a148e423c"
 
   bottle :unneeded
 
@@ -11,7 +11,7 @@ class Kawa < Formula
 
   def install
     rm Dir["bin/*.bat"]
-    inreplace "bin/kawa", "thisfile=`type -p \$0`",
+    inreplace "bin/kawa", "thisfile=`command -v $0`",
                           "thisfile=#{libexec}/bin/kawa"
     libexec.install "bin", "lib"
     bin.install_symlink libexec/"bin/kawa"

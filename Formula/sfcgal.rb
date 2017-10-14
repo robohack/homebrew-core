@@ -1,14 +1,13 @@
 class Sfcgal < Formula
   desc "C++ wrapper library around CGAL"
   homepage "http://sfcgal.org/"
-  url "https://github.com/Oslandia/SFCGAL/archive/v1.3.0.tar.gz"
-  sha256 "7ed35439fc197e73790f4c3d1c1750acdc3044968769239b2185a7a845845df3"
-  revision 2
+  url "https://github.com/Oslandia/SFCGAL/archive/v1.3.2.tar.gz"
+  sha256 "1ae0ce1c38c728b5c98adcf490135b32ab646cf5c023653fb5394f43a34f808a"
 
   bottle do
-    sha256 "e951bd5d493db1062b4cba7d82f12cb901080405f5baf82d20b741eb1eb53c6c" => :sierra
-    sha256 "3154bb53419f7ed18becddeeebdd3e1ffc7acee49815eb4334bed277c8e281bc" => :el_capitan
-    sha256 "71d17dd246841b30ac95273dddf0c56a4751240cdcb05a5d76d4d3d26e1aac25" => :yosemite
+    sha256 "f768925d0f01d8c8ea0c131a886d9ffb10677d90e86591f6d3a71adfc136975e" => :high_sierra
+    sha256 "ab1b173aa969908975b426e0e1b6e743c18f3e9da19007b0b7e1833b92969bd7" => :sierra
+    sha256 "0348fd098cfb8a0d2ce913fa256178c63c47216415507a962c5999a5c62853ac" => :el_capitan
   end
 
   option :cxx11

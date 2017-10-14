@@ -3,26 +3,25 @@ class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
 
   stable do
-    url "https://github.com/kripken/emscripten/archive/1.37.1.tar.gz"
-    sha256 "f553e7e5ab3611501b0478513f6d96f343027b04bd0317bb2c7239ebbfddf523"
+    url "https://github.com/kripken/emscripten/archive/1.37.22.tar.gz"
+    sha256 "433dedb63ba423cf04bbc9802b49fa842bd479bad31a339db9506614e92334c7"
 
-    emscripten_tag = version.to_s
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/#{emscripten_tag}.tar.gz"
-      sha256 "e73d8852d78aa466519d2fc4dc902a2069e0e7cc3cc0446bb0264133c7e9c5c9"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.37.22.tar.gz"
+      sha256 "e333c68bcd0f5ecabee464a785d10a7b1ce000b866b5769bfe1603b7b277f1cb"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/#{emscripten_tag}.tar.gz"
-      sha256 "d7c8761652eafca1eaec0484f6021c14a5e6fbfc922d0b2551e37be458e39c8d"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.37.22.tar.gz"
+      sha256 "6306f32150f2cc643205a1a4fd54946e63a5203d6186f783c2365607932fda25"
     end
   end
 
   bottle do
     cellar :any
-    sha256 "dcffc8f923f474ed0d8ce48b67eafceeea3342903a950f76f43c130130e2683f" => :sierra
-    sha256 "4fdcb331fcc82c2c8721d04895f0d261db5dfc9728c92466bfeb8066dd3aa1af" => :el_capitan
-    sha256 "ec5ca32b012b0ff952d08872e2cf2bbb41c1e6011ab7173c6bf2c3028503e37f" => :yosemite
+    sha256 "c6fd922bfcfa87a310840f36186e4c1e59e200d5546edf3b54bab3cd7bb7747f" => :high_sierra
+    sha256 "bbcb224c88295ce67f98309926977bca3f11871d75a4337be5bbe50cb93e1137" => :sierra
+    sha256 "e2b040d09d52789f7fc75d9fe743752546b9bc9db5128b1287327e28ef19fcc1" => :el_capitan
   end
 
   head do
@@ -95,6 +94,7 @@ class Emscripten < Formula
   end
 
   test do
-    system "#{libexec}/llvm/bin/llvm-config", "--version"
+    system bin/"emcc"
+    assert_predicate testpath/".emscripten", :exist?, "Failed to create sample config"
   end
 end

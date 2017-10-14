@@ -1,14 +1,13 @@
 class Babl < Formula
   desc "Dynamic, any-to-any, pixel format translation library"
   homepage "http://www.gegl.org/babl/"
-  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.24.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/b/babl/babl_0.1.24.orig.tar.bz2"
-  sha256 "472bf1acdde5bf076e6d86f3004eea4e9b007b1377ab305ebddec99994f29d0b"
+  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.34.tar.bz2"
+  sha256 "5ebfe0b3b108a8438adc86ae3ef315f1844fdedc0a857e6d814dd011869c8a5b"
 
   bottle do
-    sha256 "59dbdde4e0b9163f0ea4454633081afd6857ba4a41210c1b2d5220645396b783" => :sierra
-    sha256 "c57ea02e61a81516ae316b306676f4c81c4f1f894fcd888d69331eea2e1f498a" => :el_capitan
-    sha256 "49ed1ceef9c136ddbe1ad1dfc8a3fcc5d8aa2262fdfaa39d20e055e20201b6e3" => :yosemite
+    sha256 "485a493419f46bc32a31f7506eaa40b689ed6301d74cd139806f7b9c5662ed07" => :high_sierra
+    sha256 "9c25fa7bc86e773a6466d959653834bfcc2435b17149e5f7a973adc8c0db9075" => :sierra
+    sha256 "36a4b1036d745ac25cf58deed53d7f3b6408c7a147facc18f3f08bd711ceaf82" => :el_capitan
   end
 
   head do

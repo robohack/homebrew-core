@@ -7,7 +7,7 @@ class RRequirement < Requirement
     R not found. The R integration module requires R.
     Do one of the following:
     - install R
-    -- run brew install homebrew/science/r or brew install Caskroom/cask/r
+    -- run brew install r or brew cask install r-app
     - remove the --with-r option
     EOS
   end
@@ -16,13 +16,14 @@ end
 class Monetdb < Formula
   desc "Column-store database"
   homepage "https://www.monetdb.org/"
-  url "https://www.monetdb.org/downloads/sources/Dec2016-SP3/MonetDB-11.25.15.tar.xz"
-  sha256 "8166268f676f75f0df7fdf3f8b2a49ffff422420d275bb994dddcab95012f89e"
+  url "https://www.monetdb.org/downloads/sources/Jul2017-SP1/MonetDB-11.27.5.tar.xz"
+  sha256 "871ce08f3c4d9113f50a43fb396892b9c52ae891e8bf16431c80416cac0f6bef"
 
   bottle do
-    sha256 "29e53987c25b36626fe8d191c98c1fdb0387c8bfc78b2636df2231ce46b9a7e9" => :sierra
-    sha256 "d2f3e9272ef54c264ecde72418e43ca26006a075c275f3cfb9cccf322818b436" => :el_capitan
-    sha256 "88a00e91a4d6d1a1914474a11e42e948e3367ef58e3f572a99f75b5ecb4047c8" => :yosemite
+    sha256 "86298aa85dcc95afe6ee1858a92097154f800f8b8e2624128c15093e6cf46d66" => :high_sierra
+    sha256 "d557a98aba92cf4903da6be105616dcff2e2834fb4a451433b833cda389ee664" => :sierra
+    sha256 "0424e83c65eff82b0cd4b53a4cf2b800badc3d4fec6ae0cdc3c24fbf5fc2552a" => :el_capitan
+    sha256 "cc914fbe74bf59327c268c65cd70fbc7a84b6b734af44e5281bbd5592c2b7924" => :yosemite
   end
 
   head do
@@ -50,7 +51,7 @@ class Monetdb < Formula
   depends_on "unixodbc" => :optional # Build the ODBC driver
   depends_on "geos" => :optional # Build the GEOM module
   depends_on "gsl" => :optional
-  depends_on "homebrew/science/cfitsio" => :optional
+  depends_on "cfitsio" => :optional
   depends_on "homebrew/php/libsphinxclient" => :optional
 
   def install

@@ -1,16 +1,17 @@
 class OpenSceneGraph < Formula
   desc "3D graphics toolkit"
   homepage "https://github.com/openscenegraph/OpenSceneGraph"
-  url "https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-3.5.5.tar.gz"
-  sha256 "f44c96ade3a1d3c547f36504d75633bedbb9b8f6f42dac4fff75166db7d3aadf"
+  url "https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-3.5.6.tar.gz"
+  sha256 "58e9436b811d0344723116cb1ada6ef305bdb6d97f42f04a700a29eda17f54b2"
   revision 1
-  head "https://github.com/openscenegraph/OpenSceneGraph"
+  head "https://github.com/openscenegraph/OpenSceneGraph.git"
 
   bottle do
     rebuild 1
-    sha256 "952b9cdfd5b52d2dea8f12b6adc4bd1ff20ac3c56309d2ca4ba6810086ad9aed" => :sierra
-    sha256 "490b7fc3ebc2c71026fc761e5ffcc63f0b9c2f512173550275b72fefb8d4a3a3" => :el_capitan
-    sha256 "54094214e8eed2886dce2789eff5156dc917febfae8bc681190af233f7d946ba" => :yosemite
+    sha256 "04246e8fb2af25014e6620645fd3fd600b8ff97d872d8d50fea0719ae19c7c4c" => :high_sierra
+    sha256 "9a5b050af3debc7b0860349a095c02b8935bf3ef494036e22da61a97ca85d01c" => :sierra
+    sha256 "14b40a23917655700302c751e8a6d785a94c94d5311e82efa1ff403a6a5dbf56" => :el_capitan
+    sha256 "b2f7c7f7f5d36a0a966d03de9b44146a0c5e7313acaac93a5d41c2250ee4a952" => :yosemite
   end
 
   option :cxx11
@@ -22,7 +23,6 @@ class OpenSceneGraph < Formula
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "jpeg"
-  depends_on "wget"
   depends_on "gtkglext"
   depends_on "freetype"
   depends_on "gdal" => :optional
@@ -44,6 +44,14 @@ class OpenSceneGraph < Formula
     depends_on "graphviz" => :build
   end
 
+  # jpeg 9 compatibility
+  # Upstream issue from 18 Feb 2016 "fails to build without -fpermissive"
+  # See https://github.com/openscenegraph/OpenSceneGraph/issues/58
+  patch :p0 do
+    url "https://raw.githubusercontent.com/macports/macports-ports/a54de1ab602/graphics/OpenSceneGraph/files/patch-src_osgPlugins_jpeg_ReaderWriterJPEG.cpp.diff"
+    sha256 "c62a284d1df478a73082bb0c8eae504ffcc8a9e7b00ee541cc00543d6b163c94"
+  end
+
   def install
     ENV.cxx11 if build.cxx11?
 
@@ -53,7 +61,7 @@ class OpenSceneGraph < Formula
     end
 
     args = std_cmake_args
-    args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
+    args << "-DBUILD_DOCUMENTATION=" + (build.with?("docs") ? "ON" : "OFF")
     args << "-DCMAKE_CXX_FLAGS=-Wno-error=narrowing" # or: -Wno-c++11-narrowing
 
     if MacOS.prefer_64_bit?

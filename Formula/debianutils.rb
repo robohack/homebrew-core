@@ -1,15 +1,16 @@
 class Debianutils < Formula
   desc "Miscellaneous utilities specific to Debian"
   homepage "https://packages.debian.org/sid/debianutils"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/debianutils/debianutils_4.8.1.tar.xz"
-  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/d/debianutils/debianutils_4.8.1.tar.xz"
-  sha256 "2c395c0bdcfe89de30828b1d25cc5549ded5225a6d3625fbcb2cc0881ef5f026"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/debianutils/debianutils_4.8.2.tar.xz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/d/debianutils/debianutils_4.8.2.tar.xz"
+  sha256 "4deb5f293fd3e43c5d4a625a30b18d0fb07662ff77f769e3272841cdb61e7c68"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a81763f60f0bd1723124df4442bccb31df9b8ab197aa3f94e89ad796c6a3198b" => :sierra
-    sha256 "4a601c8b9558e41ee5352190fa58f4104c14ae05861a4628a90b0779a262018a" => :el_capitan
-    sha256 "fc466c2f03b2f23b9d0b3da35ab6b3b82714c3c512bc04471e71a39e9d04ed49" => :yosemite
+    sha256 "bbbe1cad0803ad939562c1aa9b39a1284511d6b976c3e464de3b302946e80b12" => :high_sierra
+    sha256 "9994c23af4d0d7d72f6a9bc77e68d68111aee06599f0593a83d65a23317698d8" => :sierra
+    sha256 "a4bc232d9992f7141db6e4d2805ba4cc6558fdb09a81303c7b66b4d7578889ae" => :el_capitan
+    sha256 "52169644003ecf267e64b567d7dbc8d82ea7d90859b30494e5caf56a497b8e31" => :yosemite
   end
 
   def install
@@ -25,6 +26,7 @@ class Debianutils < Formula
   end
 
   test do
-    assert File.exist?(shell_output("#{bin}/tempfile -d #{Dir.pwd}").strip)
+    output = shell_output("#{bin}/tempfile -d #{Dir.pwd}").strip
+    assert_predicate Pathname.new(output), :exist?
   end
 end

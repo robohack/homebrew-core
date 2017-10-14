@@ -1,22 +1,21 @@
 class Numpy < Formula
   desc "Package for scientific computing with Python"
   homepage "http://www.numpy.org"
-  url "https://files.pythonhosted.org/packages/a5/16/8a678404411842fe02d780b5f0a676ff4d79cd58f0f22acddab1b392e230/numpy-1.12.1.zip"
-  sha256 "a65266a4ad6ec8936a1bc85ce51f8600634a31a258b722c9274a80ff189d9542"
+  url "https://files.pythonhosted.org/packages/bf/2d/005e45738ab07a26e621c9c12dc97381f372e06678adf7dc3356a69b5960/numpy-1.13.3.zip"
+  sha256 "36ee86d5adbabc4fa2643a073f93d5504bdfed37a149a3a49f4dde259f35a750"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "9b5b02de10765dc7cfb66ab5237667e7106fb4f26468f202f5ea7ddac609b983" => :sierra
-    sha256 "bf6733745645afc5834e27fcd9db0cc9feb86164c4d3e6069ecb486d930ccdaa" => :el_capitan
-    sha256 "ec1d2fff7205da6d89270182ef8ff4b821725258954b971ad514ecca891e67d7" => :yosemite
+    sha256 "03e4c83c4d936bfd0ca7ba2f37572431e58d58185bdc5bf3acf9b4802e3b051c" => :high_sierra
+    sha256 "a57efe4118c1cbe1f8d6f6cba65c0fe3a19de26d964e33b4d0fd692745c4c799" => :sierra
+    sha256 "3500437e7b0fc0f4d9362145e86630d913421e9ac474fbdf9a29a2e8d3bc06d1" => :el_capitan
   end
 
   head do
     url "https://github.com/numpy/numpy.git"
 
     resource "Cython" do
-      url "https://files.pythonhosted.org/packages/b7/67/7e2a817f9e9c773ee3995c1e15204f5d01c8da71882016cac10342ef031b/Cython-0.25.2.tar.gz"
-      sha256 "f141d1f9c27a07b5a93f7dc5339472067e2d7140d1c5a9e20112a5665ca60306"
+      url "https://files.pythonhosted.org/packages/94/63/f54920c2ddbe3e1341a4c268f7091bf1bf53c3d84f4b115aa5beea64aef9/Cython-0.27.tar.gz"
+      sha256 "b932b5194e87a8b853d493dc1b46e38632d6846a86f55b8346eb9c6ec3bdc00b"
     end
   end
 
@@ -24,7 +23,7 @@ class Numpy < Formula
 
   depends_on :fortran => :build
   depends_on :python => :recommended if MacOS.version <= :snow_leopard
-  depends_on :python3 => :optional
+  depends_on :python3 => :recommended
 
   resource "nose" do
     url "https://files.pythonhosted.org/packages/58/a5/0dc93c3ec33f4e281849523a5a913fa1eea9a3068acfa754d44d88107a44/nose-1.3.7.tar.gz"
@@ -71,11 +70,13 @@ class Numpy < Formula
   end
 
   test do
-    system "python", "-c", <<-EOS.undent
-      import numpy as np
-      t = np.ones((3,3), int)
-      assert t.sum() == 9
-      assert np.dot(t, t).sum() == 27
-    EOS
+    Language::Python.each_python(build) do |python, _version|
+      system python, "-c", <<-EOS.undent
+        import numpy as np
+        t = np.ones((3,3), int)
+        assert t.sum() == 9
+        assert np.dot(t, t).sum() == 27
+      EOS
+    end
   end
 end

@@ -8,6 +8,7 @@ class Atomicparsley < Formula
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "ea4399b0ed2025590068deda729e9c566094cda9a9e38149e116d97fc6d034d4" => :high_sierra
     sha256 "345eb5a19de38e476a0b39627ea243efdfc9a7a7dd980e5e51e4db74599c3f20" => :sierra
     sha256 "b43ba5577c7e8b2dd9b4852a5d6652e1600a460584096646f38b69b7d103cee9" => :el_capitan
     sha256 "b1825326c53079bd37a098cf100ae29d2b2763c985be0f2592ba89f10b914eb3" => :yosemite
@@ -17,6 +18,15 @@ class Atomicparsley < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
+
+  # Fix Xcode 9 pointer warnings
+  # https://bitbucket.org/wez/atomicparsley/issues/52/xcode-9-build-failure
+  if DevelopmentTools.clang_build_version >= 900
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/ac8624c36e/atomicparsley/xcode9.patch"
+      sha256 "15b87be1800760920ac696a93131cab1c0f35ce4c400697bb8b0648765767e5f"
+    end
+  end
 
   def install
     system "./autogen.sh"

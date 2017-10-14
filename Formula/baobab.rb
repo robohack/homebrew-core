@@ -1,24 +1,24 @@
 class Baobab < Formula
   desc "Gnome disk usage analyzer"
   homepage "https://wiki.gnome.org/Apps/Baobab"
-  url "https://download.gnome.org/sources/baobab/3.24/baobab-3.24.0.tar.xz"
-  sha256 "5980e96df9f3d1751a969869ec07bc184ae3ad667d5a3eb06cf1297091fdfc3f"
+  url "https://download.gnome.org/sources/baobab/3.26/baobab-3.26.1.tar.xz"
+  sha256 "7a59ab5945f5d90725231b10d85a1893403f56660b1627c111d2b4eeb1ef787e"
 
   bottle do
-    sha256 "aa7eceabd331973f0c55c6ab39f4040b4d9edf9505e2d9d203b79882ff7c8ab9" => :sierra
-    sha256 "d33df22fb9fe15dad8dd8c88d5fd2be9e1e7be66260a2cba33cc54f26f7b80be" => :el_capitan
-    sha256 "27caf811afcd62cccca6943be092e2f0b88e1fa3a7187917f446a9fdae9d6342" => :yosemite
+    sha256 "79af97969e50a395e46f26764ac1301c604b7eaea79dc55ca6e97d0e80892709" => :high_sierra
+    sha256 "9ac8b22b290f7fd9f27d186f9d830179ab8f872fac8a997f29b01b0cf8a14786" => :sierra
+    sha256 "ba775ce84312519ee0da57407c63eaa29157de455ecd2cfca9bb9349ad09ba34" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
-  depends_on "libxml2" => ["with-python", :build]
+  depends_on "libxml2" => :build
   depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "vala" => :build
   depends_on "gtk+3"
   depends_on "hicolor-icon-theme"
-  depends_on "gnome-icon-theme"
+  depends_on "adwaita-icon-theme"
 
   def install
     system "./configure", "--disable-dependency-tracking",

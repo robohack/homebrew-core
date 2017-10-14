@@ -1,18 +1,14 @@
 class Libextractor < Formula
   desc "Library to extract meta data from files"
   homepage "https://www.gnu.org/software/libextractor/"
-  url "https://ftp.gnu.org/gnu/libextractor/libextractor-1.3.tar.gz"
-  mirror "https://ftpmirror.gnu.org/libextractor/libextractor-1.3.tar.gz"
-  sha256 "868ad64c9a056d6b923d451d746935bffb1ddf5d89c3eb4f67d786001a3f7b7f"
+  url "https://ftp.gnu.org/gnu/libextractor/libextractor-1.5.tar.gz"
+  mirror "https://ftpmirror.gnu.org/libextractor/libextractor-1.5.tar.gz"
+  sha256 "e0c0305b1356d0cf2fc2db0784e4e5ae8c44121e1e5c6424552d9f9271943553"
 
   bottle do
-    cellar :any
-    rebuild 2
-    sha256 "d264c812a1da34de495395f4e1d066598949a152f4186c4c94e8ea01286b11ea" => :sierra
-    sha256 "2622d61cf14af834df45fe16c6515b1d6d9a7684252aadd375ed323b48d1ec40" => :el_capitan
-    sha256 "8bc531741c401c62dffaef0a29547d80b254eeb9dfd847d125b66c91dbcfc22b" => :yosemite
-    sha256 "b725cac753d996850f3584650a04cd7ab7070ec6772d826ff251457b4c778bc4" => :mavericks
-    sha256 "e26a107ce3e93be06cc6ac89d5edee8c6e18ff799e2198d762f81d524b3ce9ec" => :mountain_lion
+    sha256 "c460b8b012f195be5cc7b645a4bf59e1f44b28573ce11cb95f19a71b421589ad" => :high_sierra
+    sha256 "061b876308d65624e9f10e32b0f1f8f7f464f8329d7e069e813f572fc2b5056c" => :sierra
+    sha256 "feae38f770372b26b97f3bb627145a232d6b1504357d5c4dbedeb5ccc560a132" => :el_capitan
   end
 
   depends_on "pkg-config" => :build

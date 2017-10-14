@@ -1,16 +1,15 @@
 class Minidlna < Formula
   desc "Media server software, compliant with DLNA/UPnP-AV clients"
   homepage "https://sourceforge.net/projects/minidlna/"
-  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.5/minidlna-1.1.5.tar.gz"
-  sha256 "8477ad0416bb2af5cd8da6dde6c07ffe1a413492b7fe40a362bc8587be15ab9b"
-  revision 1
+  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.2.1/minidlna-1.2.1.tar.gz"
+  sha256 "67388ba23ab0c7033557a32084804f796aa2a796db7bb2b770fb76ac2a742eec"
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "5eadd2ce885299d36c2f1c6dc50e34a2f54ff18b6a76340e7859d35f26122345" => :sierra
-    sha256 "333bbc7986eefd5978982ad1b7c72c5a4ff2c22be9b0af9357f7629b56e6bbdb" => :el_capitan
-    sha256 "310c94efdbe5776636689b1c0d49f8a4d67c542d6a47c4426a01561bd85ca605" => :yosemite
+    sha256 "b3b2df008e89d3240444e24ef086b7859a1a95254d41136af7c2643a94ee26bf" => :high_sierra
+    sha256 "7fff1741b01f5d7e6a913171c70326cb4dbbb57d1cdcb5266056b91493af69ba" => :sierra
+    sha256 "36e2d23c670f5e53e8ee9ea3f8bfca58d7d827e1318cf148cd116483a48a8443" => :el_capitan
+    sha256 "66f2fddccaa8740ef90e770419a807db46e874008625694ec881e266780dba1d" => :yosemite
   end
 
   head do
@@ -31,9 +30,8 @@ class Minidlna < Formula
   depends_on "ffmpeg"
 
   def install
-    ENV.append_to_cflags "-std=gnu89"
     system "./autogen.sh" if build.head?
-    system "./configure", "--exec-prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
 
@@ -102,16 +100,14 @@ class Minidlna < Formula
       log_dir=#{testpath}/.config/minidlna
     EOS
 
-    pid = fork do
-      exec "#{sbin}/minidlnad -f minidlna.conf -p 8081 -P #{testpath}/minidlna.pid"
-    end
+    system sbin/"minidlnad", "-f", "minidlna.conf", "-p", "8081", "-P",
+                             testpath/"minidlna.pid"
     sleep 2
 
     begin
       assert_match /MiniDLNA #{version}/, shell_output("curl localhost:8081")
     ensure
-      Process.kill("SIGINT", pid)
-      Process.wait(pid)
+      Process.kill("SIGINT", File.read("minidlna.pid").to_i)
     end
   end
 end

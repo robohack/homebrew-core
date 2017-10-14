@@ -1,18 +1,17 @@
 class Yarn < Formula
   desc "JavaScript package manager"
   homepage "https://yarnpkg.com/"
-  url "https://yarnpkg.com/downloads/0.23.2/yarn-v0.23.2.tar.gz"
-  sha256 "2e4f3c5eb0bddad10fdc08a300ab43fe0f626544893deb9e07a4497e998cb82f"
-  head "https://github.com/yarnpkg/yarn.git"
+  url "https://yarnpkg.com/downloads/1.2.1/yarn-v1.2.1.tar.gz"
+  sha256 "f8ed07675c3a0b866e11a02af5c15d2f34c3aa261ab1501943ecee328786c959"
 
   bottle :unneeded
 
-  depends_on "node"
+  depends_on "node" => :recommended
 
   def install
     libexec.install Dir["*"]
-    bin.install_symlink "#{libexec}/bin/yarn.js" => "yarn"
-    bin.install_symlink "#{libexec}/bin/yarn.js" => "yarnpkg"
+    (bin/"yarn").write_env_script "#{libexec}/bin/yarn.js", :PREFIX => HOMEBREW_PREFIX
+    (bin/"yarnpkg").write_env_script "#{libexec}/bin/yarn.js", :PREFIX => HOMEBREW_PREFIX
     inreplace "#{libexec}/package.json", '"installationMethod": "tar"', '"installationMethod": "homebrew"'
   end
 

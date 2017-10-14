@@ -1,15 +1,15 @@
 class Meson < Formula
   desc "Fast and user friendly build system"
   homepage "http://mesonbuild.com/"
-  url "https://github.com/mesonbuild/meson/releases/download/0.40.0/meson-0.40.0.tar.gz"
-  sha256 "3332e92a6a7c53b9011544fb19c86cb0e3ec13857ef70401dc7d7f45d0a0a95f"
+  url "https://github.com/mesonbuild/meson/releases/download/0.43.0/meson-0.43.0.tar.gz"
+  sha256 "c513eca90e0d70bf14cd1eaafea2fa91cf40a73326a7ff61f08a005048057340"
   head "https://github.com/mesonbuild/meson.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d2c5fb7d1646ce203455fe158fead13150d1c6b792c0b7389744d1c909b190c7" => :sierra
-    sha256 "5c6e4b25c5d9464bcda603d78f4be02c425dff7defb202ed53428b668e45b591" => :el_capitan
-    sha256 "5c6e4b25c5d9464bcda603d78f4be02c425dff7defb202ed53428b668e45b591" => :yosemite
+    sha256 "b29b8e4a61308d73c4744200a7aee75f0c3389d2359b29993a7c8cb6e4a680e2" => :high_sierra
+    sha256 "b29b8e4a61308d73c4744200a7aee75f0c3389d2359b29993a7c8cb6e4a680e2" => :sierra
+    sha256 "b29b8e4a61308d73c4744200a7aee75f0c3389d2359b29993a7c8cb6e4a680e2" => :el_capitan
   end
 
   depends_on :python3
@@ -38,7 +38,7 @@ class Meson < Formula
 
     mkdir testpath/"build" do
       system "#{bin}/meson", ".."
-      assert File.exist?(testpath/"build/build.ninja")
+      assert_predicate testpath/"build/build.ninja", :exist?
     end
   end
 end

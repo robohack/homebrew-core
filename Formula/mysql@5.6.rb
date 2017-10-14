@@ -1,13 +1,14 @@
 class MysqlAT56 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.6/en/"
-  url "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.36.tar.gz"
-  sha256 "0af81a5538fc7fe2b747295dfa96589ace8831d2a7d4a26660fca456babeb147"
+  url "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.37.tar.gz"
+  sha256 "59c4ed39047279ddccd1bed9e247830d2bfad27d56dc2eb48d0b5695c94a1fbd"
 
   bottle do
-    sha256 "4e47145445eb66c106d40b15a46aa729b36a93c04d1aa93ac3ac7fa5ad63e78c" => :sierra
-    sha256 "b12ae00a87ee2395b7f7883a689087ca2dc2e8097532daf375cde4e574b61638" => :el_capitan
-    sha256 "963406c85636c3fc81fe41236a0f87b787795196a0e024dfc97f6eb762b8fe8e" => :yosemite
+    sha256 "d74f30057d282d39bb734faddc618eec54cf6ad3e6bdf030ebf17619c980067c" => :high_sierra
+    sha256 "f26d550f2ac71cd0a7281d52a87c817448a5d4438021b2420ba588c13ae76a50" => :sierra
+    sha256 "a022ec8b89ecea46d02c092a4fe6b6573ba9dcf1fb5d0e0e41d96de0ac0cd932" => :el_capitan
+    sha256 "eea054c9021493967c8a217c85309cb7ec563b0ba966063710a96fad8771ede9" => :yosemite
   end
 
   keg_only :versioned_formula
@@ -48,7 +49,6 @@ class MysqlAT56 < Formula
       -DINSTALL_DOCDIR=share/doc/#{name}
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
-      -DWITH_SSL=yes
       -DWITH_SSL=system
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
@@ -107,6 +107,15 @@ class MysqlAT56 < Formula
 
     libexec.install bin/"mysqlaccess"
     libexec.install bin/"mysqlaccess.conf"
+
+    # Install my.cnf that binds to 127.0.0.1 by default
+    (buildpath/"my.cnf").write <<-EOS.undent
+      # Default Homebrew MySQL server config
+      [mysqld]
+      # Only allow connections from localhost
+      bind-address = 127.0.0.1
+    EOS
+    etc.install "my.cnf"
   end
 
   def post_install
@@ -122,6 +131,8 @@ class MysqlAT56 < Formula
   def caveats; <<-EOS.undent
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
+
+    MySQL is configured to only allow connections from localhost by default
 
     To connect:
         mysql -uroot
@@ -142,7 +153,6 @@ class MysqlAT56 < Formula
       <key>ProgramArguments</key>
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
-        <string>--bind-address=127.0.0.1</string>
         <string>--datadir=#{datadir}</string>
       </array>
       <key>RunAtLoad</key>
@@ -162,7 +172,7 @@ class MysqlAT56 < Formula
       "--basedir=#{prefix}", "--datadir=#{dir}", "--tmpdir=#{dir}"
 
       pid = fork do
-        exec bin/"mysqld", "--bind-address=127.0.0.1", "--datadir=#{dir}"
+        exec bin/"mysqld", "--datadir=#{dir}"
       end
       sleep 2
 

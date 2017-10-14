@@ -1,14 +1,14 @@
 class Pypy3 < Formula
   desc "Implementation of Python 3 in Python"
   homepage "https://pypy.org/"
-  url "https://dl.bintray.com/homebrew/mirror/pypy3-5.5.0.tar.bz2"
-  sha256 "d5591c34d77253e9ed57d182b6f49585b95f7c09c3e121f0e8630e5a7e75ab5f"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy3-v5.9.0-src.tar.bz2"
+  sha256 "a014f47f50a1480f871a0b82705f904b38c93c4ca069850eb37653fedafb1b97"
 
   bottle do
     cellar :any
-    sha256 "b83b687be3ff98a42634a8960c43d2a9a11b43748be10e9f0d95a352e3110684" => :sierra
-    sha256 "71b2cdcbcbb3a111a47b9f16ff8c7fd26dc0a423f940082cd655d22b5a031fdb" => :el_capitan
-    sha256 "8cd625bbcae6a60606352d60dc1a2663571c69d55ffefde8817726fa2f182e20" => :yosemite
+    sha256 "671882b5a430ba31723428282df42ab097ed2a744a4787d744e6339dd9dfbd51" => :high_sierra
+    sha256 "943180d5beea8603fe5af3eda3779bb65c9f32e2d12fdf7056495584c0e52cc2" => :sierra
+    sha256 "83a6bd36bda18be9197bdb5836be51dc7e39fa7a00e1a6d4ffae6aedae2fc731" => :el_capitan
   end
 
   option "without-bootstrap", "Translate Pypy with system Python instead of " \
@@ -24,32 +24,58 @@ class Pypy3 < Formula
   depends_on "xz" => :recommended
 
   resource "bootstrap" do
-    url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-osx64.tar.bz2"
-    sha256 "30b392b969b54cde281b07f5c10865a7f2e11a229c46b8af384ca1d3fe8d4e6e"
+    url "https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.9.0-osx64.tar.bz2"
+    sha256 "94de50ed80c7f6392ed356c03fd54cdc84858df43ad21e9e971d1b6da0f6b867"
+  end
+
+  # packaging depends on pyparsing
+  resource "pyparsing" do
+    url "https://files.pythonhosted.org/packages/3c/ec/a94f8cf7274ea60b5413df054f82a8980523efd712ec55a59e7c3357cf7c/pyparsing-2.2.0.tar.gz"
+    sha256 "0832bcf47acd283788593e7a0f542407bd9550a55a8a8435214a1960e04bcb04"
+  end
+
+  # packaging and setuptools depend on six
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/16/d8/bc6316cf98419719bd59c91742194c111b6f2e85abac88e496adefaf7afe/six-1.11.0.tar.gz"
+    sha256 "70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
+  end
+
+  # setuptools depends on packaging
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/c6/70/bb32913de251017e266c5114d0a645f262fb10ebc9bf6de894966d124e35/packaging-16.8.tar.gz"
+    sha256 "5d50835fdf0a7edf0b55e311b7c887786504efea1177abd7e69329a8e5ea619e"
+  end
+
+  # setuptools depends on appdirs
+  resource "appdirs" do
+    url "https://files.pythonhosted.org/packages/48/69/d87c60746b393309ca30761f8e2b49473d43450b150cb08f3c6df5c11be5/appdirs-1.4.3.tar.gz"
+    sha256 "9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92"
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/25/4e/1b16cfe90856235a13872a6641278c862e4143887d11a12ac4905081197f/setuptools-28.8.0.tar.gz"
-    sha256 "432a1ad4044338c34c2d09b0ff75d509b9849df8cf329f4c1c7706d9c2ba3c61"
+    url "https://files.pythonhosted.org/packages/a4/c8/9a7a47f683d54d83f648d37c3e180317f80dc126a304c45dc6663246233a/setuptools-36.5.0.zip"
+    sha256 "ce2007c1cea3359870b80657d634253a0765b0c7dc5a988d77ba803fc86f2c64"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz"
+    url "https://files.pythonhosted.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz"
     sha256 "09f243e1a7b461f654c26a725fa373211bb7ff17a9300058b205c61658ca940d"
+  end
+
+  resource "pycparser" do
+    url "https://files.pythonhosted.org/packages/8c/2d/aad7f16146f4197a11f8e91fb81df177adcc2073d36a17b1491fd09df6ed/pycparser-2.18.tar.gz"
+    sha256 "99a8ca03e29851d96616ad0404b4aad7d9ee16f25c9f9708a11faf2810f7b226"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
   fails_with :gcc
 
-  # Disable clock_gettime() use on Darwin; applied upstream.
-  # This fixes 10.11 when built using the Xcode 8 SDK.
-  # See: https://github.com/Homebrew/homebrew-core/issues/6949
-  patch do
-    url "https://bitbucket.org/pypy/pypy/commits/91e202bbd0b983c88fa9c33b9215b0f910d1f405/raw"
-    sha256 "7a5f5d1c3c0e7bd1652c4d17018d8c1328338b73858712c02c41ef563a04314c"
-  end
-
   def install
+    # Work around "dyld: Symbol not found: _utimensat"
+    if MacOS.version == :sierra && MacOS::Xcode.installed? && MacOS::Xcode.version >= "9.0"
+      ENV.delete("SDKROOT")
+    end
+
     # Having PYTHONPATH set can cause the build to fail if another
     # Python is present, e.g. a Homebrew-provided Python 2.x
     # See https://github.com/Homebrew/homebrew/issues/24364
@@ -60,6 +86,14 @@ class Pypy3 < Formula
     if build.with?("bootstrap") && MacOS.prefer_64_bit?
       resource("bootstrap").stage buildpath/"bootstrap"
       python = buildpath/"bootstrap/bin/pypy"
+    end
+
+    # PyPy 5.7.1 needs either cffi or pycparser to build
+    if build.without?("bootstrap")
+      %w[pycparser].each do |pkg|
+        resource(pkg).stage buildpath/"pycparser"
+        ENV.append "PYTHONPATH", buildpath/"pycparser"
+      end
     end
 
     cd "pypy/goal" do
@@ -77,10 +111,10 @@ class Pypy3 < Formula
       system "tar", "-C", libexec.to_s, "--strip-components", "1", "-xzf", "pypy3.tar.bz2"
     end
 
-    (libexec/"lib").install libexec/"bin/libpypy-c.dylib" => "libpypy3-c.dylib"
+    (libexec/"lib").install libexec/"bin/libpypy3-c.dylib" => "libpypy3-c.dylib"
 
-    MachO::Tools.change_install_name("#{libexec}/bin/pypy3.3",
-                                     "@rpath/libpypy-c.dylib",
+    MachO::Tools.change_install_name("#{libexec}/bin/pypy3",
+                                     "@rpath/libpypy3-c.dylib",
                                      "#{libexec}/lib/libpypy3-c.dylib")
     MachO::Tools.change_dylib_id("#{libexec}/lib/libpypy3-c.dylib",
                                  "#{opt_libexec}/lib/libpypy3-c.dylib")
@@ -93,7 +127,7 @@ class Pypy3 < Formula
     # we want to avoid putting PyPy's Python.h somewhere that configure
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy3"
-    bin.install_symlink libexec/"bin/pypy3.3"
+    bin.install_symlink libexec/"bin/pypy3.5"
     lib.install_symlink libexec/"lib/libpypy3-c.dylib"
   end
 
@@ -121,7 +155,7 @@ class Pypy3 < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    %w[setuptools pip].each do |pkg|
+    %w[appdirs pyparsing six packaging setuptools pip].each do |pkg|
       resource(pkg).stage do
         system bin/"pypy3", "-s", "setup.py", "install", "--force", "--verbose"
       end
@@ -151,7 +185,7 @@ class Pypy3 < Formula
     To update pip and setuptools between pypy3 releases, run:
         pip_pypy3 install --upgrade pip setuptools
 
-    See: http://docs.brew.sh/Homebrew-and-Python.html
+    See: https://docs.brew.sh/Homebrew-and-Python.html
     EOS
   end
 

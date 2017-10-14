@@ -10,17 +10,17 @@ class Corsixth < Formula
 
     # Applies the upstream patch prioritising newer Luas over older ones.
     patch do
-      url "https://github.com/CorsixTH/CorsixTH/commit/46420b76.patch"
-      sha256 "076639d0da1f29c263fe2dae96bc759029270d421d7d9388516ed8147defd722"
+      url "https://github.com/CorsixTH/CorsixTH/commit/46420b76.patch?full_index=1"
+      sha256 "024b4fad24d3427fe3050499eeaa2da95adc76f2a80df5ea3fe6ac363b545396"
     end
   end
   bottle do
     cellar :any
+    sha256 "5e338a006640ff951d2d087317daeae35936b159465ab180b0132eba69b2f412" => :high_sierra
     sha256 "ce70fb520401ead2b042a2322887a4e04d84ff3ee94ff0895df63603930570b8" => :sierra
     sha256 "b3c2a857a44b0072b0499767f9bfe5c7ef562038351481ab4c647f48e52bbc4f" => :el_capitan
     sha256 "879015e727a6decec4d24f65d810890caa766107339e81f1e6c6b96a70e1b944" => :yosemite
   end
-
 
   depends_on "cmake" => :build
   depends_on :xcode => :build

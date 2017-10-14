@@ -2,27 +2,21 @@ class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
   url "https://github.com/hashicorp/consul.git",
-      :tag => "v0.8.1",
-      :revision => "e9ca44d0a1757ac9aecc6785904a701936c10e4a"
+      :tag => "v0.9.3",
+      :revision => "112c0603d3d6fb23ab5f15e8fdb1a761da8eaf9a"
 
   head "https://github.com/hashicorp/consul.git",
        :shallow => false
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "11a9f43bc721b159c5a269a6fa2adfd5585eb80317fe2c31ce342ca4b1eed1bc" => :sierra
-    sha256 "8d88805e6c8be2330ecc29f103d03f6c94b796777f13796e9904fe8fde79200f" => :el_capitan
-    sha256 "13df2c27a92014e78613319b98888ba7aaade08cd01fcc1348415bebc083f6cc" => :yosemite
+    sha256 "50cf2c2e86fcc50e250bfb2bc10777525ba9a7e9f234fcb53998599eba5f48d6" => :high_sierra
+    sha256 "116c2a66ce62414ce9829c1e8ec93db61c8eb071dfb5832470f542b727a72b77" => :sierra
+    sha256 "8598f078a558ecc6d2f23804280b8f8d692b40f340a387730497e2e5fc6877b0" => :el_capitan
+    sha256 "8a3aa00a1e75e2524af83d1d2ff2cc71c5fc7e2ce0f0785ce1065acf85d4080b" => :yosemite
   end
-
-  option "with-web-ui", "Installs the consul web ui"
 
   depends_on "go" => :build
-
-  resource "web-ui" do
-    url "https://releases.hashicorp.com/consul/0.8.1/consul_0.8.1_web_ui.zip"
-    sha256 "0caff8d54a80ff7bc5baec39b0eda19a9652df992db324026e361fa31183749f"
-  end
 
   def install
     contents = Dir["{*,.git,.gitignore}"]
@@ -37,15 +31,6 @@ class Consul < Formula
       bin.install "bin/consul"
       zsh_completion.install "contrib/zsh-completion/_consul"
     end
-
-    # install web-ui to package share folder.
-    (pkgshare/"web-ui").install resource("web-ui") if build.with? "web-ui"
-  end
-
-  def caveats; <<-EOS.undent
-    If consul was built with --with-web-ui, you can activate the UI by running
-    consul with `-ui-dir #{pkgshare}/web-ui`.
-    EOS
   end
 
   plist_options :manual => "consul agent -dev -advertise 127.0.0.1"
@@ -85,10 +70,9 @@ class Consul < Formula
 
   test do
     fork do
-      exec "#{bin}/consul", "agent", "-data-dir", ".", "-server", "-bootstrap"
+      exec "#{bin}/consul", "agent", "-data-dir", "."
     end
-    sleep 30
-    system "#{bin}/consul", "info"
+    sleep 3
     system "#{bin}/consul", "leave"
   end
 end

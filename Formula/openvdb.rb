@@ -1,14 +1,15 @@
 class Openvdb < Formula
   desc "Sparse volume processing toolkit"
   homepage "http://www.openvdb.org/"
-  url "https://github.com/dreamworksanimation/openvdb/archive/v4.0.1.tar.gz"
-  sha256 "ba17c66e633d84bd31393893f54bde863723367b218bdb15b633fab1cf43a764"
+  url "https://github.com/dreamworksanimation/openvdb/archive/v4.0.2.tar.gz"
+  sha256 "7d995976cf124136b874d006496c37589f32de1b877ee7ccce626710823e8dbb"
+  revision 1
   head "https://github.com/dreamworksanimation/openvdb.git"
 
   bottle do
-    sha256 "b00d021ca951b3d4f735501bdbda30af334b7690aee6a6f3a36cd4a44382d8a1" => :sierra
-    sha256 "90d96b8cea9837ff909e874b9c35b25aa9b8c6dc15a767fc0ec7e13a9ecbd7ee" => :el_capitan
-    sha256 "17a526fc234a65c0c3184db723278fc3843d331bfa3348b082e8f0c9b8ab6348" => :yosemite
+    sha256 "df8f9aae2315c4042108b36b54d04e859d669c0e77fe17165be0e4f54ccee63f" => :high_sierra
+    sha256 "0d1fef9c5b48d93c515b1f3a0088042f2c62e8d2b2d920b9b524d50e7500a162" => :sierra
+    sha256 "96e764b3a8cb53e0efe4b28d7febc03f11be5c0e71e7e8eeb7c202b3f81da9fc" => :el_capitan
   end
 
   option "with-glfw", "Installs the command-line tool to view OpenVDB files"
@@ -46,27 +47,27 @@ class Openvdb < Formula
     # Adjust hard coded paths in Makefile
     args = [
       "DESTDIR=#{prefix}",
-      "BOOST_INCL_DIR=#{Formula["boost"].opt_lib}/include",
+      "BOOST_INCL_DIR=#{Formula["boost"].opt_include}",
       "BOOST_LIB_DIR=#{Formula["boost"].opt_lib}",
       "BOOST_THREAD_LIB=-lboost_thread-mt",
-      "TBB_INCL_DIR=#{Formula["tbb"].opt_lib}/include",
-      "TBB_LIB_DIR=#{Formula["tbb"].opt_lib}/lib",
-      "EXR_INCL_DIR=#{Formula["openexr"].opt_lib}/include",
-      "EXR_LIB_DIR=#{Formula["openexr"].opt_lib}/lib",
+      "TBB_INCL_DIR=#{Formula["tbb"].opt_include}",
+      "TBB_LIB_DIR=#{Formula["tbb"].opt_lib}",
+      "EXR_INCL_DIR=#{Formula["openexr"].opt_include}/OpenEXR",
+      "EXR_LIB_DIR=#{Formula["openexr"].opt_lib}",
       "BLOSC_INCL_DIR=", # Blosc is not yet supported.
       "PYTHON_VERSION=",
       "NUMPY_INCL_DIR=",
     ]
 
     if build.with? "jemalloc"
-      args << "CONCURRENT_MALLOC_LIB_DIR=#{Formula["jemalloc"].opt_lib}/lib"
+      args << "CONCURRENT_MALLOC_LIB_DIR=#{Formula["jemalloc"].opt_lib}"
     else
       args << "CONCURRENT_MALLOC_LIB="
     end
 
     if build.with? "glfw"
-      args << "GLFW_INCL_DIR=#{Formula["glfw"].opt_lib}/include"
-      args << "GLFW_LIB_DIR=#{Formula["glfw"].opt_lib}/lib"
+      args << "GLFW_INCL_DIR=#{Formula["glfw"].opt_include}"
+      args << "GLFW_LIB_DIR=#{Formula["glfw"].opt_lib}"
       args << "GLFW_LIB=-lglfw"
     else
       args << "GLFW_INCL_DIR="
@@ -81,15 +82,15 @@ class Openvdb < Formula
     end
 
     if build.with? "test"
-      args << "CPPUNIT_INCL_DIR=#{Formula["cppunit"].opt_lib}/include"
-      args << "CPPUNIT_LIB_DIR=#{Formula["cppunit"].opt_lib}/lib"
+      args << "CPPUNIT_INCL_DIR=#{Formula["cppunit"].opt_include}"
+      args << "CPPUNIT_LIB_DIR=#{Formula["cppunit"].opt_lib}"
     else
       args << "CPPUNIT_INCL_DIR=" << "CPPUNIT_LIB_DIR="
     end
 
     if build.with? "logging"
-      args << "LOG4CPLUS_INCL_DIR=#{Formula["log4cplus"].opt_lib}/include"
-      args << "LOG4CPLUS_LIB_DIR=#{Formula["log4cplus"].opt_lib}/lib"
+      args << "LOG4CPLUS_INCL_DIR=#{Formula["log4cplus"].opt_include}"
+      args << "LOG4CPLUS_LIB_DIR=#{Formula["log4cplus"].opt_lib}"
     else
       args << "LOG4CPLUS_INCL_DIR=" << "LOG4CPLUS_LIB_DIR="
     end

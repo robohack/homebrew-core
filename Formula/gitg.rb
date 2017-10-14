@@ -1,14 +1,14 @@
 class Gitg < Formula
   desc "GNOME GUI client to view git repositories"
   homepage "https://wiki.gnome.org/Apps/Gitg"
-  url "https://download.gnome.org/sources/gitg/3.22/gitg-3.22.0.tar.xz"
-  sha256 "ba6895f85c18748294075980a5e03e0936ad4e84534dbb0d8f9e29aa874ddeaf"
-  revision 1
+  url "https://download.gnome.org/sources/gitg/3.26/gitg-3.26.0.tar.xz"
+  sha256 "26730d437d6a30d6e341b9e8da99d2134dce4b96022c195609f45062f82b54d5"
 
   bottle do
-    sha256 "4132836f7275773fc4fc52017295455416e067d044b75e610070ddb6448d6903" => :sierra
-    sha256 "326c39b1aef24d993dbf6897ed2e0166a6e0e403fbae6c808e1eb90c4b1c613d" => :el_capitan
-    sha256 "36b4f56fb22dbb3375f926adc2eed61254070eb6793c4b8add14e9d0db4a5a9a" => :yosemite
+    rebuild 1
+    sha256 "6008b01e3422683cef31cdd74c9899bc789ca27e61644fbc1f0ac8cc42221d1c" => :high_sierra
+    sha256 "c1092dcb629bed409b7947ff10cbb62d65896c05b9e8ff23d21e0e88d22f053b" => :sierra
+    sha256 "e172c547253eeba68f651f7ea81779d79c233e6bdb8a0c38b0612a9f96e9ba9b" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
@@ -16,6 +16,7 @@ class Gitg < Formula
   depends_on "intltool" => :build
   depends_on "gtksourceview3"
   depends_on "gobject-introspection"
+  depends_on "libgit2"
   depends_on "libgit2-glib"
   depends_on "gsettings-desktop-schemas"
   depends_on "libgee"
@@ -25,18 +26,15 @@ class Gitg < Formula
   depends_on "libsoup"
   depends_on "gtkspell3"
   depends_on "hicolor-icon-theme"
-  depends_on "gnome-icon-theme"
-  depends_on :python3 => :optional
-  depends_on "pygobject3" => "with-python3" if build.with?("python3")
+  depends_on "adwaita-icon-theme"
 
   def install
-    ENV.prepend_path "PKG_CONFIG_PATH", Formula["libgit2-glib"].opt_libexec/"libgit2/lib/pkgconfig"
-
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--disable-schemas-compile"
+                          "--disable-schemas-compile",
+                          "--disable-python"
     system "make", "install"
   end
 

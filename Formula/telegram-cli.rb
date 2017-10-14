@@ -7,6 +7,7 @@ class TelegramCli < Formula
   head "https://github.com/vysheng/tg.git"
 
   bottle do
+    sha256 "b94d71f1caa8309c8973a69009c9995f5cf9ff4596df3e07b09cfc3d476d151f" => :high_sierra
     sha256 "e3d11d044d22c704c4cce49b3e02c1016361c0ca0416cb9c97648c7b6972c6da" => :sierra
     sha256 "899040eda68f601bcdfbf317159f885d6f6adc59b4c58ce4e1e9d72f7943dc7e" => :el_capitan
     sha256 "55487d971dec4cbfc5944ba94c691ade8a814de805ea451dea1c5884f2e28925" => :yosemite
@@ -24,8 +25,8 @@ class TelegramCli < Formula
   # Look for the configuration file under /usr/local/etc rather than /etc on OS X.
   # Pull Request: https://github.com/vysheng/tg/pull/1306
   patch do
-    url "https://github.com/vysheng/tg/pull/1306.patch"
-    sha256 "97c692d332f3078144f514e2bebe08c3be187a0d4a2ab4bf240479f1a0f6c740"
+    url "https://github.com/vysheng/tg/pull/1306.patch?full_index=1"
+    sha256 "1cdaa1f3e1f7fd722681ea4e02ff31a538897ed9d704c61f28c819a52ed0f592"
   end
 
   def install

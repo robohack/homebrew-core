@@ -11,13 +11,14 @@ class Neko < Formula
     patch do
       # To workaround issue https://github.com/HaxeFoundation/neko/issues/130
       # It is a commit already applied to the upstream.
-      url "https://github.com/HaxeFoundation/neko/commit/a8c71ad97faaccff6c6e9e09eba2d5efd022f8dc.patch"
-      sha256 "7bbdbd38f64220aa11fd1725ae99ea53f2d36563249f1828d5452562e3ca9977"
+      url "https://github.com/HaxeFoundation/neko/commit/a8c71ad97faaccff6c6e9e09eba2d5efd022f8dc.patch?full_index=1"
+      sha256 "a5d08e5ff2f6372c780d2864b699aae714fc37d4ab987cea11764082757ddb39"
     end
   end
 
   bottle do
     cellar :any
+    sha256 "e7eac782a1eefa0c284c6ac03a7aee6dfce36d171b867495c218b7fff0373e59" => :high_sierra
     sha256 "d13f59694764fdb51b946227c0c2f6d32fcfaf2c2539d7428a270b641c8f03a6" => :sierra
     sha256 "96f0c125a3269f52d691fa6fe8a9dcbfc0d71dcf949b76acd004631e28ce2d81" => :el_capitan
     sha256 "4d1aa0431be615afa6207a56fecc30a79fe39d1e6e53c7ff84c4f075eda8ddeb" => :yosemite

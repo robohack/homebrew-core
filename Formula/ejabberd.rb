@@ -1,13 +1,13 @@
 class Ejabberd < Formula
   desc "XMPP application server"
   homepage "https://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/17.04/ejabberd-17.04.tgz"
-  sha256 "b8395bc65b09f135a60320b62338258acd6056cc241e9e245fde267fb18dd3c9"
+  url "https://www.process-one.net/downloads/ejabberd/17.09/ejabberd-17.09.tgz"
+  sha256 "6caf64cb472f8ab0f40429e967450555b7e1fec11d84fc5ea5d466381329cf03"
 
   bottle do
-    sha256 "acf6cafde085065fd6d6a9857c92ea41218a0921baaca76fec7e753c324a6b4d" => :sierra
-    sha256 "05fee3e510aaa61277cf22ed6d4545a4668a8ae1c8922f4c32413e270ce04cc4" => :el_capitan
-    sha256 "5cfe591d532c9b739835611a2a504449cf85c36a3f9f68d7b52bdcf5d6eb3b87" => :yosemite
+    sha256 "b7cfd636f150117138c8331a70025f9e3bad4136f84ccf2213ece4eb5595b3a8" => :high_sierra
+    sha256 "f4397bc029f84b30aa0277bf6ffe0d1c318815a94e1da6408d8e2e49d47a40ca" => :sierra
+    sha256 "10756dc3d75219d2464c7c31dffa5a23e3fd20cd5815a011261e2434a42f60b4" => :el_capitan
   end
 
   head do
@@ -19,6 +19,7 @@ class Ejabberd < Formula
 
   depends_on "openssl"
   depends_on "erlang"
+  depends_on "gd"
   depends_on "libyaml"
   # for CAPTCHA challenges
   depends_on "imagemagick" => :optional

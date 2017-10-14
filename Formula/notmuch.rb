@@ -1,32 +1,29 @@
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org"
-  url "https://notmuchmail.org/releases/notmuch-0.24.1.tar.gz"
-  sha256 "fa117de2c6096dd896a333b9c770572a939e04a02abe6745b6b07f5363063ca3"
-  head "git://git.notmuchmail.org/git/notmuch"
+  url "https://notmuchmail.org/releases/notmuch-0.25.1.tar.gz"
+  sha256 "b4bf09ec9b7b64180704faa26d66cad5f911a5a00ef812da34cb02c3f8872831"
+  head "git://notmuchmail.org/git/notmuch"
 
   bottle do
     cellar :any
-    sha256 "0fb3360c41dfc3ed91420875b3ec74f78c124743e79036c30248f49a4ce9bf45" => :sierra
-    sha256 "087c52f7178efd621eab51187406332380134cc08f2759af4a488294db39bd95" => :el_capitan
-    sha256 "58440c1e81a60042efc6cada19db917d9af7c9094ee7a7dc7cc7be5e1a7f24f4" => :yosemite
+    sha256 "1a8b0e9ca796c879ec5e1c82e0603324d5ece1cdfdb93580d0d63d3ca49d51a0" => :high_sierra
+    sha256 "49f4b5963ec9b90b2e042993d659571114dd9415628087f1defee16ea03aedd8" => :sierra
+    sha256 "3e3cc91824b79f977149beada05114f766a77e30c656bf9bb892c60e40b2b701" => :el_capitan
   end
 
   option "without-python", "Build without python support"
 
   depends_on "pkg-config" => :build
+  depends_on "libgpg-error" => :build
+  depends_on "glib"
   depends_on "gmime"
   depends_on "talloc"
   depends_on "xapian"
+  depends_on "zlib"
   depends_on :emacs => ["24.1", :optional]
   depends_on :python3 => :optional
   depends_on :ruby => ["1.9", :optional]
-
-  # Requires zlib >= 1.2.11
-  resource "zlib" do
-    url "http://zlib.net/zlib-1.2.11.tar.gz"
-    sha256 "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1"
-  end
 
   # Fix SIP issue with python bindings
   # A more comprehensive patch has been submitted upstream
@@ -34,12 +31,6 @@ class Notmuch < Formula
   patch :DATA
 
   def install
-    resource("zlib").stage do
-      system "./configure", "--prefix=#{buildpath}/zlib", "--static"
-      system "make", "install"
-      ENV.append_path "PKG_CONFIG_PATH", "#{buildpath}/zlib/lib/pkgconfig"
-    end
-
     args = %W[--prefix=#{prefix}]
 
     if build.with? "emacs"

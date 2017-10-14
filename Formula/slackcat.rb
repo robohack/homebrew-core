@@ -3,26 +3,27 @@ require "language/go"
 class Slackcat < Formula
   desc "Command-line utility for posting snippets to Slack"
   homepage "https://github.com/vektorlab/slackcat"
-  url "https://github.com/vektorlab/slackcat/archive/v1.2.tar.gz"
-  sha256 "efde5f9acdf072a833ccbbea5414c80dd5cd177664db41a3e61bf2eb384a8fe5"
+  url "https://github.com/vektorlab/slackcat/archive/v1.3.tar.gz"
+  sha256 "bea9d91f16d25fa91da24d0cbbebf333544d9e9a0b19549391ed7156199c6d77"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0a22f997fbe87df2f5dbeb737bf0e23b198c1085d03af604c22e1300ca2dfeb1" => :sierra
-    sha256 "639ffb80f71174af2e4c05ab7b7f1c91baf787c507016b37dbb9190dabaa366a" => :el_capitan
-    sha256 "ce8b07ccb48e8dc8ca522a9da8aa4be52e731072179e5599f440754565442a4e" => :yosemite
+    sha256 "7725a6279d7b5d3ef84e2c475e9c5c0587b7dd0945309456446537dd4ca2df1c" => :high_sierra
+    sha256 "67b5641e49b8190f8fd70c8863561ba10f71648d61d600658299ae617930da1d" => :sierra
+    sha256 "5bcb1b8a7891afee3e5b663685222c95dd500437797d5e8ae81d6f5f2e55a621" => :el_capitan
+    sha256 "9fd2b8c5c1210ea9133341108eb6a7a148bef9443ac2f85d3488c200f6f607c9" => :yosemite
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-        :revision => "b26d9c308763d68093482582cea63d69be07a0f0"
+        :revision => "a368813c5e648fee92e5f6c30e3944ff9d5e8895"
   end
 
   go_resource "github.com/bluele/slack" do
     url "https://github.com/bluele/slack.git",
-        :revision => "3b1fffcc45b37a2644a23eb7dc434d4d9f0987ba"
+        :revision => "b5a7526d62db4690f8a49a30c8ed46f90d0f29f7"
   end
 
   go_resource "github.com/codegangsta/cli" do
@@ -32,7 +33,7 @@ class Slackcat < Formula
 
   go_resource "github.com/fatih/color" do
     url "https://github.com/fatih/color.git",
-        :revision => "9131ab34cf20d2f6d83fdc67168a5430d1c7dc23"
+        :revision => "67c513e5729f918f5e69786686770c27141a4490"
   end
 
   go_resource "github.com/skratchdot/open-golang" do

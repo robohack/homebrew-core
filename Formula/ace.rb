@@ -1,14 +1,15 @@
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
   homepage "https://www.dre.vanderbilt.edu/~schmidt/ACE.html"
-  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.4.2.tar.bz2"
-  sha256 "e334aa2f90e570c311d2c7cc18ca9908d682d86a537e358caadc01df1fdd4c37"
+  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.4.5.tar.bz2"
+  sha256 "004198f7a07fc2938986399d654547ff3811936b16202fdab59b3beb365dd82f"
 
   bottle do
     cellar :any
-    sha256 "3899536da0a018ce9989e55a6e2c23b3956e285921ebd0faf3749ba0c32054c9" => :sierra
-    sha256 "eb4b3c216549cc92e43f0570ea7597f9042b33e252dcb14b0abecc254f0f8e2d" => :el_capitan
-    sha256 "bed3ffe0bc9b805e5810c5fa4e9a2be0bf4b663ef6362278c29e10d7c1a72858" => :yosemite
+    sha256 "8e546261101509e7b600f2cdf73451b606cc32bfecfe64d661f893bae6c1d756" => :high_sierra
+    sha256 "a3ec66c4a8f0aa33bf8079240a0eecf510455fece517bf6f4f2f07f2c1f8d1f1" => :sierra
+    sha256 "aa558003a97c0909a44adda0a0563a22e1a6bb6c560c15a656c545c19deb6701" => :el_capitan
+    sha256 "6fd93f3a1aecfa2861526ba41ff2998ca791e2668decffae36c2fa01db61b032" => :yosemite
   end
 
   def install

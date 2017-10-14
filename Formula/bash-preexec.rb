@@ -1,8 +1,8 @@
 class BashPreexec < Formula
-  desc "preexec and precmd functions for Bash just like Zsh."
+  desc "preexec and precmd functions for Bash (just like Zsh)"
   homepage "https://github.com/rcaloras/bash-preexec"
-  url "https://github.com/rcaloras/bash-preexec/archive/0.3.2.tar.gz"
-  sha256 "bf35c21ffdb8a48a908f1503c681017399e62e5580852e3e598e303bb86fc24d"
+  url "https://github.com/rcaloras/bash-preexec/archive/0.3.4.tar.gz"
+  sha256 "a3050e1672ebc2374e235ea7879f129a62dfddc95875ba90e86271a48f6548b9"
 
   head "https://github.com/rcaloras/bash-preexec.git"
 
@@ -20,6 +20,6 @@ class BashPreexec < Formula
 
   test do
     # Just testing that the file is installed
-    assert File.exist?("#{prefix}/etc/profile.d/bash-preexec.sh")
+    assert_predicate testpath/"#{prefix}/etc/profile.d/bash-preexec.sh", :exist?
   end
 end

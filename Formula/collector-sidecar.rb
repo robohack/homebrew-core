@@ -1,13 +1,14 @@
 class CollectorSidecar < Formula
   desc "Manage log collectors through Graylog"
   homepage "https://github.com/Graylog2/collector-sidecar"
-  url "https://github.com/Graylog2/collector-sidecar/archive/0.1.1.tar.gz"
-  sha256 "c71f9762a74e10827d9f671b31d826d63fb9b35e5c3230a361b65edfcfc02ff7"
+  url "https://github.com/Graylog2/collector-sidecar/archive/0.1.4.tar.gz"
+  sha256 "3d73f8054a52411ff6d71634bc93b23a55372477069fcfad699876f82ae22ce8"
 
   bottle do
-    sha256 "a9aaafbc4ed7ac7b8f94e320757702cf38a91e889e721bbe576fecb860747d75" => :sierra
-    sha256 "378b416968e1ec9320670213ff0e11833b2f1b2f7f9fe842338ea2de73d8f1de" => :el_capitan
-    sha256 "889b43fa8159c46c3631e1ab05a5ad50963d1e6ff24b95235f15353b568f6c95" => :yosemite
+    rebuild 1
+    sha256 "91b81c42bebaf3f028bb06cca5e16d47d4cda446e98ec951a118ba73c89d19bd" => :high_sierra
+    sha256 "5f3be3b9e129b33caf227a4e07f9b425f5d14689aff9b176560215300406083b" => :sierra
+    sha256 "5c9508066b8e856e6e6a2ebb27fe5a59d485b254f61ab7878b365a7a41382bfb" => :el_capitan
   end
 
   depends_on "glide" => :build
@@ -19,15 +20,21 @@ class CollectorSidecar < Formula
     ENV["GOPATH"] = buildpath
     ENV["GLIDE_HOME"] = HOMEBREW_CACHE/"glide_home/#{name}"
     (buildpath/"src/github.com/Graylog2/collector-sidecar").install buildpath.children
+
     cd "src/github.com/Graylog2/collector-sidecar" do
       inreplace "main.go", "/etc", etc
-      inreplace "collector_sidecar.yml", "/usr", HOMEBREW_PREFIX
-      inreplace "collector_sidecar.yml", "/etc", etc
-      inreplace "collector_sidecar.yml", "/var", var
+
+      inreplace "collector_sidecar.yml" do |s|
+        s.gsub! "/usr", HOMEBREW_PREFIX
+        s.gsub! "/etc", etc
+        s.gsub! "/var", var
+      end
+
       system "glide", "install"
       system "make", "build"
       (etc/"graylog/collector-sidecar").install "collector_sidecar.yml"
       bin.install "graylog-collector-sidecar"
+      prefix.install_metafiles
     end
   end
 

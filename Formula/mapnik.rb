@@ -3,13 +3,15 @@ class Mapnik < Formula
   homepage "http://www.mapnik.org/"
   url "https://github.com/mapnik/mapnik/releases/download/v3.0.13/mapnik-v3.0.13.tar.bz2"
   sha256 "d6213d514a0e3cd84d9bfcb6d97208d169ffcaae1f36250f6555655cdfe57bcc"
+  revision 2
   head "https://github.com/mapnik/mapnik.git"
 
   bottle do
     cellar :any
-    sha256 "79f1a036cd98eb7d94f416e5c8e0ad55a9d92aba90a0b09a5df6def0dd02ac1b" => :sierra
-    sha256 "2f6d9de1df7ab5266684c01a2c12577bdbf9a8e77fe58e5c130865c06904234e" => :el_capitan
-    sha256 "44d3c6b9302e185c3ad2933fdcb28e666891f2ed2cffd2fa506ea031ba676f9a" => :yosemite
+    rebuild 1
+    sha256 "72187ae6b0ced95e532b9c93ffd705660e1e01cfb0eb0ba47e020e1250c74b7b" => :high_sierra
+    sha256 "d23f0b97fca875c08b70cd5174b4ddb83362bafca3d9b640e10ac3bfce354962" => :sierra
+    sha256 "4284fe8222588309d9cfca91d40d2fa9d57975f8fe81e51d095ecff78ba44448" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
@@ -33,8 +35,20 @@ class Mapnik < Formula
 
   needs :cxx11
 
+  # Upstream issue from 18 Jul 2017 "3.0.15 build failure with icu-59"
+  # See https://github.com/mapnik/mapnik/issues/3729
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/baacb3b/mapnik/3.0.13-icu4c-59.patch"
+    sha256 "b8c6d1e7477893b0024f4b79410b4499dd6fc7991d7d233a902b3a5e627854b7"
+  end
+
   def install
     ENV.cxx11
+
+    # Work around "error: no member named 'signbit' in the global namespace"
+    # encountered when trying to detect boost regex in configure
+    ENV.delete("SDKROOT") if DevelopmentTools.clang_build_version >= 900
+
     icu = Formula["icu4c"].opt_prefix
     boost = Formula["boost"].opt_prefix
     proj = Formula["proj"].opt_prefix

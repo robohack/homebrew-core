@@ -1,15 +1,16 @@
 class Ncmpcpp < Formula
   desc "Ncurses-based client for the Music Player Daemon"
   homepage "https://rybczak.net/ncmpcpp/"
-  url "https://ncmpcpp.rybczak.net/stable/ncmpcpp-0.7.7.tar.bz2"
-  sha256 "b7bcbec83b1f88cc7b21f196b10be09a27b430566c59f402df170163464d01ef"
-  revision 2
+  url "https://rybczak.net/ncmpcpp/stable/ncmpcpp-0.8.tar.bz2"
+  sha256 "2f0f2a1c0816119430880be6932e5eb356b7875dfa140e2453a5a802909f465a"
+  revision 3
 
   bottle do
     cellar :any
-    sha256 "f1829140c57c35a84df82067969f9aa06fbabdbf5996fb8a537db4c8cc6cf6d4" => :sierra
-    sha256 "15c39036a7fb314abaa2d4efd315413553cfea676574860d000782983fa2a3c1" => :el_capitan
-    sha256 "5df36c4e9ee3cea5b27f28c8e51b8071872df34a023f136f98358f2e112c24c5" => :yosemite
+    sha256 "4a186ba3b4d909fffa1215282d0d2e14d95c2397cb26315ab80bca80575fe9bc" => :high_sierra
+    sha256 "1eb97ff9e00df44f9b253b943dbc4af34f183e9690c95e230bdbb5dcf19d614b" => :sierra
+    sha256 "54fa45a5986015cd71eaa158605bc46c6dd0e1e74365821c3cf8709c254c54f2" => :el_capitan
+    sha256 "91af848fb4b9831e9298efcc8d8eb3ad3efec1e47e5d7bbcd96729da262258c4" => :yosemite
   end
 
   head do
@@ -29,17 +30,12 @@ class Ncmpcpp < Formula
   option "with-clock", "Compile with optional clock tab"
 
   depends_on "pkg-config" => :build
+  depends_on "boost"
   depends_on "libmpdclient"
+  depends_on "ncurses"
   depends_on "readline"
+  depends_on "taglib"
   depends_on "fftw" if build.with? "visualizer"
-
-  if MacOS.version < :mavericks
-    depends_on "boost" => "c++11"
-    depends_on "taglib" => "c++11"
-  else
-    depends_on "boost"
-    depends_on "taglib"
-  end
 
   needs :cxx11
 
@@ -61,12 +57,9 @@ class Ncmpcpp < Formula
     args << "--enable-visualizer" if build.with? "visualizer"
     args << "--enable-clock" if build.with? "clock"
 
-    if build.head?
-      # Also runs configure
-      system "./autogen.sh", *args
-    else
-      system "./configure", *args
-    end
+    system "./autogen.sh" if build.head?
+    system "./configure", *args
+    system "make"
     system "make", "install"
   end
 

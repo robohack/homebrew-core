@@ -1,13 +1,14 @@
 class Menhir < Formula
   desc "LR(1) parser generator for the OCaml programming language"
   homepage "http://cristal.inria.fr/~fpottier/menhir"
-  url "http://cristal.inria.fr/~fpottier/menhir/menhir-20170418.tar.gz"
-  sha256 "31deadeef2129ffcbdd78717007e13f87031432e6c3601f7e829bb0e5f9c7d2b"
+  url "http://cristal.inria.fr/~fpottier/menhir/menhir-20170712.tar.gz"
+  sha256 "ca482d690052343d6cb9452433248a0a92cc8bfc8fa529dc313220c9d7c0d000"
 
   bottle do
-    sha256 "86157755557dd51f1a9322adc8327807be6ccb7fdf4a4ea451d9c177f7f9e78e" => :sierra
-    sha256 "c279ad81a33a688861afe7c9a32d6dd98ec404d4bec00cb0e563e7a3356a8c5a" => :el_capitan
-    sha256 "b169d89422b88a6121f56f1d1d4d25fa1990b6ed5b89577a328ceb5406d6178a" => :yosemite
+    sha256 "593281dfdb0a92ac867835839697e4d69545044aeb2cddd37b2aa748cfd898a6" => :high_sierra
+    sha256 "57489d76a5f717fda9b2d78f6c049ad924f823f8536b11eb3e3aee2449207a3d" => :sierra
+    sha256 "9d17da07dfecdbfc7bc3d26c74d1c92f6d5a0e546e6e9a2e4db1288ce5cdcbbc" => :el_capitan
+    sha256 "fab74e052f76b06d9511e3cd3d68caed29027f0994016791441b009e09f7798c" => :yosemite
   end
 
   depends_on "ocamlbuild" => :build
@@ -37,7 +38,7 @@ class Menhir < Formula
     EOS
 
     system "#{bin}/menhir", "--dump", "--explain", "--infer", "test.mly"
-    assert File.exist? "test.ml"
-    assert File.exist? "test.mli"
+    assert_predicate testpath/"test.ml", :exist?
+    assert_predicate testpath/"test.mli", :exist?
   end
 end

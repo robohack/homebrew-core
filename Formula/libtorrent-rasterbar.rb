@@ -1,14 +1,25 @@
 class LibtorrentRasterbar < Formula
   desc "C++ bittorrent library by Rasterbar Software"
   homepage "http://www.libtorrent.org/"
-  url "https://github.com/arvidn/libtorrent/releases/download/libtorrent-1_1_3/libtorrent-rasterbar-1.1.3.tar.gz"
-  sha256 "44196a89932c26528f5db19289d0f0f4130730a61dccc61c9f1eac9ad3e881d8"
+  revision 1
+
+  stable do
+    url "https://github.com/arvidn/libtorrent/releases/download/libtorrent-1_1_4/libtorrent-rasterbar-1.1.4.tar.gz"
+    sha256 "ccf42367803a6df7edcf4756d1f7d0a9ce6158ec33b851b3b58fd470ac4eeba6"
+
+    # Fix compilation with Boost >= 1.65, remove in next release
+    patch do
+      url "https://patch-diff.githubusercontent.com/raw/arvidn/libtorrent/pull/2146.patch?full_index=1"
+      sha256 "be5c98a435a047027d1bad667876322b0d8fc55c8265131368072e93b6729a18"
+    end
+  end
 
   bottle do
     cellar :any
-    sha256 "3dd3f762a1f2752ade68b556a2fbef59a464483f5145078cc88fbdd35015c280" => :sierra
-    sha256 "2306afa8195a418c89f8e9e0cd13532d5a5a418b924ccbb2d516691c48207b8c" => :el_capitan
-    sha256 "cc73f24fa62e4759a493a7c7c3c7564b2c70ad3f1c4720f37b24f5b83f8098d8" => :yosemite
+    rebuild 1
+    sha256 "5f9125a9d3c71eb237da458eae5b6cc0d5bdd75812122765dcdf913ac77252c6" => :high_sierra
+    sha256 "86ff2717a99856d38bf10f56229b10bbec6bcd1b74e3086e98059be613ac26be" => :sierra
+    sha256 "4b2346c9afc763d3703e2268471e5fe28e2631e56a73ffc50eaa63ae82353d7a" => :el_capitan
   end
 
   head do
@@ -26,6 +37,7 @@ class LibtorrentRasterbar < Formula
   depends_on "boost-python" if build.with? "python"
 
   def install
+    ENV.cxx11
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--disable-silent-rules",
@@ -59,6 +71,6 @@ class LibtorrentRasterbar < Formula
            "-I#{Formula["boost"].include}/boost", "-lboost_system",
            libexec/"examples/make_torrent.cpp", "-o", "test"
     system "./test", test_fixtures("test.mp3"), "-o", "test.torrent"
-    File.exist? testpath/"test.torrent"
+    assert_predicate testpath/"test.torrent", :exist?
   end
 end

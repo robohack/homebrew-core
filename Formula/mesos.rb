@@ -1,14 +1,15 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/1.2.0/mesos-1.2.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz"
-  sha256 "60dfd06cd1eec6f69af4ff77f7a92043fe7ead60bedf5605eecd14ffa7a3fb41"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/1.3.0/mesos-1.3.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/1.3.0/mesos-1.3.0.tar.gz"
+  sha256 "a081f126134b59dcd935521a3fb3d1e13925a1c60a27a517fc63a48c3d2dffab"
 
   bottle do
-    sha256 "7f95b0ae80c39d56f8f2e34a93f80c92a9dc9c9edddd61a6d4171c256bb1994e" => :sierra
-    sha256 "eb52e6eedd7fd1096ee4a06efbfab78cf29cc8a13fa92c1a41f30037f45fbf95" => :el_capitan
-    sha256 "e0d594640d1aba3594feee8e158137fc0d9e1631636889844c681d84c42523e1" => :yosemite
+    sha256 "2ab3b2548b2b7544f688cefca1a5e16afd075a532b4773a3a432dff289e7f950" => :high_sierra
+    sha256 "1e21968c73c7f4a89205e7670550e9ae6bc51df4c90f88596e64a1a7829eddca" => :sierra
+    sha256 "8669a1a4165203bd787b555983394cccf5f94306eb80fbdf15475c99129d398f" => :el_capitan
+    sha256 "7f6e46afb9daf74f61c7229f59a72ad9020464a8bec5d6e3727c50a42c6a82be" => :yosemite
   end
 
   depends_on :java => "1.7+"
@@ -18,7 +19,7 @@ class Mesos < Formula
   depends_on "subversion"
 
   resource "protobuf" do
-    url "https://pypi.python.org/packages/e0/2f/690a5f047e2cfef40c9c5eec0877b496dc1f5a0625ca6b0ac1cd11f12f6a/protobuf-3.2.0.tar.gz"
+    url "https://files.pythonhosted.org/packages/e0/2f/690a5f047e2cfef40c9c5eec0877b496dc1f5a0625ca6b0ac1cd11f12f6a/protobuf-3.2.0.tar.gz"
     sha256 "a48475035c42d13284fd7bf3a2ffa193f8c472ad1e8539c8444ea7e2d25823a1"
   end
 
@@ -48,11 +49,23 @@ class Mesos < Formula
     sha256 "47959d0651c32102c10ad919b8a0ffe0ae85f44b8457ddcf2bdc0358fb03dc29"
   end
 
+  if DevelopmentTools.clang_build_version >= 802 # does not affect < Xcode 8.3
+    # _scheduler.so segfault when Mesos is built with Xcode 8.3.2
+    # Reported 29 May 2017 https://issues.apache.org/jira/browse/MESOS-7583
+    # The issue does not occur with Xcode 9 beta 3.
+    fails_with :clang do
+      build 802
+      cause "Segmentation fault in _scheduler.so"
+    end
+  end
+
+  # error: 'Megabytes(32).Megabytes::<anonymous>' is not a constant expression
+  # because it refers to an incompletely initialized variable
+  fails_with :gcc => "7"
+
   needs :cxx11
 
   def install
-    ENV.java_cache
-
     # Disable optimizing as libc++ does not play well with optimized clang
     # builds (see https://llvm.org/bugs/show_bug.cgi?id=28469 and
     # https://issues.apache.org/jira/browse/MESOS-5745).
@@ -85,7 +98,7 @@ class Mesos < Formula
               "import ext_modules",
               native_patch
 
-    # skip build javadoc because Homebrew sandbox ENV.java_cache
+    # skip build javadoc because Homebrew's setting user.home in _JAVA_OPTIONS
     # would trigger maven-javadoc-plugin bug.
     # https://issues.apache.org/jira/browse/MESOS-3482
     maven_javadoc_patch = <<-EOS.undent
@@ -129,7 +142,7 @@ class Mesos < Formula
 
     # stage protobuf build dependencies
     ENV.prepend_create_path "PYTHONPATH", buildpath/"protobuf/lib/python2.7/site-packages"
-    %w[six python-dateutil pytz python-gflags google-apputils].each do |r|
+    %w[python-dateutil pytz python-gflags google-apputils].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(buildpath/"protobuf")
       end
@@ -137,9 +150,13 @@ class Mesos < Formula
 
     protobuf_path = libexec/"protobuf/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", protobuf_path
-    resource("protobuf").stage do
-      ln_s buildpath/"protobuf/lib/python2.7/site-packages/google/apputils", "google/apputils"
-      system "python", *Language::Python.setup_install_args(libexec/"protobuf")
+    %w[six protobuf].each do |r|
+      resource(r).stage do
+        if r == "protobuf"
+          ln_s buildpath/"protobuf/lib/python2.7/site-packages/google/apputils", "google/apputils"
+        end
+        system "python", *Language::Python.setup_install_args(libexec/"protobuf")
+      end
     end
     pth_contents = "import site; site.addsitedir('#{protobuf_path}')\n"
     (lib/"python2.7/site-packages/homebrew-mesos-protobuf.pth").write pth_contents
@@ -162,7 +179,7 @@ class Mesos < Formula
     rescue Timeout::Error
       Process.kill "TERM", agent
     end
-    assert $?.exitstatus, "agent process died, check MESOS-6606-related behavior"
+    assert $CHILD_STATUS.exitstatus, "agent process died, check MESOS-6606-related behavior"
 
     # Make tests for minimal functionality.
     master = fork do
@@ -181,7 +198,7 @@ class Mesos < Formula
     end
     Process.kill("TERM", master)
     Process.kill("TERM", agent)
-    assert File.exist?("#{testpath}/executed")
+    assert_predicate testpath/"executed", :exist?
     system "python", "-c", "import mesos.native"
   end
 end

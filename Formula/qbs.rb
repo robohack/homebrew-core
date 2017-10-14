@@ -1,16 +1,15 @@
 class Qbs < Formula
   desc "Build tool for developing projects across multiple platforms."
   homepage "https://wiki.qt.io/Qbs"
-  url "https://download.qt.io/official_releases/qbs/1.7.1/qbs-src-1.7.1.tar.gz"
-  sha256 "e4f5627ffcdba4d74a432f89215e7df1c1657f5416b61612467a7a9267cd4851"
-  revision 1
+  url "https://download.qt.io/official_releases/qbs/1.9.1/qbs-src-1.9.1.tar.gz"
+  sha256 "970048842581bc004eec9ac9777a49380c03f4e01ef7ad309813aa1054870073"
   head "https://code.qt.io/qt-labs/qbs.git"
 
   bottle do
     cellar :any
-    sha256 "c0741c903b661245bfa0ac3021ddf0bf311183d2cb37edf9afaed6a989f28991" => :sierra
-    sha256 "7199dd4529010ce4f9db44d099818f9d454ce8dc613a24abf940082fce94abec" => :el_capitan
-    sha256 "d056df27c679d10ffa28a5ea77b4b487d8a84ccf4362bf22134c9f1be3d7a8b5" => :yosemite
+    sha256 "e5cec8be1a0f9eb4fdf9704dceecc2dd2d1c6fcc890a97adb48a9883d6d108b9" => :high_sierra
+    sha256 "f1dc8d6bd27a165271a83979309183ce163557d9126d2000353952335ef679c1" => :sierra
+    sha256 "60174aff75d9adc9ca27ebd00250a760e0bb231207121265539bfdb43e0fe35e" => :el_capitan
   end
 
   depends_on "qt"

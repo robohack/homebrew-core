@@ -4,19 +4,19 @@ class Kibana < Formula
   desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
   url "https://github.com/elastic/kibana.git",
-      :tag => "v5.3.1",
-      :revision => "b7417c4d48eb56df8d5448a2eea14dd56356c28a"
+      :tag => "v5.6.3",
+      :revision => "f363a8fe7aeeb6a535e0bb43b3b1916f26ab3732"
   head "https://github.com/elastic/kibana.git"
 
   bottle do
-    sha256 "fc12c852eca75162725d8dae62cc6f4f7f8986571aee93d34fdd4c711894f4b1" => :sierra
-    sha256 "3c2f89f2bf4b1b8f480e5f2b154d5d7b9aed45685489efff3b60fb283764fad1" => :el_capitan
-    sha256 "a98bc535656611fe4fe5a19b319b6d4dc83c6176de50aa54c7091d24fd3bc760" => :yosemite
+    sha256 "8bd71d71c346020941e81226c3cfb98f2d42ad60abc8e4fd2929cdf72454690e" => :high_sierra
+    sha256 "24f7ef61fd3d28731e1f046b3f1e8ce65264449878d33c53129d13516d64220f" => :sierra
+    sha256 "137533a3bde1309c371bc77539c440b2ec00b8ed58c3532c61935d2991d6b14b" => :el_capitan
   end
 
   resource "node" do
-    url "https://nodejs.org/dist/v6.10.2/node-v6.10.2.tar.xz"
-    sha256 "80aa11333da99813973a99646e2113c6be5b63f665c0731ed14ecb94cbe846b6"
+    url "https://nodejs.org/dist/v6.11.1/node-v6.11.1.tar.xz"
+    sha256 "6f6655b85919aa54cb045a6d69a226849802fcc26491d0db4ce59873e41cc2b8"
   end
 
   def install
@@ -27,27 +27,17 @@ class Kibana < Formula
     end
 
     # do not build packages for other platforms
-    platforms = Set.new(["darwin-x64", "linux-x64", "linux-x86", "windows-x86"])
-    if MacOS.prefer_64_bit?
-      platform = "darwin-x64"
-    else
-      raise "Installing Kibana via Homebrew is only supported on macOS x86_64"
-    end
-    platforms.delete(platform)
-    sub = platforms.to_a.join("|")
-    inreplace buildpath/"tasks/config/platforms.js", /('(#{sub})',?(?!;))/, "// \\1"
-    inreplace buildpath/"tasks/build/notice.js", /linux-x64/, "darwin-x64"
+    inreplace buildpath/"tasks/config/platforms.js", /('(linux-x64|windows-x64)',?(?!;))/, "// \\1"
 
     # trick the build into thinking we've already downloaded the Node.js binary
-    mkdir_p buildpath/".node_binaries/#{resource("node").version}/#{platform}"
+    mkdir_p buildpath/".node_binaries/#{resource("node").version}/darwin-x64"
 
     # set npm env and fix cache edge case (https://github.com/Homebrew/brew/pull/37#issuecomment-208840366)
     ENV.prepend_path "PATH", prefix/"libexec/node/bin"
-    Pathname.new("#{ENV["HOME"]}/.npmrc").write Language::Node.npm_cache_config
-    system "npm", "install", "--verbose"
+    system "npm", "install", "-ddd", "--build-from-source", "--#{Language::Node.npm_cache_config}"
     system "npm", "run", "build", "--", "--release", "--skip-os-packages", "--skip-archives"
 
-    prefix.install Dir["build/kibana-#{version}-#{platform.sub("x64", "x86_64")}/{bin,config,node_modules,optimize,package.json,src,ui_framework,webpackShims}"]
+    prefix.install Dir["build/kibana-#{version}-darwin-x86_64/{bin,config,node_modules,optimize,package.json,src,ui_framework,webpackShims}"]
 
     inreplace "#{bin}/kibana", %r{/node/bin/node}, "/libexec/node/bin/node"
     inreplace "#{bin}/kibana-plugin", %r{/node/bin/node}, "/libexec/node/bin/node"

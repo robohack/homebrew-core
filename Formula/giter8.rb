@@ -1,14 +1,14 @@
 class Giter8 < Formula
   desc "Generate files and directories from templates in a git repo"
   homepage "https://github.com/foundweekends/giter8"
-  url "https://github.com/foundweekends/giter8/archive/v0.8.0.tar.gz"
-  sha256 "f3a49b559b5438d5f28d30bf5c40c607823e6d968aaeeff231eedd17f38f2b4e"
+  url "https://github.com/foundweekends/giter8/archive/v0.10.0.tar.gz"
+  sha256 "f9e3b26a7e154421f1a3c77941ee0f4bf8b04835f9810c9f46425871bb9cbb02"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bcc901d03b43c6ed8604623900261f8a88c288506d70d4ce3cf37bc49f0eae58" => :sierra
-    sha256 "e7a62369645174ff5593ae3b17a42858d6aa3bf45637d6bff6c3d4ffc25e3b76" => :el_capitan
-    sha256 "954c03fe0f4bdaa0164919533385c0a6a8177fc0b7edfb07291d760b0a596770" => :yosemite
+    sha256 "d802cf462c8283e0c9663a61dde82bce7d482da24b2ce71b2cb233e5c589e362" => :high_sierra
+    sha256 "3841b04b665c9121d698fadfe94d4dc0ccaa4c5b36d7a590d54186c7d7583afc" => :sierra
+    sha256 "1d45736f60b6fdb1af3e2ee607b256caa99536e27a237d2f834fe2d3fb15326f" => :el_capitan
   end
 
   depends_on :java => "1.6+"
@@ -27,7 +27,6 @@ class Giter8 < Formula
   def install
     conscript_home = libexec/"conscript"
     ENV["CONSCRIPT_HOME"] = conscript_home
-    ENV.java_cache
 
     conscript_home.install resource("launcher")
     launcher = conscript_home/"launcher-#{resource("launcher").version}.jar"

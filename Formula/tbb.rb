@@ -1,15 +1,15 @@
 class Tbb < Formula
   desc "Rich and complete approach to parallelism in C++"
   homepage "https://www.threadingbuildingblocks.org/"
-  url "https://github.com/01org/tbb/archive/2017_U5.tar.gz"
-  version "2017_U5"
-  sha256 "780baf0ad520f23b54dd20dc97bf5aae4bc562019e0a70f53bfc4c1afec6e545"
+  url "https://github.com/01org/tbb/archive/2018_U1.tar.gz"
+  version "2018_U1"
+  sha256 "c6462217d4ecef2b44fce63cfdf31f9db4f6ff493869899d497a5aef68b05fc5"
 
   bottle do
     cellar :any
-    sha256 "855778d984dcc4a010cda6314e866ac2e85d33992d0f8e616c43c706b5016b3c" => :sierra
-    sha256 "86c0a9cb131520adbb731bfcbfc70f5f0c1572fe1adfcbb9fb04e372cf17860f" => :el_capitan
-    sha256 "0c0f736453f18bdbf373fde5a6f2823036067416fe1e3bf86e6c858895c7b074" => :yosemite
+    sha256 "d67a5fe90766e6ff5e7d76a79f5d6b321d9ea226614d67d884295bb26ba6d9ae" => :high_sierra
+    sha256 "7bb00f4041fb7945c675d58f6d0fa121ac28fb249a211567c0eade71d9e018a0" => :sierra
+    sha256 "b9ee2339d50a595189f9b9e9612b0cbf22f84572bf0a2de4081db698a2766de5" => :el_capitan
   end
 
   option :cxx11
@@ -21,7 +21,7 @@ class Tbb < Formula
   depends_on "swig" => :build
 
   def install
-    compiler = ENV.compiler == :clang ? "clang" : "gcc"
+    compiler = (ENV.compiler == :clang) ? "clang" : "gcc"
     args = %W[tbb_build_prefix=BUILDPREFIX compiler=#{compiler}]
 
     if build.cxx11?
@@ -50,7 +50,7 @@ class Tbb < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-ltbb", "-o", "test"
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-ltbb", "-o", "test"
     system "./test"
   end
 end

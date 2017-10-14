@@ -1,6 +1,6 @@
 class Puzzles < Formula
   desc "Collection of one-player puzzle games"
-  homepage "http://www.chiark.greenend.org.uk/~sgtatham/puzzles/"
+  homepage "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/"
   url "https://mirrors.kernel.org/debian/pool/main/s/sgt-puzzles/sgt-puzzles_20161228.7cae89f.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/sgt-puzzles/sgt-puzzles_20161228.7cae89f.orig.tar.gz"
   version "20161228.7cae89f"
@@ -10,6 +10,7 @@ class Puzzles < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "d283d7e9cc4ec3bef4cafb41d4739cc301bdaf31d62af81494f84f9a04319db4" => :high_sierra
     sha256 "57b04776dc4696ac93b9230c4df569f3aecd36b238a05e73dcde3493659dc847" => :sierra
     sha256 "57b04776dc4696ac93b9230c4df569f3aecd36b238a05e73dcde3493659dc847" => :el_capitan
     sha256 "e01a6fc502cf54a2fc1d1c05a8d1e04b3762defb50aadd9d67e4049435649676" => :yosemite
@@ -24,6 +25,6 @@ class Puzzles < Formula
   end
 
   test do
-    File.executable? prefix/"Puzzles.app/Contents/MacOS/puzzles"
+    assert_predicate prefix/"Puzzles.app/Contents/MacOS/puzzles", :executable?
   end
 end

@@ -1,16 +1,16 @@
 class Saldl < Formula
   desc "CLI downloader optimized for speed and early preview."
   homepage "https://saldl.github.io/"
-  url "https://github.com/saldl/saldl/archive/v35.tar.gz"
-  sha256 "6b5f45a8f7782bcad124df4a24876c8b3c47d45aa25d0b09b2030837c6ece82c"
+  url "https://github.com/saldl/saldl/archive/v37.tar.gz"
+  sha256 "9e8f91d3c82366dd6a72b24ab4ceecd4328df8eb3bb3347cc1fde26bcda04aa8"
 
   head "https://github.com/saldl/saldl.git", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "723d7e0181ea35f4b6643682db7731434411454239ef7c61a9393cd8cf5c9a08" => :sierra
-    sha256 "f006aa31bd31f9410a5579a92354c3d4acba5a7ac2102564423120ba1b45ef06" => :el_capitan
-    sha256 "689d5ea91227117ad5c43d52925456a8e75b069e4900a15a5853a6de96b8ffd5" => :yosemite
+    sha256 "6c7151634d74ed35a6dff9c9b9c01e0099fa16ad823434805301cd51e2a3104c" => :high_sierra
+    sha256 "e2b43d46455a439dc0a944b0dce104f37de07f46d2d92bca09cd39c90d880397" => :sierra
+    sha256 "3aea3af9027e04dbd003a9e959d94cc347b334c6ff654b0fcd840b5733fc999b" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
@@ -43,6 +43,6 @@ class Saldl < Formula
 
   test do
     system "#{bin}/saldl", "https://brew.sh/index.html"
-    assert File.exist? "index.html"
+    assert_predicate testpath/"index.html", :exist?
   end
 end

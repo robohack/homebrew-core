@@ -1,9 +1,9 @@
 class Chromedriver < Formula
   desc "Tool for automated testing of webapps across many browsers"
   homepage "https://sites.google.com/a/chromium.org/chromedriver/"
-  url "https://chromedriver.storage.googleapis.com/2.29/chromedriver_mac64.zip"
-  version "2.29"
-  sha256 "6c30bba7693ec2d9af7cd9a54729e10aeae85c0953c816d9c4a40a1a72fd8be0"
+  url "https://chromedriver.storage.googleapis.com/2.33/chromedriver_mac64.zip"
+  version "2.33"
+  sha256 "064b243c4236380cc705f183e100d7a229815db7b143f6ad3eaae072a48cc827"
 
   bottle :unneeded
 
@@ -45,6 +45,6 @@ class Chromedriver < Formula
     end
     sleep 5
     Process.kill("TERM", driver)
-    File.exist? testpath/"cd.log"
+    assert_predicate testpath/"cd.log", :exist?
   end
 end

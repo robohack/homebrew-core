@@ -1,17 +1,16 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  url "https://github.com/docker/docker.git",
-      :tag => "v17.04.0-ce",
-      :revision => "4845c567eb35d68f35b0b1713a09b0c8d47fe67e"
-
-  head "https://github.com/docker/docker.git"
+  url "https://github.com/docker/docker-ce.git",
+      :tag => "v17.09.0-ce",
+      :revision => "afdb6d44a80f777069885a9ee0e0f86cf841b1bb"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d2c909a58ac30a2d7c5c89127f3e9dcfbe4b6730ece34e68176a7f272e455c28" => :sierra
-    sha256 "3e5ee5765c066fbbefe9aec04965eaaa0d199d46b7f5ffb7a6a5ce5c60b75b17" => :el_capitan
-    sha256 "f857c190f4cc805a207d39fc1d7f3c020d93438aedda32cf1d876dceb236c40b" => :yosemite
+    rebuild 1
+    sha256 "13dde6921824dd2b3c5a1092597e4373ed7ba9a7c729ed4e303426564c136262" => :high_sierra
+    sha256 "3360d8313e135bf42aaa4a561117f8725d3a6920ad6c0a0a1340b3652da58c6d" => :sierra
+    sha256 "01b71ab9bfce60c8541b679320da91cc268ce9407f5d1e416f965c83f4b4b74b" => :el_capitan
   end
 
   option "with-experimental", "Enable experimental features"
@@ -25,18 +24,22 @@ class Docker < Formula
   end
 
   def install
-    ENV["AUTO_GOPATH"] = "1"
     ENV["DOCKER_EXPERIMENTAL"] = "1" if build.with? "experimental"
+    ENV["GOPATH"] = buildpath
+    dir = buildpath/"src/github.com/docker/cli"
+    dir.install (buildpath/"components/cli").children
+    cd dir do
+      commit = Utils.popen_read("git rev-parse --short HEAD").chomp
+      ldflags = ["-X github.com/docker/cli/cli.GitCommit=#{commit}",
+                 "-X github.com/docker/cli/cli.Version=#{version}-ce"]
+      system "go", "build", "-o", bin/"docker", "-ldflags", ldflags.join(" "),
+             "github.com/docker/cli/cmd/docker"
 
-    system "hack/make.sh", "dynbinary-client"
-
-    build_version = build.head? ? File.read("VERSION").chomp : "#{version}-ce"
-    bin.install "bundles/#{build_version}/dynbinary-client/docker-#{build_version}" => "docker"
-
-    if build.with? "completions"
-      bash_completion.install "contrib/completion/bash/docker"
-      fish_completion.install "contrib/completion/fish/docker.fish"
-      zsh_completion.install "contrib/completion/zsh/_docker"
+      if build.with? "completions"
+        bash_completion.install "contrib/completion/bash/docker"
+        fish_completion.install "contrib/completion/fish/docker.fish"
+        zsh_completion.install "contrib/completion/zsh/_docker"
+      end
     end
   end
 

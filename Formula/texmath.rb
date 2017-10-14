@@ -5,13 +5,14 @@ class Texmath < Formula
 
   desc "Haskell library for converting LaTeX math to MathML"
   homepage "https://johnmacfarlane.net/texmath.html"
-  url "https://hackage.haskell.org/package/texmath-0.9.4/texmath-0.9.4.tar.gz"
-  sha256 "da665d069708679fb40ee2e981dcdede55e79f3165c0ae09c55621273e682195"
+  url "https://hackage.haskell.org/package/texmath-0.9.4.4/texmath-0.9.4.4.tar.gz"
+  sha256 "6de2f96d72fb07ea5dc7ad4f846a052f7334d001cbf136cbd8313653ea183889"
 
   bottle do
-    sha256 "0bd0eab4170d18ec6e8cc3c50ca456f8c72bb594b06263f17f5d06af587f1e2f" => :sierra
-    sha256 "33f120135a7c3af74287243632a61db17f56b45d64d59f4120192134b8959afb" => :el_capitan
-    sha256 "81c65e6a4aa0fc4f5d354459c4f04aae266ce8f86d94c646f351608c55fc8274" => :yosemite
+    cellar :any_skip_relocation
+    sha256 "b9f020ed4deb4a7f8ad3aee7ffd6d9a508771aebafb793a96e6e109aa83dd38b" => :high_sierra
+    sha256 "e87453cebac34bf834abcde930fe30b31975c0ae3004f6cd7a3b089df50d9010" => :sierra
+    sha256 "7710fb277a5a12637e54b464fdf566747636ed726afc2993a50a5c7ec59ac249" => :el_capitan
   end
 
   depends_on "ghc" => :build

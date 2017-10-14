@@ -9,6 +9,7 @@ class Ford < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "fdf7c838602b5d38b6f12293a8d36100a5c2e879bae2f1d86e14077fd7fa1b19" => :high_sierra
     sha256 "c738a796ee8a8adfdcb8358eb93e3a87530523b6260151d82a5003a1ed8af532" => :sierra
     sha256 "47599cea228882fef8c4efaa0e52e8135ab58d6d3c7bed9efc29a0bd72d46716" => :el_capitan
     sha256 "af2a90e3a5af08077676bdcf241c4cf61525c90164b92c5dc137a78237cce3e3" => :yosemite
@@ -72,7 +73,7 @@ class Ford < Formula
 
   def install
     venv = virtualenv_create(libexec)
-    deps = (build.with? "lxml") ? resources : resources - [resource("lxml")]
+    deps = build.with?("lxml") ? resources : resources - [resource("lxml")]
     venv.pip_install deps
     venv.pip_install_and_link buildpath
     doc.install "2008standard.pdf", "2003standard.pdf"
@@ -147,6 +148,6 @@ class Ford < Formula
       EOS
     end
     system "#{bin}/ford", testpath/"test-project.md"
-    assert File.exist?(testpath/"doc"/"index.html")
+    assert_predicate testpath/"doc"/"index.html", :exist?
   end
 end

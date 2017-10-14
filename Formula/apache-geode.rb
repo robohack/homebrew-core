@@ -1,8 +1,8 @@
 class ApacheGeode < Formula
   desc "In-memory Data Grid for fast transactional data processing"
   homepage "https://geode.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=geode/1.1.1/apache-geode-1.1.1.tar.gz"
-  sha256 "f540ba8d2b9dc80069e18314651deb890498af87d17dc5dbcd6ae47bf487b185"
+  url "https://www.apache.org/dyn/closer.cgi?path=geode/1.2.1/apache-geode-1.2.1.tar.gz"
+  sha256 "c5d268e286ca450ef0640b77429f7e65e100ffe1d3e882d2c9401a4f4d3a8a54"
 
   bottle :unneeded
 
@@ -17,7 +17,6 @@ class ApacheGeode < Formula
   end
 
   test do
-    ENV.java_cache
     begin
       output = shell_output("#{bin}/gfsh start locator --dir #{testpath} --name=geode_locator_brew_test")
       assert_match /Cluster configuration service is up and running/, output

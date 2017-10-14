@@ -1,36 +1,23 @@
 class Capnp < Formula
   desc "Data interchange format and capability-based RPC system"
   homepage "https://capnproto.org/"
-  url "https://capnproto.org/capnproto-c++-0.5.3.1.tar.gz"
-  sha256 "04b5c56805895fd15751167ab04c99fa86602110ea7591ef611695de9923911b"
+  url "https://capnproto.org/capnproto-c++-0.6.1.tar.gz"
+  sha256 "8082040cd8c3b93c0e4fc72f2799990c72fdcf21c2b5ecdae6611482a14f1a04"
+  head "https://github.com/capnproto/capnproto.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1c017adc3ee4e0f1af501a3228d1069995750561ac0459c3430aa90c178a77fc" => :sierra
-    sha256 "821b56780106b139788ecdcad979dd8f5af734e6aae776ffc6476943ab6ab542" => :el_capitan
-    sha256 "35edb1dacc06cf7c784b37b8625f0cea35a190ecb6fe6e5d913b40eb34c3fa5f" => :yosemite
+    sha256 "dd976dfecf6bb362aa6f4471722b7a66c9dede1b231a77b56231ed31a66660ad" => :high_sierra
+    sha256 "02d729a3d9c6267ff0bea777ade442da70410f04f4f478e789d6f02ca4ad8069" => :sierra
+    sha256 "2393cf083cccf35613b7bd293d87a52f201a4f0cd48bce8d0cd60300808ee203" => :el_capitan
+    sha256 "726278b97a0fab5be359b604b08dc8ea9b5cd7a8a1e350e6724aaa40b7bbd5a2" => :yosemite
   end
 
   needs :cxx11
   depends_on "cmake" => :build
 
-  resource "gtest" do
-    url "https://github.com/google/googletest/archive/release-1.7.0.tar.gz"
-    sha256 "f73a6546fdf9fce9ff93a5015e0333a8af3062a152a9ad6bcb772c96687016cc"
-  end
-
   def install
     ENV.cxx11
-
-    gtest = resource("gtest")
-    gtest.verify_download_integrity(gtest.fetch)
-    inreplace "src/CMakeLists.txt" do |s|
-      s.gsub! "https://github.com/google/googletest/archive/release-1.7.0.zip",
-              gtest.cached_download
-      s.gsub! "URL_MD5 ef5e700c8a0f3ee123e2e0209b8b4961",
-              "URL_HASH SHA256=#{gtest.checksum}"
-    end
-
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make", "install"

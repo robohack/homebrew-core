@@ -1,19 +1,21 @@
 class Libav < Formula
   desc "Audio and video processing tools"
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-12.tar.xz"
-  sha256 "72291ec223b08716fe5204b7b79ea8b90d75003730caa1c575dbf4232277a90e"
+  url "https://libav.org/releases/libav-12.2.tar.xz"
+  sha256 "7b5620261fb3e372bf3992736862f598967988502f7804c39c5246b62348c53b"
 
   head "https://git.libav.org/libav.git"
 
   bottle do
-    sha256 "4e053bcc6117a02e7722a2e3eca490297d9ac5b7a43d29ccfdce7214c45c6a2c" => :sierra
-    sha256 "0d93239c110aded5fec9e3d30aaa6165f61b72ff1c06b1c7e3ba87ccb86bea90" => :el_capitan
-    sha256 "6375d45e010c69b98008c26bea428137595c33286bac8380da4bdbe6c0f0678b" => :yosemite
+    sha256 "f5e07daaf273dfd195589bcad8c5b5ac76a2d2a5303f5049982d8571229e5588" => :high_sierra
+    sha256 "eebcb1c507573e727c3c0fdaf71c7eacd3e812dd2291d9d810e351ba51d44a3d" => :sierra
+    sha256 "2e1471577657408ca11733bab5324f6dcd8ee62db06fa8a0e1d28dc05498981b" => :el_capitan
   end
 
   option "without-faac", "Disable AAC encoder via faac"
   option "without-lame", "Disable MP3 encoder via libmp3lame"
+  option "without-libvorbis", "Disable Vorbis encoding via libvorbis"
+  option "without-libvpx", "Disable VP8 de/encoding via libvpx"
   option "without-x264", "Disable H.264 encoder via x264"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder via xvid"
 
@@ -25,9 +27,7 @@ class Libav < Formula
   option "with-sdl", "Enable avplay"
   option "with-speex", "Enable Speex de/encoding via libspeex"
   option "with-theora", "Enable Theora encoding via libtheora"
-  option "with-libvorbis", "Enable Vorbis encoding via libvorbis"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
-  option "with-libvpx", "Enable VP8 de/encoding via libvpx"
 
   depends_on "pkg-config" => :build
   depends_on "yasm" => :build
@@ -36,21 +36,21 @@ class Libav < Formula
   depends_on "texi2html" => :build if MacOS.version >= :mountain_lion
 
   depends_on "faac" => :recommended
+  depends_on "fdk-aac" => :recommended
+  depends_on "freetype" => :recommended
   depends_on "lame" => :recommended
+  depends_on "libvorbis" => :recommended
+  depends_on "libvpx" => :recommended
+  depends_on "opus" => :recommended
   depends_on "x264" => :recommended
   depends_on "xvid" => :recommended
 
   depends_on "fontconfig" => :optional
-  depends_on "freetype" => :optional
-  depends_on "fdk-aac" => :optional
   depends_on "frei0r" => :optional
   depends_on "gnutls" => :optional
   depends_on "libvo-aacenc" => :optional
-  depends_on "libvorbis" => :optional
-  depends_on "libvpx" => :optional
   depends_on "opencore-amr" => :optional
   depends_on "openssl" => :optional
-  depends_on "opus" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "schroedinger" => :optional
   depends_on "sdl" => :optional
@@ -115,6 +115,6 @@ class Libav < Formula
     # Create an example mp4 file
     system "#{bin}/avconv", "-y", "-filter_complex",
         "testsrc=rate=1:duration=1", "#{testpath}/video.mp4"
-    assert (testpath/"video.mp4").exist?
+    assert_predicate testpath/"video.mp4", :exist?
   end
 end

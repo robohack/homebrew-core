@@ -1,15 +1,15 @@
 class Gammaray < Formula
   desc "Examine and manipulate Qt application internals at runtime"
   homepage "https://www.kdab.com/kdab-products/gammaray/"
-  url "https://github.com/KDAB/GammaRay/releases/download/v2.7.0/gammaray-2.7.0.tar.gz"
-  sha256 "09b814a33a53ae76f897ca8a100af9b57b08807f6fc2a1a8c7889212ee10c83b"
-  revision 1
+  url "https://github.com/KDAB/GammaRay/releases/download/v2.8.1/gammaray-2.8.1.tar.gz"
+  sha256 "b01533a524d6f66e4e15d94b7528c7c4d6d8dfc104621849be6155df6b52fc3f"
   head "https://github.com/KDAB/GammaRay.git"
 
   bottle do
-    sha256 "49b9693517b4464312c5240921015c8795574877cc0cc2ad00f5fbabfbb347ee" => :sierra
-    sha256 "36399292449e6125e1843365fcae366e68ecf1d0610b2a22836bdfb01924a770" => :el_capitan
-    sha256 "ac058868dde7954847d474a1f79a17c7ea1828b83402c3337b071e5e6f6a14be" => :yosemite
+    sha256 "9b33e7e9c865866c4d3a9525e28f2b8c7f0e2a21d80a014d05394c129b9168c8" => :high_sierra
+    sha256 "edaf5e2f136cae40a09d16165e3f4b178251fa938603e3f26132458c84ceeba5" => :sierra
+    sha256 "4ff4974627728b9289ddc31394c1e5bb612bfc28a40dacf365ee4c31d7e33b24" => :el_capitan
+    sha256 "12ad2449434c9c7752a2b8a4b40c537008ba29efbc03a1840714b7ef7f51a23b" => :yosemite
   end
 
   option "with-vtk", "Build with VTK-with-Qt support, for object 3D visualizer"
@@ -20,22 +20,19 @@ class Gammaray < Formula
   depends_on "qt"
   depends_on "graphviz" => :recommended
 
-  # VTK needs to have Qt support, and it needs to match GammaRay's
-  depends_on "homebrew/science/vtk" => [:optional, "with-qt5"]
-
   def install
     # For Mountain Lion
     ENV.libcxx
 
     args = std_cmake_args
-    args << "-DCMAKE_DISABLE_FIND_PACKAGE_VTK=" + ((build.without? "vtk") ? "ON" : "OFF")
-    args << "-DCMAKE_DISABLE_FIND_PACKAGE_Graphviz=" + ((build.without? "graphviz") ? "ON" : "OFF")
+    args << "-DCMAKE_DISABLE_FIND_PACKAGE_VTK=" + (build.without?("vtk") ? "ON" : "OFF")
+    args << "-DCMAKE_DISABLE_FIND_PACKAGE_Graphviz=" + (build.without?("graphviz") ? "ON" : "OFF")
 
     system "cmake", *args
     system "make", "install"
   end
 
   test do
-    (prefix/"GammaRay.app/Contents/MacOS/gammaray").executable?
+    assert_predicate prefix/"GammaRay.app/Contents/MacOS/gammaray", :executable?
   end
 end

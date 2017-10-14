@@ -1,21 +1,22 @@
 class Sourcery < Formula
   desc "Meta-programming for Swift, stop writing boilerplate code."
   homepage "https://github.com/krzysztofzablocki/Sourcery"
-  url "https://github.com/krzysztofzablocki/Sourcery/archive/0.5.9.tar.gz"
-  sha256 "1f5dee5184a7271a70552c0e85dd1d730e711088e5fdcf3dd7aa1f96b993e414"
+  url "https://github.com/krzysztofzablocki/Sourcery/archive/0.9.0.tar.gz"
+  sha256 "02f8c0fda5adfdc33938e00db0f90410079eb79cb9c7f2895742184911c8f338"
+  head "https://github.com/krzysztofzablocki/Sourcery.git"
 
   bottle do
-    cellar :any
-    sha256 "965e3b2bf5ffadb428f83c9514efabc4a9a8eacbe6a92ea37dcaf98feefb48b8" => :sierra
-    sha256 "45b5e5a455da4fd652d6ad03504f1966eb5e5ebf0c93174ab231d8e057478510" => :el_capitan
+    cellar :any_skip_relocation
+    sha256 "ebab65610598ac601484a76a378951d6d2081b5296691b617af728ab26dd55df" => :high_sierra
+    sha256 "65ef899d25716768b5be04bcaf2c0d0761f8d6a17225069c8521a1cfe6450d1a" => :sierra
   end
 
-  depends_on :xcode => ["8.0", :build]
+  depends_on :xcode => ["6.0", :run]
+  depends_on :xcode => ["8.3", :build]
 
   def install
-    ENV.delete("CC")
-    ENV["SDKROOT"] = MacOS.sdk_path
-    system "swift", "build", "-c", "release"
+    system "swift", "build", "--disable-sandbox", "-c", "release", "-Xswiftc",
+           "-static-stdlib"
     bin.install ".build/release/sourcery"
     lib.install Dir[".build/release/*.dylib"]
   end

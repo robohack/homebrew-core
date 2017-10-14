@@ -1,28 +1,28 @@
 class Ccm < Formula
   desc "Create and destroy an Apache Cassandra cluster on localhost"
   homepage "https://github.com/pcmanus/ccm"
-  url "https://files.pythonhosted.org/packages/c6/11/f9d69d65ca3f8995aea37d94c8636b3662340a355ab61b583316a1cc36d1/ccm-2.1.6.tar.gz"
-  sha256 "16b1d1db66239e7af801ec1a6d4fc796c0155243db40676064648e597577ed9c"
+  url "https://files.pythonhosted.org/packages/e7/8c/f9a6b7338615baf3992d50a497aa4408e4a1d5356869dd27da3455fe2992/ccm-3.0.1.tar.gz"
+  sha256 "2e15759159b9b4e68ef97f5a85e3a65d43486ae9f23f450971d93e4f885d014c"
   head "https://github.com/pcmanus/ccm.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "51e590fa4a5ccdcaad22c48e6dbbc335a944df850d685df42c8394b7382e27fc" => :sierra
-    sha256 "17a2cc69b2808dad1ad47018bd40d6db645c0af332822622bdb3e7a48727c65c" => :el_capitan
-    sha256 "e70194684f0841f64bb6411245f4358ee8e5cd0a90675b1d6e4796fa0e1594ea" => :yosemite
-    sha256 "b27407e39fb003847b6827de1919af0dd207325544a0caefd16c57a893629054" => :mavericks
+    rebuild 1
+    sha256 "b02e906439215c664beb9eb883823ccbb10753adff12d2a1276068691f6469b2" => :high_sierra
+    sha256 "b02e906439215c664beb9eb883823ccbb10753adff12d2a1276068691f6469b2" => :sierra
+    sha256 "fd02f60bfc50e4501b39a16a2c957a54771f2710209e8932e1ee207ee5d9aee0" => :el_capitan
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/75/5e/b84feba55e20f8da46ead76f14a3943c8cb722d40360702b2365b91dec00/PyYAML-3.11.tar.gz"
-    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
+    url "https://files.pythonhosted.org/packages/4a/85/db5a2df477072b2902b0eb892feb37d88ac635d36245a72a6a69b23b383a/PyYAML-3.12.tar.gz"
+    sha256 "592766c6303207a20efc445587778322d7f73b161bd994f227adaa341ba212ab"
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/b3/b2/238e2590826bfdd113244a40d9d3eb26918bd798fc187e2360a8367068db/six-1.10.0.tar.gz"
-    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+    url "https://files.pythonhosted.org/packages/16/d8/bc6316cf98419719bd59c91742194c111b6f2e85abac88e496adefaf7afe/six-1.11.0.tar.gz"
+    sha256 "70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
   end
 
   def install

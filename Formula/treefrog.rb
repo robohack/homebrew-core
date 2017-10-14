@@ -1,13 +1,14 @@
 class Treefrog < Formula
   desc "High-speed C++ MVC Framework for Web Application"
   homepage "http://www.treefrogframework.org/"
-  url "https://github.com/treefrogframework/treefrog-framework/archive/v1.16.0.tar.gz"
-  sha256 "b125f2b45d65423c6affd2fd7c60c8534de6d85d06a25d8b65035e4bdb79e73b"
-  head "https://github.com/treefrogframework/treefrog-framework.git", :branch => "master"
+  url "https://github.com/treefrogframework/treefrog-framework/archive/v1.19.0.tar.gz"
+  sha256 "7e1017c00dba4aa111882aa7ac334956a3b8b64466bf1137379b2b326caf4047"
+  head "https://github.com/treefrogframework/treefrog-framework.git"
 
   bottle do
-    sha256 "2a4470cf711ba14f03710e7a354e2ee0b0caf2447aea0fad6e47f5bdd34f0b2f" => :sierra
-    sha256 "010a880f394a57da1ca2e8094dba9003dbbec3cd3f6135005cfdc9e4282b3dd6" => :el_capitan
+    sha256 "ec2359159e02bf595d0cbf91a23e3975b9cd59e5655fe8d157b95ffb8e8d62a2" => :high_sierra
+    sha256 "a808d24e338c2e8c0b80e34ca00aa539b8b0a26912c493cdfabf7f4c33d1a619" => :sierra
+    sha256 "7b015baad146c53ab210c931c99710b41b5a9c62b2c09a0d5eb7a4ed832f6427" => :el_capitan
   end
 
   deprecated_option "with-qt5" => "with-qt"
@@ -43,11 +44,11 @@ class Treefrog < Formula
 
   test do
     system bin/"tspawn", "new", "hello"
-    assert File.exist?("hello")
+    assert_predicate testpath/"hello", :exist?
     cd "hello" do
-      assert File.exist?("hello.pro")
+      assert_predicate Pathname.pwd/"hello.pro", :exist?
       system HOMEBREW_PREFIX/"opt/qt/bin/qmake"
-      assert File.exist?("Makefile")
+      assert_predicate Pathname.pwd/"Makefile", :exist?
       system "make"
       system bin/"treefrog", "-v"
     end

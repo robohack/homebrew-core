@@ -7,6 +7,7 @@ class Argtable < Formula
 
   bottle do
     cellar :any
+    sha256 "e68b3df66d638a024c3b57b069bcdebfbdabb230a9c851de886321c2b3df7099" => :high_sierra
     sha256 "9485d1e045ed40c0145eb867f9d24425ccedd53b4f0cb0ec949139b0c99507c7" => :sierra
     sha256 "0a720e738557215bf1b58fa642ec2fc51971da38e98b987862fcd05cc54756f7" => :el_capitan
     sha256 "9e9d1451712580f090f0078ec7774a0daeb1057be3b1762e3d8465264d969432" => :yosemite
@@ -17,5 +18,31 @@ class Argtable < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOF.undent
+      #include "argtable2.h"
+      #include <assert.h>
+      #include <stdio.h>
+
+      int main (int argc, char **argv) {
+        struct arg_lit *all = arg_lit0 ("a", "all", "show all");
+        struct arg_end *end = arg_end(20);
+        void *argtable[] = {all, end};
+
+        assert (arg_nullcheck(argtable) == 0);
+        if (arg_parse(argc, argv, argtable) == 0) {
+          if (all->count) puts ("Received option");
+        } else {
+          puts ("Invalid option");
+        }
+      }
+    EOF
+    system ENV.cc, "test.c", "-L#{lib}", "-I#{include}", "-largtable2",
+                   "-o", "test"
+    assert_match "Received option", shell_output("./test -a")
+    assert_match "Received option", shell_output("./test --all")
+    assert_match "Invalid option", shell_output("./test -t")
   end
 end
