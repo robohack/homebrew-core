@@ -1,15 +1,16 @@
 class Root < Formula
   desc "Object oriented framework for large scale data analysis"
   homepage "https://root.cern.ch"
-  url "https://root.cern.ch/download/root_v6.10.06.source.tar.gz"
-  version "6.10.06"
-  sha256 "02ba62b2a732f4f8d7beecb29556545cc30d122bc87da904473de69a8972ed74"
+  url "https://root.cern.ch/download/root_v6.10.08.source.tar.gz"
+  version "6.10.08"
+  sha256 "2cd276d2ac365403c66f08edd1be62fe932a0334f76349b24d8c737c0d6dad8a"
   head "http://root.cern.ch/git/root.git"
 
   bottle do
-    sha256 "d7b475b07c9b70ed7d2ed3d54a339dcdf977ccabe8ca02f19a10964cf114ba6a" => :high_sierra
-    sha256 "e34e041f0204a3361e8c84519cbb18675f1efd89bbc806d0c4a062aedb317d99" => :sierra
-    sha256 "27072e27a0af013c7daf578244ff029a6c51eedcdbabf58356e2a19c62873bc0" => :el_capitan
+    rebuild 1
+    sha256 "32ec87dd05b998d2b6d794b75bdb5905b752842ed2193ed6bbdd22deb5c49c7a" => :high_sierra
+    sha256 "5a913e35442d6f37d5abd5bda2a80061716f8687f24bb95ca3630dbb29918897" => :sierra
+    sha256 "e1191f01a47f1a086f48266a33d5d5ff11722e14259c3b30560417049c86a2e6" => :el_capitan
   end
 
   depends_on "cmake" => :build
@@ -26,24 +27,6 @@ class Root < Formula
 
   skip_clean "bin"
 
-  # 3 upstream commits that fix compilation with Xcode 9
-  if DevelopmentTools.clang_build_version >= 900
-    patch do
-      url "https://github.com/root-project/root/commit/26350842.patch?full_index=1"
-      sha256 "27d29c775d8c8100ebd7f206eeb8364a30015f39a1af1a00203ef80ff1a04cd9"
-    end
-
-    patch do
-      url "https://github.com/root-project/root/commit/9339de9e.patch?full_index=1"
-      sha256 "f7386c626fcc64791cfcbe35a0efc10c245c10e4f0547687334592da70c99ab5"
-    end
-
-    patch do
-      url "https://github.com/root-project/root/commit/7d585604.patch?full_index=1"
-      sha256 "3ff15aa6f15621d14d07de06ed4e31f901d07da54695fae1948dba5e2884fc8f"
-    end
-  end
-
   def install
     # Work around "error: no member named 'signbit' in the global namespace"
     ENV.delete("SDKROOT") if DevelopmentTools.clang_build_version >= 900
@@ -54,6 +37,7 @@ class Root < Formula
       -Dbuiltin_freetype=ON
       -Dfftw3=ON
       -Dfortran=ON
+      -Dgdml=ON
       -Dmathmore=ON
       -Dminuit2=ON
       -Droofit=ON
@@ -106,7 +90,7 @@ class Root < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<~EOS
     Because ROOT depends on several installation-dependent
     environment variables to function properly, you should
     add the following commands to your shell initialization
@@ -123,13 +107,13 @@ class Root < Formula
   end
 
   test do
-    (testpath/"test.C").write <<-EOS.undent
+    (testpath/"test.C").write <<~EOS
       #include <iostream>
       void test() {
         std::cout << "Hello, world!" << std::endl;
       }
     EOS
-    (testpath/"test.bash").write <<-EOS.undent
+    (testpath/"test.bash").write <<~EOS
       . #{bin}/thisroot.sh
       root -l -b -n -q test.C
     EOS

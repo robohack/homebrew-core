@@ -253,17 +253,17 @@ class Mikutter < Formula
   end
 
   def exec_script
-    <<-EOS.undent
-    #!/bin/bash
-    export GEM_HOME="#{opt_lib}/mikutter/vendor"
-    export DISABLE_BUNDLER_SETUP=1
-    export GTK_PATH="#{Formula["gtk+"].opt_lib}/gtk-2.0"
-    exec ruby "#{libexec}/mikutter.rb" "$@"
+    <<~EOS
+      #!/bin/bash
+      export GEM_HOME="#{opt_lib}/mikutter/vendor"
+      export DISABLE_BUNDLER_SETUP=1
+      export GTK_PATH="#{Formula["gtk+"].opt_lib}/gtk-2.0"
+      exec ruby "#{libexec}/mikutter.rb" "$@"
     EOS
   end
 
   test do
-    (testpath/"test_plugin").write <<-EOS.undent
+    (testpath/"test_plugin").write <<~EOS
       # -*- coding: utf-8 -*-
       Plugin.create(:brew) do
         Delayer.new { Thread.exit }

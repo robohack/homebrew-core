@@ -30,14 +30,14 @@ class Pazpar2 < Formula
   end
 
   test do
-    (testpath/"test-config.xml").write <<-EOS.undent
-    <?xml version="1.0" encoding="UTF-8"?>
-    <pazpar2 xmlns="http://www.indexdata.com/pazpar2/1.0">
-      <threads number="2"/>
-      <server>
-        <listen port="8004"/>
-      </server>
-    </pazpar2>
+    (testpath/"test-config.xml").write <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <pazpar2 xmlns="http://www.indexdata.com/pazpar2/1.0">
+        <threads number="2"/>
+        <server>
+          <listen port="8004"/>
+        </server>
+      </pazpar2>
     EOS
 
     system "#{sbin}/pazpar2", "-t", "-f", "#{testpath}/test-config.xml"

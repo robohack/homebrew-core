@@ -14,13 +14,13 @@ class ProcyonDecompiler < Formula
   end
 
   test do
-    fixture = <<-EOS.undent
-    class T
-    {
-        public static void main(final String[] array) {
-            System.out.println("Hello World!");
-        }
-    }
+    fixture = <<~EOS
+      class T
+      {
+          public static void main(final String[] array) {
+              System.out.println("Hello World!");
+          }
+      }
     EOS
     (testpath/"T.java").write fixture
     system "javac", "T.java"

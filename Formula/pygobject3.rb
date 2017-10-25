@@ -33,9 +33,9 @@ class Pygobject3 < Formula
   end
 
   test do
-    Pathname("test.py").write <<-EOS.undent
-    import gi
-    assert("__init__" in gi.__file__)
+    Pathname("test.py").write <<~EOS
+      import gi
+      assert("__init__" in gi.__file__)
     EOS
     Language::Python.each_python(build) do |python, pyversion|
       ENV.prepend_path "PYTHONPATH", lib/"python#{pyversion}/site-packages"

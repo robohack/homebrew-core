@@ -27,7 +27,7 @@ class Byteman < Formula
   end
 
   test do
-    (testpath/"src/main/java/BytemanHello.java").write <<-EOS.undent
+    (testpath/"src/main/java/BytemanHello.java").write <<~EOS
       class BytemanHello {
         public static void main(String... args) {
           System.out.println("Hello, Brew!");
@@ -35,7 +35,7 @@ class Byteman < Formula
       }
     EOS
 
-    (testpath/"brew.btm").write <<-EOS.undent
+    (testpath/"brew.btm").write <<~EOS
       RULE trace main entry
       CLASS BytemanHello
       METHOD main
@@ -55,10 +55,10 @@ class Byteman < Formula
     # Compile example
     system "javac", "src/main/java/BytemanHello.java"
     # Expected successful output when Byteman runs example
-    expected = <<-EOS.undent
-    Entering main
-    Hello, Brew!
-    Exiting main
+    expected = <<~EOS
+      Entering main
+      Hello, Brew!
+      Exiting main
     EOS
     actual = shell_output("#{bin}/bmjava -l brew.btm -cp src/main/java BytemanHello")
     assert_equal(expected, actual)

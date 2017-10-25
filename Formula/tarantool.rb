@@ -44,17 +44,17 @@ class Tarantool < Formula
   end
 
   test do
-    (testpath/"test.lua").write <<-EOS.undent
-        box.cfg{}
-        local s = box.schema.create_space("test")
-        s:create_index("primary")
-        local tup = {1, 2, 3, 4}
-        s:insert(tup)
-        local ret = s:get(tup[1])
-        if (ret[3] ~= tup[3]) then
-          os.exit(-1)
-        end
-        os.exit(0)
+    (testpath/"test.lua").write <<~EOS
+      box.cfg{}
+      local s = box.schema.create_space("test")
+      s:create_index("primary")
+      local tup = {1, 2, 3, 4}
+      s:insert(tup)
+      local ret = s:get(tup[1])
+      if (ret[3] ~= tup[3]) then
+        os.exit(-1)
+      end
+      os.exit(0)
     EOS
     system bin/"tarantool", "#{testpath}/test.lua"
   end

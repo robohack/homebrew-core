@@ -23,7 +23,7 @@ class Cryptol < Formula
 
   def install
     # Remove the "happy<1.19.6" for cryptol > 2.5.0
-    # See revision 1 of http://hackage.haskell.org/package/cryptol-2.5.0/revisions/
+    # See revision 1 of https://hackage.haskell.org/package/cryptol-2.5.0/revisions/
     if build.stable?
       install_cabal_package :using => ["alex", "happy<1.19.6"]
     else
@@ -32,7 +32,7 @@ class Cryptol < Formula
   end
 
   test do
-    (testpath/"helloworld.icry").write <<-EOS.undent
+    (testpath/"helloworld.icry").write <<~EOS
       :prove \\(x : [8]) -> x == x
       :prove \\(x : [32]) -> x + zero == x
     EOS

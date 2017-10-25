@@ -22,22 +22,22 @@ class GruntCli < Formula
   end
 
   test do
-    (testpath/"package.json").write <<-EOS.undent
-    {
-      "name": "grunt-homebrew-test",
-      "version": "1.0.0",
-      "devDependencies": {
-        "grunt": ">=0.4.0"
+    (testpath/"package.json").write <<~EOS
+      {
+        "name": "grunt-homebrew-test",
+        "version": "1.0.0",
+        "devDependencies": {
+          "grunt": ">=0.4.0"
+        }
       }
-    }
     EOS
 
-    (testpath/"Gruntfile.js").write <<-EOS.undent
-    module.exports = function(grunt) {
-      grunt.registerTask("default", "Write output to file.", function() {
-        grunt.file.write("output.txt", "Success!");
-      })
-    };
+    (testpath/"Gruntfile.js").write <<~EOS
+      module.exports = function(grunt) {
+        grunt.registerTask("default", "Write output to file.", function() {
+          grunt.file.write("output.txt", "Success!");
+        })
+      };
     EOS
 
     system "npm", "install", *Language::Node.local_npm_install_args

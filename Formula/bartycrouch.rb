@@ -24,19 +24,19 @@ class Bartycrouch < Formula
   end
 
   test do
-    (testpath/"Test.swift").write <<-EOS.undent
-    import Foundation
+    (testpath/"Test.swift").write <<~EOS
+      import Foundation
 
-    class Test {
-      func test() {
-          NSLocalizedString("test", comment: "")
+      class Test {
+        func test() {
+            NSLocalizedString("test", comment: "")
+        }
       }
-    }
     EOS
 
-    (testpath/"en.lproj/Localizable.strings").write <<-EOS.undent
-    /* No comment provided by engineer. */
-    "oldKey" = "Some translation";
+    (testpath/"en.lproj/Localizable.strings").write <<~EOS
+      /* No comment provided by engineer. */
+      "oldKey" = "Some translation";
     EOS
 
     system bin/"bartycrouch", "code", "-p", testpath, "-l", testpath, "-a"

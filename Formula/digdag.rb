@@ -1,8 +1,8 @@
 class Digdag < Formula
   desc "Workload Automation System"
   homepage "https://www.digdag.io/"
-  url "https://dl.digdag.io/digdag-0.9.19.jar"
-  sha256 "b8241b1be250aae9b32165c66734650d09e7348844971888cc3bca2839165dfe"
+  url "https://dl.digdag.io/digdag-0.9.20.jar"
+  sha256 "2f2d685a827f1482372a6b85521f5f92fd184cb3aaaed83735ec20cd26525c32"
 
   bottle :unneeded
 
@@ -12,7 +12,7 @@ class Digdag < Formula
     libexec.install "digdag-#{version}.jar" => "digdag.jar"
 
     # Create a wrapper script to support OS X 10.9.
-    (bin/"digdag").write <<-EOS.undent
+    (bin/"digdag").write <<~EOS
       #!/bin/bash
       exec /bin/bash "#{libexec}/digdag.jar" "$@"
     EOS

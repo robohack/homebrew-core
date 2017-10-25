@@ -11,14 +11,14 @@ class ZshAutosuggestions < Formula
   end
 
   def caveats
-    <<-EOS.undent
-    To activate the autosuggestions, add the following at the end of your .zshrc:
+    <<~EOS
+      To activate the autosuggestions, add the following at the end of your .zshrc:
 
-      source #{HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        source #{HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-    You will also need to force reload of your .zshrc:
+      You will also need to force reload of your .zshrc:
 
-      source ~/.zshrc
+        source ~/.zshrc
     EOS
   end
 

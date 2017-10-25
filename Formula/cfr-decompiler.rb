@@ -15,17 +15,17 @@ class CfrDecompiler < Formula
   end
 
   test do
-    fixture = <<-EOS.undent
-    import java.io.PrintStream;
+    fixture = <<~EOS
+      import java.io.PrintStream;
 
-    class T {
-        T() {
-        }
+      class T {
+          T() {
+          }
 
-        public static void main(String[] arrstring) {
-            System.out.println("Hello brew!");
-        }
-    }
+          public static void main(String[] arrstring) {
+              System.out.println("Hello brew!");
+          }
+      }
     EOS
     (testpath/"T.java").write fixture
     system "javac", "T.java"

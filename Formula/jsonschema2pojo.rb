@@ -14,21 +14,21 @@ class Jsonschema2pojo < Formula
   end
 
   test do
-    (testpath/"src/jsonschema.json").write <<-EOS.undent
-    {
-      "type":"object",
-      "properties": {
-        "foo": {
-          "type": "string"
-        },
-        "bar": {
-          "type": "integer"
-        },
-        "baz": {
-          "type": "boolean"
+    (testpath/"src/jsonschema.json").write <<~EOS
+      {
+        "type":"object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          },
+          "bar": {
+            "type": "integer"
+          },
+          "baz": {
+            "type": "boolean"
+          }
         }
       }
-    }
     EOS
     system bin/"jsonschema2pojo", "-s", "src", "-t", testpath
     assert_predicate testpath/"Jsonschema.java", :exist?, "Failed to generate Jsonschema.java"
